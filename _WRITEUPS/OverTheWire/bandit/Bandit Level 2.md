@@ -17,9 +17,7 @@ date: 2025-10-26
 Este write-up aborda cómo manejar nombres de archivo que contienen espacios, lo que normalmente haría que el shell interpretara cada palabra como un argumento separado. Se demuestran tres técnicas para tratar el nombre del archivo como una sola entidad: comillas, escape de caracteres y autocompletado con TAB.
 
 ### Objetivo
-La contraseña para `bandit3` se encuentra en un archivo llamado `spaces in this filename`.
-
-![[OverTheWire.bandit11.png]]
+La contraseña para `bandit3` se encuentra en un archivo llamado `--spaces in this filename--`.
 
 ### Contexto
 El shell de Linux usa el espacio como delimitador por defecto para separar comandos y argumentos. Este nivel enseña las técnicas estándar para manejar nombres de archivo que contienen espacios, asegurando que el shell los trate como un único argumento.
@@ -41,19 +39,19 @@ El manejo incorrecto de espacios en nombres de archivo es una causa común de vu
 ```
 ssh -p 2220 bandit2@bandit.labs.overthewire.org
 ```
-![[OverTheWire.bandit11.png]]
+![OverTheWire.bandit](_assets/OverTheWire.bandit11.png)
 
 2.  **Listar los archivos del home para ver el nombre exacto:**
 ```
 ls -la
 ```
-![[OverTheWire.bandit5.png]]
+![OverTheWire.bandit](_assets/OverTheWire.bandit5.png)
 
 3.  **Leer el archivo usando comillas, escape de caracteres o autocompletado:**
 ```
 cat ./--spaces in this filename--
 ```
-![[OverTheWire.bandit12.png]]
+![OverTheWire.bandit](_assets/OverTheWire.bandit12.png)
 	**Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
 
 ---
