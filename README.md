@@ -75,7 +75,7 @@ Mi visión es simple: **acceso al conocimiento gratuito, sin suscripciones ni pa
 
 El acceso a la neCyberWIKI es y será **100% gratuito, siempre**. Sin embargo, mantener y expandir este proyecto requiere una gran dedicación.
 
-![Support Me on Ko-fi](https://cdn.prod.website-files.com/5c14e387dab576fe667689cf/670f5a02fcf48af59c591185_support_me_on_kofi_dark.png)
+[![Support Me on Ko-fi](https://cdn.prod.website-files.com/5c14e387dab576fe667689cf/670f5a02fcf48af59c591185_support_me_on_kofi_dark.png)](https://ko-fi.com/G2G15D68T)
 
 Si esta misión resuena contigo y tienes la posibilidad, considera apoyar mi trabajo con una donación. Tu aporte me permite dedicar más tiempo a investigar, curar contenido y mantener la guía actualizada para todos.
 
