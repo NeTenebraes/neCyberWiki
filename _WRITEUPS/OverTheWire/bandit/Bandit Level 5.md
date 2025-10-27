@@ -45,14 +45,14 @@ En escenarios de Threat Hunting y análisis forense, los analistas a menudo busc
 ```
 ssh bandit5@bandit.labs.overthewire.org -p 2220
 ```
-![[OverTheWire.bandit29.png]]
+![OverTheWire.bandit](_assets/OverTheWire.bandit29.png)
 
 2.  **Explorar la estructura del directorio `inhere`**
     Antes de buscar, es útil entender la complejidad del directorio.
 ```
 ls -R
 ```
-![[OverTheWire.bandit28.png]]
+![OverTheWire.bandit](_assets/OverTheWire.bandit28.png)
     La salida mostrará muchos directorios anidados, lo que confirma que una búsqueda manual con `ls` y `cd` sería ineficiente.
 	- `-R`:  Hacemos que la respuesta sea **recursive.**
 
@@ -61,7 +61,7 @@ ls -R
 ```
 find . -type f -size 1033c
 ```
-![[OverTheWire.bandit27.png]]
+![OverTheWire.bandit](_assets/OverTheWire.bandit27.png)
 	*   `find .`: Busca en el directorio actual y sus subdirectorios.
     *   `-type f`: Limita la búsqueda solo a archivos.
     *   `-size 1033c`: Especifica el tamaño exacto en bytes `(c)`.
@@ -72,7 +72,7 @@ Este comando devolverá la ruta al único archivo que cumple las condiciones cla
 ```
 cat ./inhere/maybehere07/.file2
 ```
-![[OverTheWire.bandit26.png]]
+![OverTheWire.bandit](_assets/OverTheWire.bandit26.png)
     Una vez que `find` devuelve la ruta, se usa `cat` para leer el archivo y obtener la contraseña.
 
 ---
