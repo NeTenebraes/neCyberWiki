@@ -17,12 +17,12 @@ Internet es un océano de información sobre ciberseguridad: tutoriales, cursos,
 Aquí no encontrarás un simple listado de enlaces, sino un _roadmap_ curado y estructurado con los mejores recursos. Queremos ahorrarte cientos de horas de búsqueda para que te concentres en lo que de verdad importa: **aprender de forma efectiva y práctica.**
 
 El contenido abarca desde los fundamentos hasta temas avanzados:
-*   Ciencias de la Computación.
-*   Redes Informáticas.
-*   Sistemas Operativos y Programación.
-*   Ciberseguridad: Red Team | Blue Team.
-*   Preparación para Certificaciones.
-*   Write Ups de máquinas y retos.
+*   Ciencias de la Computación
+*   Redes Informáticas
+*   Sistemas Operativos y Programación
+*   Ciberseguridad (Red Team y Blue Team)
+*   Preparación para Certificaciones
+*   Write Ups de máquinas y retos
 
 ---
 
@@ -33,6 +33,18 @@ Mi viaje, como el de muchos, comenzó con más preguntas que respuestas. Saltaba
 Esta guía nació de una necesidad personal: el deseo de aprender sin poder costear formaciones caras. Decidí que, si no encontraba un camino trazado, lo construiría para mí y para otros que vinieran detrás.
 
 La **neCyberWIKI** es el resultado de esa misión. Es mi forma de ser el mentor digital que nunca tuve, para que tu única preocupación sea aprender.
+
+---
+
+## 🚀 Sigue mi Progreso en Threads
+
+Este proyecto es un viaje en constante evolución. Para hacerlo más transparente y cercano, documento mi día a día, los descubrimientos, los retos y las pequeñas victorias directamente en Threads.
+
+Es una bitácora en tiempo real donde comparto notas rápidas, recursos que encuentro y el "detrás de cámaras" de la construcción de esta guía.
+
+🔗 **¡Sigueme en Threads y no te pierdas ninguna actualización!** [**@netenebrae**](https://www.threads.com/@netenebrae)
+
+![[Threads]()](https://i.postimg.cc/XJf9f4H7/Screenshot-2025-10-26-21-16-04.png)
 
 ---
 
@@ -63,6 +75,8 @@ Mi visión es simple: **acceso al conocimiento gratuito, sin suscripciones ni pa
 
 El acceso a la neCyberWIKI es y será **100% gratuito, siempre**. Sin embargo, mantener y expandir este proyecto requiere una gran dedicación.
 
+![Support Me on Ko-fi](https://cdn.prod.website-files.com/5c14e387dab576fe667689cf/670f5a02fcf48af59c591185_support_me_on_kofi_dark.png)
+
 Si esta misión resuena contigo y tienes la posibilidad, considera apoyar mi trabajo con una donación. Tu aporte me permite dedicar más tiempo a investigar, curar contenido y mantener la guía actualizada para todos.
 
-![Support Me on Ko-fi](https://cdn.prod.website-files.com/5c14e387dab576fe667689cf/670f5a02fcf48af59c591185_support_me_on_kofi_dark.png)
+Cada contribución, sin importar el tamaño, es increíblemente valiosa. ¡Muchas gracias por ser parte de esto!
