@@ -32,31 +32,31 @@ El comando `find` es una herramienta indispensable en pentesting y análisis for
 ```
 ssh bandit3@bandit.labs.overthewire.org -p 2220
 ```
-![[OverTheWire.bandit18.png]]
+![OverTheWire.bandit](_assets/OverTheWire.bandit18.png)
     Se utiliza la contraseña del nivel anterior para iniciar la sesión SSH.
 
 2. **Confirmamos la existencia de los directorios**
-![[OverTheWire.bandit17.png]]
+![OverTheWire.bandit](_assets/OverTheWire.bandit17.png)
 
 3. **Explorar el directorio `inhere`**
 ```
 cd inhere
 ```
-![[OverTheWire.bandit16.png]]
+![OverTheWire.bandit](_assets/OverTheWire.bandit16.png)
     Se accede al directorio especificado en el objetivo.
 
 4.  **Listar todos los archivos para encontrar el oculto**
 ```
 ls -a
 ```
-![[OverTheWire.bandit15.png]]
+![OverTheWire.bandit](_assets/OverTheWire.bandit15.png)
     El uso de `ls -a` revela el archivo `.hidden` que no es visible con un `ls` simple.
 
 5.  **Leer el contenido del archivo `...Hiding-From-You`**
 ```
 cat ...Hiding-From-You
 ```
-![[OverTheWire.bandit14.png]]
+![OverTheWire.bandit](_assets/OverTheWire.bandit14.png)
 - Se utiliza `cat` para mostrar la contraseña.
 - **Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
 ### Método Alternativo (Solución con `find`)
@@ -67,7 +67,7 @@ Este método simplificado separa la búsqueda de la lectura, lo cual es útil pa
 ```
 find . 
 ```
-![[OverTheWire.bandit13.png]]
+![OverTheWire.bandit](_assets/OverTheWire.bandit13.png)
 - Desde el directorio actual, se buscan todos los archivo (`.`)
 - La salida de este comando será la ruta relativa de todos los archivos en la carpeta actual: `./inhere/...Hiding-From-You`
 
@@ -75,7 +75,7 @@ find .
 ```
 cat ./inhere/...Hiding-From-You
 ```
-![[OverTheWire.bandit19.png]]
+![OverTheWire.bandit](_assets/OverTheWire.bandit19.png)
 - Una vez localizada la ruta, se usa `cat` para leer el archivo.
 - **Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
 ---
