@@ -63,7 +63,7 @@ ssh -p 2220 bandit0@bandit.labs.overthewire.org
 
 Tras ejecutar el comando, la terminal solicitará la contraseña (`password:`). Escribe `bandit0` y presiona Enter. No verás los caracteres mientras escribes; es un comportamiento normal de seguridad.
 
-![[OverTheWire.bandit.png]]
+![OverTheWire.bandit](_assets/OverTheWire.bandit.png)
 
 ### Método 2: Sintaxis con flag `-l`
 
@@ -75,7 +75,7 @@ ssh bandit.labs.overthewire.org -p 2220 -l bandit0
 
 Tras ejecutar cualquiera de los comandos, el sistema solicitará la contraseña. Escribe `bandit0` y presiona Enter. La entrada de la contraseña es invisible por seguridad. Una vez autenticado, habrás completado el nivel.
 
-![[OverTheWire.bandit0.png]]
+![OverTheWire.bandit](_assets/OverTheWire.bandit0.png)
 
 ---
 

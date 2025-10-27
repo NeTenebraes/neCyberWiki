@@ -1,58 +1,82 @@
-# CyberWIKI: El Mapa de Ruta Definitivo en Ciberseguridad
+# 📚 neCyberWIKI: Misión de Conocimiento Libre
 
-¡Bienvenido/a a la **CyberWIKI**! Si estás aquí, es probable que compartas una pasión o una creciente curiosidad por el mundo de la **ciberseguridad**. Has llegado al lugar correcto.
+> Un proyecto creado por y para la comunidad, diseñado para ser la guía definitiva que te llevará desde cero hasta un nivel competitivo en ciberseguridad.
 
----
-## El Propósito de esta Guía: Tu Ruta Anti-Abrumamiento
+¡Bienvenido/a! Si estás aquí, es porque compartes la pasión por un campo que define nuestro futuro digital.
 
-La CyberWIKI existe para servir como un **mapa de ruta (roadmap) claro y estructurado** para todos aquellos que deseen iniciar o consolidar su carrera en ciberseguridad.
-
-Internet es un océano de información, y es muy fácil sentirse abrumado o no saber por dónde empezar. **Esta guía nace para ser ese material de apoyo** que te guiará paso a paso, **curando y organizando los mejores recursos** (muchos de ellos gratuitos) en un camino lógico y progresivo. Queremos ahorrarte horas de búsqueda y frustración para que puedas concentrarte en lo que de verdad importa: **aprender de forma efectiva y práctica**.
+La **neCyberWIKI** nace de una convicción: **el conocimiento de calidad debe ser universal y accesible**. Este es mi compromiso personal para derribar las barreras de entrada a la Informática y la Ciberseguridad. Aquí comparto mis apuntes profesionales y todo lo que aprendo, de forma 100% técnica, práctica y gratuita. 😎
 
 ---
-## La Importancia del Inglés: Tu Acceso a la Vanguardia
 
-En el sector tecnológico, y de forma muy especial en ciberseguridad, el **inglés no es solo un idioma más, es la llave maestra** que te abrirá las puertas al conocimiento más actualizado y relevante. La gran mayoría de la documentación técnica, las **investigaciones de vanguardia**, los foros de discusión más activos (como Reddit o Stack Exchange), las certificaciones de prestigio y las herramientas más potentes se publican primero, y a veces únicamente, en inglés.
+## ¿Te sientes abrumado? No estás solo.
 
-Aunque esta guía está en español para derribar la primera barrera de entrada, te animamos a que, en paralelo a tu aprendizaje técnico, dediques tiempo a **mejorar tu inglés**. Esto te permitirá beber directamente de las fuentes originales y no depender de traducciones que pueden tardar en llegar o **perder matices importantes** que son cruciales en la precisión técnica.
+Internet es un océano de información sobre ciberseguridad: tutoriales, cursos, blogs, videos... Es fácil perderse, saltar de un tema a otro sin orden y sentir una "fatiga de información" que desmotiva.
+
+**El propósito de esta guía es ser tu brújula en medio de ese caos.**
+
+Aquí no encontrarás un simple listado de enlaces, sino un _roadmap_ curado y estructurado con los mejores recursos. Queremos ahorrarte cientos de horas de búsqueda para que te concentres en lo que de verdad importa: **aprender de forma efectiva y práctica.**
+
+El contenido abarca desde los fundamentos hasta temas avanzados:
+*   Ciencias de la Computación
+*   Redes Informáticas
+*   Sistemas Operativos y Programación
+*   Ciberseguridad (Red Team y Blue Team)
+*   Preparación para Certificaciones
+*   Write Ups de máquinas y retos
 
 ---
-## Mi Historia: ¿Por Qué Crear esta Guía?
 
-Esta guía nace del deseo de poder aprender ciberseguridad sin contar con los recursos para hacerlo. No me rendiré. El objetivo es democratizar el acceso al conocimiento y ofrecer una ruta clara que a mí me hubiera gustado tener al empezar.
+## Mi Historia: ¿Por Qué Cree esta Guía?
 
-Al igual que muchos, mi viaje comenzó en un mar de incertidumbre. **Me encontré sin un rumbo claro**, saltando de un tutorial a otro, sin entender la secuencia lógica que conecta los fundamentos de redes con el *hacking* ético o la seguridad en la nube. Esta dispersión no solo consume tiempo, sino que también genera una **"fatiga de información"** que puede llevar a muchos a abandonar.
+Mi viaje, como el de muchos, comenzó con más preguntas que respuestas. Saltaba de un tutorial a otro, sin entender cómo se conectaban los fundamentos con el hacking ético o la seguridad en la nube.
 
-Decidí que si bien yo no tenía el camino trazado, podía construirlo para mí mismo y para otros. La neCyberWIKI es el resultado de **curar, probar y organizar** cientos de recursos. Es una prueba de que, con **dedicación y el mapa correcto**, cualquiera puede forjar una carrera sólida en este apasionante campo, sin importar el punto de partida o el presupuesto. 
+Esta guía nació de una necesidad personal: el deseo de aprender sin poder costear formaciones caras. Decidí que, si no encontraba un camino trazado, lo construiría para mí y para otros que vinieran detrás.
 
-Mi misión es simple: **ser el mentor digital que nunca tuve**, eliminando las barreras económicas y de complejidad para que tu única preocupación sea el aprendizaje.
+La **neCyberWIKI** es el resultado de esa misión. Es mi forma de ser el mentor digital que nunca tuve, para que tu única preocupación sea aprender.
 
 ---
-## 🙌 Apoya y Mejora Esta Guía: Un Proyecto Comunitario
 
-Este proyecto es **de la comunidad y para la comunidad**. Su valor aumenta con cada contribución. Si esta guía te ha sido de ayuda, hay muchas formas en las que puedes apoyar su crecimiento y mantenimiento.
+## 🚀 Sigue mi Progreso en Threads
 
-### Contribuciones de Contenido
+Este proyecto es un viaje en constante evolución. Para hacerlo más transparente y cercano, documento mi día a día, los descubrimientos, los retos y las pequeñas victorias directamente en Threads.
 
-Si quieres aportar con conocimiento y ayudar a mantener la calidad de esta ruta, puedes:
+Es una bitácora en tiempo real donde comparto notas rápidas, recursos que encuentro y el "detrás de cámaras" de la construcción de esta guía.
 
-* **Reportar Errores**: Si encuentras un enlace roto, un error de tipeo o información desactualizada, ¡háznoslo saber!
-* **Sugerir Nuevos Recursos**: ¿Conoces un video, un blog o un curso gratuito increíble que encajaría perfectamente en una de las secciones? ¡Compártelo!
-* **Mejorar el Contenido**: Si crees que puedes explicar un concepto de una manera más clara o añadir un ejemplo útil, tu aporte es bienvenido.
-* **Correr la Voz**: Comparte este repositorio con amigos, colegas y en tus redes sociales para que más personas puedan beneficiarse.
+🔗 **¡Sigueme en Threads y no te pierdas ninguna actualización!** [**@netenebrae**](https://www.threads.com/@netenebrae)
 
-Para contribuir con contenido, simplemente abre un **"Issue"** para proponer un cambio o un **"Pull Request"** si quieres editar el contenido directamente.
+![[Threads]()](https://i.postimg.cc/XJf9f4H7/Screenshot-2025-10-26-21-16-04.png)
 
-### Apoyo Financiero ❤️ (Opcional)
+---
 
-El acceso a la CyberWIKI es y será **100% gratuito** siempre. Nuestro objetivo principal es democratizar el acceso al conocimiento en ciberseguridad.
+## Un Consejo Clave: La Importancia del Inglés
 
-Si bien el acceso es libre, mantener y expandir la calidad y actualidad de este proyecto requiere una dedicación significativa de tiempo en investigación, curación de contenido y actualizaciones periódicas.
+Aunque esta guía está en español para derribar la primera barrera, seamos claros: en ciberseguridad, **el inglés es la llave maestra**.
 
-Si encuentras un valor real en este esfuerzo y tienes la posibilidad de hacerlo, considera apoyar el proyecto con una donación. Tu aporte es una forma de retribuir el tiempo invertido, permitiéndome dedicar **más horas de mi día** a la mejora y expansión de la Wiki. ¡Cada contribución ayuda a mantener viva y actualizada esta ruta para todos!
+La documentación técnica, las investigaciones de vanguardia y las herramientas más potentes se publican en inglés. Mi recomendación es que, en paralelo a tu aprendizaje técnico, dediques tiempo a mejorar tu inglés. Te dará acceso directo a la fuente original del conocimiento.
 
-Puedes hacerlo a través del siguiente enlace:
+---
 
-* [❤️ Apoyame en Ko-fi](https://www.google.com/)
+## 🙌 ¡Tu Contribución es Clave!
 
-¡Muchas gracias! Cada aporte, ya sea una corrección en el texto o un café, es **increíblemente valioso** y ayuda a mantener vivo y actualizado este proyecto para todos.
+La CyberWIKI es un proyecto vivo que mejora con cada aporte. Si te resulta útil, puedes devolver el favor:
+
+*   ✍️ **Mejora el Contenido**: ¿Puedes explicar un concepto de forma más clara? ¡Adelante!
+*   🌐 **Sugiere Recursos**: ¿Conoces un blog, video o curso gratuito que encaje aquí? ¡Compártelo!
+*   🐛 **Reporta Errores**: Enlaces rotos o información desactualizada. ¡Ayúdanos a mantener la calidad!
+*   📣 **Corre la Voz**: Comparte este repositorio con amigos, colegas y en tus redes.
+
+Para contribuir, simplemente abre un **"Issue"** para proponer un cambio o un **"Pull Request"** si quieres editar el contenido directamente.
+
+---
+
+## ❤️ Apoya la Misión de Conocimiento Libre
+
+Mi visión es simple: **acceso al conocimiento gratuito, sin suscripciones ni pagos ocultos**. Priorizo la educación sin costo para que cualquiera pueda adentrarse al mundo de la informática **sin excusas**.
+
+El acceso a la neCyberWIKI es y será **100% gratuito, siempre**. Sin embargo, mantener y expandir este proyecto requiere una gran dedicación.
+
+![Support Me on Ko-fi](https://cdn.prod.website-files.com/5c14e387dab576fe667689cf/670f5a02fcf48af59c591185_support_me_on_kofi_dark.png)
+
+Si esta misión resuena contigo y tienes la posibilidad, considera apoyar mi trabajo con una donación. Tu aporte me permite dedicar más tiempo a investigar, curar contenido y mantener la guía actualizada para todos.
+
+Cada contribución, sin importar el tamaño, es increíblemente valiosa. ¡Muchas gracias por ser parte de esto!
