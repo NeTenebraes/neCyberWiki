@@ -19,7 +19,7 @@ Este write-up cubre el primer paso en los wargames de "OverTheWire: Bandit", **e
 ### Objetivo
 La contraseña para el nivel `bandit1` se encuentra en un archivo llamado `readme` en el directorio `home` del usuario `bandit0`.
 
-![[OverTheWire.bandit1.png]]
+![OverTheWire.bandit1.png](_assets/OverTheWire.bandit.png)
 
 ### Contexto
 Este nivel establece las bases para todos los desafíos futuros. Enseña las dos acciones más fundamentales al interactuar con un sistema remoto:
@@ -42,20 +42,20 @@ El acceso vía SSH es el método estándar para administrar servidores de forma 
 ```
 ls
 ```
-![[OverTheWire.bandit2.png]]
+![OverTheWire.bandit2.png](_assets/OverTheWire.bandit2.png)
 
 2.  **Confirmar que el archivo es de texto plano (Opcional)**
 ```
 file readme
 ```
-![[OverTheWire.bandit3.png]]
+![OverTheWire.bandit](_assets/OverTheWire.bandit3.png)
 	La entra nos da una respuesta "ASCII text" lo que nos da a entender que el mismo contiene texto.
 
 3.  **Leer el contenido del archivo `readme` para obtener la contraseña.**
 ```
 cat readme
 ```
-![[OverTheWire.bandit4.png]]
+![OverTheWire.bandit](_assets/OverTheWire.bandit4.png)
 	**Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
 
 ---
