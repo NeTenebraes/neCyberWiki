@@ -3,4 +3,21 @@ Development/
 
 
 Main Tasks - CyberWIKI.md
-SubTasks - CyberWIKI.md
+SubTasks - CyberWIKI.md.DS_Store
+.gitignore
+node_modules
+public
+prof
+tsconfig.tsbuildinfo
+.obsidian
+.quartz-cache
+private/
+.replit
+replit.nix
+
+node_modules/
+.quartz-cache/
+.obsidian/
+public/
+.DS_Store
+

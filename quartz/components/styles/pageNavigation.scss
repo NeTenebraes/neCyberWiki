@@ -1,0 +1,54 @@
+// quartz/components/styles/pageNavigation.scss
+.page-navigation {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 2.5rem;
+  gap: 1rem;
+
+  a {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    padding: 1rem;
+    border: 1px solid var(--gray);
+    border-radius: 8px;
+    color: var(--dark);
+    transition: all 0.2s ease-in-out;
+    text-decoration: none;
+
+    &:hover {
+      border-color: var(--secondary);
+      color: var(--secondary);
+    }
+
+    .link-text {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+
+      .icon {
+        width: 1rem;
+        height: 1rem;
+      }
+    }
+
+    .link-title {
+      margin-top: 0.5rem;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .next {
+    text-align: right;
+    .link-text {
+      justify-content: flex-end;
+    }
+  }
+}
