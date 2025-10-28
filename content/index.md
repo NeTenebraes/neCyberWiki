@@ -68,15 +68,3 @@ La CyberWIKI es un proyecto vivo que mejora con cada aporte. Si te resulta útil
 Para contribuir, simplemente abre un **"Issue"** para proponer un cambio o un **"Pull Request"** si quieres editar el contenido directamente.
 
 ---
-
-## ❤️ Apoya la Misión de Conocimiento Libre
-
-Mi visión es simple: **acceso al conocimiento gratuito, sin suscripciones ni pagos ocultos**. Priorizo la educación sin costo para que cualquiera pueda adentrarse al mundo de la informática **sin excusas**.
-
-El acceso a la neCyberWIKI es y será **100% gratuito, siempre**. Sin embargo, mantener y expandir este proyecto requiere una gran dedicación.
-
-[![Support Me on Ko-fi](https://cdn.prod.website-files.com/5c14e387dab576fe667689cf/670f5a02fcf48af59c591185_support_me_on_kofi_dark.png)](https://ko-fi.com/G2G15D68T)
-
-Si esta misión resuena contigo y tienes la posibilidad, considera apoyar mi trabajo con una donación. Tu aporte me permite dedicar más tiempo a investigar, curar contenido y mantener la guía actualizada para todos.
-
-Cada contribución, sin importar el tamaño, es increíblemente valiosa. ¡Muchas gracias por ser parte de esto!

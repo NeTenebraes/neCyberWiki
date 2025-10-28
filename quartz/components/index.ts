@@ -24,6 +24,7 @@ import Comments from "./Comments"
 import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
 import PageNavigation from "./PageNavigation"
+import KoFiOverlay from "./KoFiOverlay"
 
 export {
   ArticleTitle,
@@ -52,4 +53,5 @@ export {
   Flex,
   ConditionalRender,
   PageNavigation,
+  KoFiOverlay,
 }

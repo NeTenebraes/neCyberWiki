@@ -42,7 +42,7 @@ En análisis forense y respuesta a incidentes, es crucial distinguir entre archi
 ```
 ssh bandit4@bandit.labs.overthewire.org -p 2220
  ```
-![OverTheWire.bandit](content/_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit24.png)
+![OverTheWire.bandit](_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit24.png)
     Se utiliza la contraseña del nivel anterior para la sesión SSH.
 
 2.  **Confirma la existencia y navega hacia al directorio `inhere`**
@@ -50,14 +50,14 @@ ssh bandit4@bandit.labs.overthewire.org -p 2220
 ls 
 cd inhere
 ```
-![OverTheWire.bandit](content/_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit23.png)
+![OverTheWire.bandit](_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit23.png)
 
 3.  **Analizar todos los archivos con el comando `file`**
 ```
 ls
 file ./*
 ```
-![OverTheWire.bandit](content/_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit22.png)
+![OverTheWire.bandit](_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit22.png)
    Al ejecutar `ls`, se ven varios archivos con nombres como `-file00`, `-file01`, etc. Para saber cuál es de texto, se usa `file ./*`.  La salida mostrará el tipo de cada archivo. La mayoría serán de tipo `data` (binarios), pero uno será identificado como `ASCII text`.
 
 
@@ -66,7 +66,7 @@ file ./*
 ```
 cat ./-file07
 ```
-![OverTheWire.bandit](content/_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit21.png)
+![OverTheWire.bandit](_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit21.png)
 	**Nota**: El nombre del archivo comienza con un guion, por lo que es necesario usar la ruta relativa `./` para que `cat` no lo interprete como una opción.
 
 ### Métodos Alternativos (`grep`)
@@ -77,14 +77,14 @@ Este método es más avanzado y eficiente, ya que automatiza la identificación 
 ```
 find . -type f -exec file {} +
 ```
-![OverTheWire.bandit](content/_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit20.png)
+![OverTheWire.bandit](_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit20.png)
     El resultado es similar al de `file ./*`, pero `find` es más potente ya que puede **buscar en subdirectorios y ejecutar find al unisono.**
 
 2.  **Filtrar el resultado para encontrar solo archivos de texto**: Se puede mejorar el comando anterior usando una **tubería** (`|`) para enviar el resultado a `grep` y filtrar solo la línea que contiene "ASCII text".
  ```
  find . -type f -exec file {} + | grep "ASCII text"
  ```
-![OverTheWire.bandit](content/_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit25.png)
+![OverTheWire.bandit](_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit25.png)
     La salida de este comando mostrará únicamente la línea correspondiente al archivo de texto, haciendo su identificación inmediata. A partir de ahí, solo queda usar `cat` sobre ese nombre de archivo.
 
 ---
