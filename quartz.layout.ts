@@ -6,7 +6,7 @@ export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
   header: [],
   afterBody: [
-    Component.KoFiOverlay(),
+    //Component.KoFiOverlay(),
     Component.ConditionalRender({
       component: Component.PageNavigation(),
       condition: (page) =>
