@@ -1,6 +1,6 @@
 // quartz/components/PageNavigation.tsx
-import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
-import { classNames } from "../util/lang"
+import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "../types"
+import { classNames } from "../../util/lang"
 
 export default (() => {
   const C: QuartzComponent = ({ fileData, allFiles, displayClass }: QuartzComponentProps) => {

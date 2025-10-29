@@ -24,6 +24,9 @@ import Comments from "./Comments"
 import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
 
+export { default as PageNavigation } from "./custom/PageNavigation"
+export { default as KoFiOverlay } from "./custom/KoFiOverlay"
+
 export {
   ArticleTitle,
   Content,
