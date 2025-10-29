@@ -1,6 +1,7 @@
 // quartz/components/PageNavigation.tsx
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "../types"
 import { classNames } from "../../util/lang"
+import { resolveRelative } from "../../util/path"
 
 export default (() => {
   const C: QuartzComponent = ({ fileData, allFiles, displayClass }: QuartzComponentProps) => {
@@ -41,12 +42,12 @@ export default (() => {
     return (
       <div className={classNames(displayClass, "page-navigation")}>
         {prev && (
-          <a className="prev" href={`/${prev.slug}`}>
+          <a className="prev" href={resolveRelative(fileData.slug!, prev.slug!)}>
             <div className="link-title">{toTitle(prev.slug, prev.frontmatter?.title)}</div>
           </a>
         )}
         {next && (
-          <a className="next" href={`/${next.slug}`}>
+          <a className="next" href={resolveRelative(fileData.slug!, next.slug!)}>
             <div className="link-title">{toTitle(next.slug, next.frontmatter?.title)}</div>
           </a>
         )}
