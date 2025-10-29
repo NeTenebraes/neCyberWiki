@@ -1,0 +1,50 @@
+name: Deploy Quartz Site to GitHub Pages
+
+# Esto le dice a GitHub cuándo debe ejecutarse
+on:
+  push:
+    branches:
+      - main # También se activará en 'main'
+
+# Permisos que necesita la acción para poder publicar
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  # Este es el trabajo de "construcción"
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22 # Quartz necesita Node 22 o superior
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build with Quartz
+        run: npx quartz build
+
+      - name: Upload artifact for deployment
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './public' # Sube la carpeta 'public' que contiene el sitio
+
+  # Este es el trabajo de "despliegue"
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build # Necesita que el trabajo 'build' termine primero
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
