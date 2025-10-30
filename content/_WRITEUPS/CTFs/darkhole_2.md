@@ -491,13 +491,3 @@ Flags capturadas:
 **Lecciones aprendidas:** La exposición de repositorios Git con historial completo es una vulnerabilidad crítica que puede llevar a la filtración de credenciales. La inyección SQL manual sigue siendo efectiva cuando la validación de entradas es nula. Los servicios internos mal configurados y el historial de bash sin limpiar son vectores de escalada comunes.
 
 **Complejidad real vs marcada:** La dificultad media es apropiada. Requiere conocimientos sólidos de enumeración web, SQLi manual y pensamiento lateral para identificar servicios locales.
-
-> [!note] Mapa mental
-> Técnicas relacionadas: [[Git-Enumeration]], [[SQLi-Manual]], [[SQLi-Union-Based]], [[Linux-Internal-Services]], [[Python-Sudo-Privesc]], [[SSH-Lateral-Movement]]
-
----
-
-## Metadatos de Navegación
-
-- Relacionados: [[VulnHub-Writeups]], [[Web-Exploitation]], [[SQLi-Techniques]], [[Linux-Privesc-Methods]], [[Git-Security]]
-- Palabras clave: VulnHub, DarkHole, SQLi, Git, SSH, Reverse Shell, Sudo Privesc, Python Exploitation, Ubuntu 20.04
