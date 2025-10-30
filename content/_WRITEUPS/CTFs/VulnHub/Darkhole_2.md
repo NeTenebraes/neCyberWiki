@@ -1,11 +1,6 @@
 ---
 title: DarkHole 2 - Writeup
 date: 2025-10-09
-author: NeTenebrae
-platform: VulnHub
-difficulty: Media
-ip: 172.16.23.128
-status: completed
 tags:
   - writeup
   - vulnhub
@@ -14,8 +9,6 @@ tags:
   - ssh
   - privilege-escalation
   - web-exploitation
-aliases:
-  - DarkHole V2
 related:
   - "[[SQLi-Manual]]"
   - "[[Git-Reconnaissance]]"
@@ -24,27 +17,40 @@ related:
 references:
   - https://www.vulnhub.com/entry/darkhole-2,740/
 ---
----
-> [!abstract] TL;DR
-> Se obtuvo acceso inicial mediante credenciales hardcodeadas extraídas de commits de Git expuestos en la aplicación web, esto llevó a una explotación de una inyección SQL manual en el parámetro id del dashboard lo que permitió obtener credenciales SSH del usuario "jehad". La escalada de privilegios se logró abusando de un servicio PHP interno ejecutándose como "losy" bajo el puerto 9999, seguido de la explotación de permisos sudo para ejecutar Python como root y lograr una shell de igual manera.
----
-## Objetivos
+> [!INFO] Información General
+>Aquí encontrarás un Writeup de como hackear la máquina "darkhole_2" de VulnHub. A lo largo de la cual aprenderás a como funcionan diversos ataques de inyección SQL, en que consiste la enumeración básica de subdominios y nos aprovecharemos de un servicios expuesto bajo el puerto 9999 para realizar una escalada de privilegios.
 
-- Comprometer la máquina virtual DarkHole V2 alojada en VulnHub
-- Obtener acceso inicial mediante enumeración web y explotación de credenciales expuestas
-- Escalar privilegios hasta root mediante abuso de servicios locales y sudo
+![[cover.png]]
+
+---
+## Objetivo
+
+- Comprometer la máquina virtual [DarkHole_2](https://www.vulnhub.com/entry/darkhole-2,740/).
+- Obtener acceso inicial mediante enumeración web.
+- Escalar privilegios hasta root mediante abuso de servicios locales.
 - Capturar las flags user.txt y root.txt
 
 ---
+## Preparativos
+- Máquina Virtual en VMWare.
+
+---
+# Informe General:
+
+> [!Abstract] Resumen Técnico
+> Se obtuvo acceso inicial mediante credenciales hardcodeadas extraídas de commits de Git expuestos en la aplicación web, esto llevó a una explotación de una inyección SQL manual (Burp Suite) en el parámetro "id" del dashboard. Esto permitió obtener credenciales SSH del usuario "jehad". La escalada de privilegios se logró abusando de un servicio PHP interno ejecutándose como el usuario "losy" bajo el puerto 9999, seguido de una explotación de permisos para ejecutar Python como root y lograr una shell sin limites.
+---
 ## Información y Reconocimiento
 
-### Alcance
+### Alcance:
+- Host objetivo: 
+	- Máquina virtual: darkhole_2 en red local `vmnet1`
+- Restricciones: 
+	- Entorno de laboratorio local, sin restricciones.
 
-- Host objetivo: Máquina virtual DarkHole V2 en red local VMnet1
-- Sistema operativo: Ubuntu Linux 20.04.3 LTS
-- Restricciones: Entorno de laboratorio local, sin restricciones
+### I. Identificación del Target
 
-### Identificación del Target
+Lo primero que debemos hacer es la fase de reconocimiento, esto es indispensable para trazar el mapa de la infraestructura objetivo y saber exactamente a que nos estamos enfrentando. Casi siempre tu primer paso será determinar la dirección IP de la máquina objetivo, en mi caso será la maquina "`darkhole_2`" ubicada en mi red local (`vmnet1`).
 
 Comando utilizado:
 ```
@@ -52,28 +58,30 @@ arp-scan -I vmnet1 --localnet
 ```
 
 Parámetros:
-- arp-scan: Herramienta de reconocimiento de red
-- -I vmnet1: Especifica el adaptador de red a escanear
-- --localnet: Indica escaneo de toda la red local
+- `arp-scan`: Herramienta de reconocimiento de red
+- `-I`: Especifica el adaptador de red a escanear
+- `--localnet`: Indica escaneo de toda la red local
 
 ![[darkhole_2.1.png]]
-
-El escaneo identificó la máquina objetivo en 172.16.23.128 dentro de la red vmnet1.
+	El escaneo identifica la máquina objetivo en "`172.16.23.128`" dentro de la red `vmnet1`.
 
 ### Escaneo de Puertos
 
+Una vez sabiendo la IP de la maquina, es bueno proceder a un escaneo exhaustivo para identificar los servicios en ejecución y obtener información de versiones. 
+
 Comando utilizado:
 ```
-nmap -p- -sVC --open -T4 -vvv -n -Pn 172.16.23.128
+nmap -p- --open -sVC -T4 -vvv -n -Pn 172.16.23.128
 ```
 
 Parámetros:
-- -p- --open: Escanea los 65535 puertos y reporta solo los abiertos
-- -sVC: Detecta servicios y ejecuta scripts básicos de reconocimiento
-- -T4: Plantilla de velocidad agresiva
-- -vvv: Salida verbose en tiempo real
-- -n: Deshabilita resolución DNS para acelerar el escaneo
-- -Pn: Omite host discovery y fuerza el reconocimiento de puertos
+- `nmap`: Herramienta de escaneo de redes.
+- `-p- --open`: Escanea los 65535 puertos y reporta solo los abiertos.
+- `-sVC`: Detecta servicios y ejecuta scripts básicos de reconocimiento
+- `-T4`: Plantilla de velocidad agresiva
+- `-vvv`: Salida verbose en tiempo real, útil para ver información en tiempo real.
+- `-n`: Deshabilita resolución DNS para acelerar el escaneo
+- `-Pn`: Omite host discovery y fuerza el reconocimiento de puertos
 
 ![[darkhole_2.2.png]]
 
@@ -86,14 +94,15 @@ Resultados resumidos:
 
 ### Puerto 80 - Análisis HTTP
 
-Puerto 80 abierto:
+Un puerto 80 abierto normalmente quiere decir que el servidor está hosteando un servicio Web. Esto quiere decir que si entramos al navegador y colocamos la IP seguramente encontremos una página web.
+
+Confirmación de Puerto 80 abierto:
 ```
 80/tcp open  http    syn-ack ttl 64 Apache httpd 2.4.41 ((Ubuntu))
 ```
 
 ![[darkhole_2.3.png]]
-
-Se identifica una aplicación web activa con TTL de 64 (indicador de sistema Linux) y servidor Apache httpd 2.4.41 corriendo sobre Ubuntu.
+	Se identifica una aplicación web activa con TTL de 64 (indicador de sistema Linux) y servidor Apache httpd 2.4.41 corriendo sobre Sistema Ubuntu.
 
 ### Puerto 22 - SSH
 
@@ -106,7 +115,7 @@ Puerto SSH estándar disponible para acceso remoto con credenciales válidas.
 
 ### Enumeración de Repositorio Git
 
-Los scripts de nmap revelaron información crítica:
+Los scripts básicos de reconocimiento de nmap revelaron información crítica:
 ```
 |_http-title: DarkHole V2
 |_http-server-header: Apache/2.4.41 (Ubuntu)
@@ -119,19 +128,22 @@ Los scripts de nmap revelaron información crítica:
 
 > [!warning] Repositorio Git Expuesto
 > Se detectó un directorio .git accesible públicamente en http://172.16.23.128/.git/ con commits históricos potencialmente sensibles.
-
+> 
 ![[darkhole_2.4.png]]
 
-Se procede a descargar el repositorio completo para análisis forense:
+Siempre que encuentres algún directorio de git en ulgún proyecto puede valer la penar echarle un ojo a lo contiene, puede que haya guardado/borrado información sensibles y es justo lo que vamos a averiguar. Para ellos hay varias formas de hacerlo, yo procederé a descargar el repositorio completo para un análisis forense:
+
+Comando para descargar repositorio:
 ```
 wget -r http://172.16.23.128/.git/
 ```
-
 ![[darkhole_2.5.png]]
-
+	Descargamos con éxito el proyecto y podemos ver su contenido.
 ### Análisis de Commits Git
 
-Comando:
+Como queremos ver si hay información sensible dentro del proyecto solo debemos ver un log del mismo, cosa que se puede hacer de forma muy sencilla.
+
+Comando para revisar logs:
 ```
 git log
 ```
@@ -139,17 +151,21 @@ git log
 
 El historial de Git reveló 3 commits:
 
-1. 0f1d821f48a9cf662f285457a5ce9af6b9feb2c4: HEAD actual del proyecto
-2. a4d900a8d85e8938d3601f3cef113ee293028e10: "I added login.php file with default credentials" (crítico)
-3. aa2a5f3aa15bb402f2b90a07d86af57436d64917: "First Initialize" (commit inicial)
+1. `0f1d821f48a9cf662f285457a5ce9af6b9feb2c4`: HEAD actual del proyecto
+2. `a4d900a8d85e8938d3601f3cef113ee293028e10`: "I added login.php file with default credentials". **¡Información critica!**
+3. `aa2a5f3aa15bb402f2b90a07d86af57436d64917`: "First Initialize" (commit inicial)
 
 ### Enumeración de Subdominios
+
+El commit anterior nos indica que han agregado unas credenciales al archivo "`login.php`". Ya tenemos una pista de donde puede estar las credenciales, pero antes realicemos un último script basico de enumeración de nmap:
 
 Comando:
 ```
 nmap --script http-enum 172.16.23.128
 ```
 ![[darkhole_2.7.png]]
+	`--script`: Me permite indicarle a nmap un script a ejecutar.
+	`http-enum`: Script de enumeración de subdominios básicos.
 
 Resultados:
 ```
@@ -162,11 +178,13 @@ Resultados:
 |_  /style/: Potentially interesting directory w/ listing on 'apache/2.4.41 (ubuntu)'
 ```
 
-Se confirma el subdominio /login.php mencionado en el commit.
+Se confirma el subdominio "/login.php" mencionado en el commit.
 
 ![[darkhole_2.8.png]]
-
+	Tenemos una Login page, la cual seguramente tiene que ver con las credenciales anteriormente mencionadas. 
 ### Leak de Credenciales en Git
+
+Ya con toda esta información está más que claro que necesitamos las credenciales para iniciar sesión en la página web, para esto verifiquemos el contenido del commit anterior:
 
 Comando:
 ```
@@ -175,10 +193,9 @@ git show a4d900a8d85e8938d3601f3cef113ee293028e10
 ![[darkhole_2.9.png]]
 
 > [!danger] Credenciales Hardcodeadas Expuestas
-> El commit reveló credenciales de administrador embebidas en el código fuente del archivo login.php
+> El commit reveló credenciales de administrador embebidas en el código fuente del archivo login.php. Dando así paso al 2do ataque.
 
 Fragmento del código encontrado:
-
 ```
 +<?php
 +session_start();
