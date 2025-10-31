@@ -29,7 +29,7 @@ export const defaultContentPageLayout: PageLayout = {
   ],
   // Sección que se renderiza al final del contenido
   afterBody: [
-    Component.PageNavigation(),  // ahora queda justo debajo del .md
+    Component.PageNavigation(),  
   ],
   left: [
     Component.PageTitle(),
