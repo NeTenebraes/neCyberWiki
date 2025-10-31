@@ -6,7 +6,7 @@ export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
   header: [],
   afterBody: [
-    // Component.KoFiOverlay(),  // sigue comentado
+    // Component.KoFiOverlay(),
   ],
   footer: Component.Footer({
     links: {

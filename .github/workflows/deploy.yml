@@ -4,7 +4,7 @@ name: Deploy Quartz Site to GitHub Pages
 on:
   push:
     branches:
-      - main # También se activará en 'main'
+      - main 
 
 # Permisos que necesita la acción para poder publicar
 permissions:
