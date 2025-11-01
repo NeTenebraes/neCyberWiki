@@ -95,23 +95,24 @@ Una vez copilada ejecutamos:
 nmap -p- --open -sS 172.16.23.129 -T4 -n -vvv -Pn -oA nmap 
 ```
 
+Parámetros:
+- `-p-`: Escanea todos los puertos TCP del host, del puerto 1 al 65535.
+- `--open`: Solo muestra los puertos que están abiertos, ignorando los cerrados o filtrados.
+- `-sS`: Realiza un escaneo SYN stealth (Half-open scan), que envía paquetes SYN para detectar puertos abiertos sin completar la conexión TCP (menos detectable).
+- `172.16.23.129`: Es la dirección IP del objetivo o máquina a escanear.
+- `-T4`: Ajusta la velocidad del escaneo a un nivel agresivo (más rápido, menos sigiloso).
+- `-n`: No resuelve nombres DNS para las IPs, acelera el escaneo al evitar consultas DNS.
+- `-vvv`: Muestra salida muy detallada (nivel de verbosidad triple).
+- `-Pn`: No realiza ping previo para detectar si el host está activo; asume que está activo y escanea directamente.
+- `-oA nmap`: Exporta la salida en tres formatos simultáneamente (normal, XML y grepable) usando el prefijo de archivo "nmap".
 
+![[Pasted image 20251031182855.png]]
 
-
-
-
-
-| Puerto | Protocolo | Servicio     | Versión                 | Observaciones               |
-| :----: | :-------: | :----------- | :---------------------- | :-------------------------- |
-| 22/tcp |    SSH    | OpenSSH      | 8.2p1 Ubuntu 4ubuntu0.3 | Potencial acceso remoto     |
-| 80/tcp |   HTTP    | Apache httpd | 2.4.41 (Ubuntu)         | Aplicación web: DarkHole V2 |
-
-
-### Escaneo de Puertos
+### Reconocimiento: Scripts de Reconocimiento | nmap
 
 Comando utilizado:
 ```
-nmap -p- --open -sVC -T4 -vvv -n -Pn 172.16.23.128
+nmap -p80 -sCV 172.16.23.129 -oA PORTscan   
 ```
 
 Parámetros:
@@ -122,6 +123,7 @@ Parámetros:
 - `-vvv`: Salida verbose en tiempo real, útil para ver información en tiempo real.
 - `-n`: Deshabilita resolución DNS para acelerar el escaneo
 - `-Pn`: Omite host discovery y fuerza el reconocimiento de puertos
+- `-oA SYNscan`: Exporta la salida en tres formatos simultáneamente (normal, XML y grepable) usando el prefijo de archivo "nmap".
 
 
 | Puerto | Protocolo | Servicio     | Versión                 | Observaciones               |
