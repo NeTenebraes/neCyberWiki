@@ -14,46 +14,53 @@ related:
   - "[[Linux-Privesc]]"
   - "[[SSH-Techniques]]"
 references:
-  - https://www.vulnhub.com/entry/darkhole-2,740/
+  - https://www.vulnhub.com/entry/imf-1,162/
 ---
+
 # CTF: IMF: 1
 
 PORTADA
 
->[!INFO] Información General
->Este documento contiene un writeup detallado de cómo comprometer la máquina IMF en VulnHub. Se abordan técnicas de
+>[!INFO] Información General  
+>Este documento contiene un writeup detallado de cómo comprometer la máquina IMF en VulnHub. Se abordan técnicas de enumeración, explotación y escalada de privilegios para capturar las flags.
+
 ---
+
 ## Objetivo
 
 - Comprometer la máquina virtual [IMF: 1](https://www.vulnhub.com/entry/imf-1,162/).
 - Obtener acceso inicial mediante enumeración web.
 - Escalar privilegios hasta root mediante abuso de servicios vulnerables.
 - Capturar las 5 flags.
+
 ## Herramientas y Comandos Recomendados
 
-| Herramienta | Función principal                             |
-| ----------- | --------------------------------------------- |
-| arp-scan    | Descubre hosts en la red.                     |
+| Herramienta | Función principal                               |
+| ----------- | ---------------------------------------------- |
+| arp-scan    | Descubre hosts en la red.                       |
 | nmap        | Escaneo y enumeración de puertos y servicios. |
-| wget        | Descarga de archivos desde la web.            |
-| git         | Control de versiones de código.               |
-| Burp Suite  | Análisis y pruebas de tráfico web.            |
-| curl        | Transferencia de datos y pruebas HTTP.        |
-| netcat      | Utilidad multipropósito de red.               |
-| ssh         | Acceso remoto seguro por consola.             |
-| htop        | Monitorización avanzada de procesos.          |
-| netstat     | Revisión de conexiones y puertos activos.     |
+| wget        | Descarga de archivos desde la web.              |
+| git         | Control de versiones de código.                 |
+| Burp Suite  | Análisis y pruebas de tráfico web.              |
+| curl        | Transferencia de datos y pruebas HTTP.          |
+| netcat      | Utilidad multipropósito de red.                 |
+| ssh         | Acceso remoto seguro por consola.               |
+| htop        | Monitorización avanzada de procesos.            |
+| netstat     | Revisión de conexiones y puertos activos.       |
+
 > [!TIP] Preparativos Personales:  
->Esta máquina vulnerable fue ejecutada bajo un entorno virtualizado usando **VMware Workstation** sobre un sistema operativo **Arch Linux**. Todas las herramientas fueron descargadas e instaladas de los repositorios oficiales o desde la **AUR**. 
+> Esta máquina vulnerable fue ejecutada bajo un entorno virtualizado usando **VMware Workstation** sobre un sistema operativo **Arch Linux**. Todas las herramientas fueron descargadas e instaladas desde los repositorios oficiales o desde la **AUR**.
 
 ---
-# Informe General:
 
-> [!Abstract] Resumen Técnico
-> Se obtuvo acceso inicial 
+# Informe General
+
+> [!Abstract] Resumen Técnico  
+> Se obtuvo acceso inicial mediante técnicas de enumeración y explotación en la máquina IMF.
+
 ## I. Reconocimiento: Fase inicial | arp-scan / tcping
 
-Lo primero que debes hacer antes de hacer cualquier cosa es reconocer que maquina vas a atacar. Para esto debe reconocer que IP tiene la máquina victima.
+Lo primero que debes hacer es reconocer qué máquina vas a atacar. Para ello, debes identificar la IP de la máquina víctima.
 
 Comando utilizado:
 ```
@@ -68,20 +75,19 @@ Parámetros:
 ![[Pasted image 20251031173658.png]]
 	El escaneo identifica la máquina objetivo en "`172.16.23.129`" dentro de mi red `vmnet1`.
 
-Indentificamos que hay una maquina conectada, por lo que podemos proceder ejecutar el comando ping para verificar conectividad con la máquina:
+Identificamos que hay una máquina conectada, por lo que podemos ejecutar el comando ping para verificar conectividad con la máquina:
 
-Comando utilizado
 ```
 ping 172.16.23.129
 ```
 ![[Pasted image 20251031174154.png]]
 	No hay conexión por medio de ping.
 
-El comando "ping" usa el protocolo ICMP (Internet Control Message Protocol), que envía paquetes de eco para saber si un dispositivo está accesible en la red. Sin embargo, muchos sistemas o routers pueden bloquear estos paquetes ICMP por seguridad, por lo que "ping" puede fallar aunque el dispositivo esté activo.
+El comando "ping" usa el protocolo ICMP (Internet Control Message Protocol), que envía paquetes de eco para saber si un dispositivo está accesible en la red. Sin embargo, muchos sistemas o routers pueden bloquear estos paquetes ICMP por seguridad, por lo que "ping" puede fallar aunque el dispositivo esté activo. 
 
-Ya que no hay conexión mediante conexiones ICMP, probaremos la herramienta [tcping](https://github.com/cloverstd/tcping) para verificar la conexión mediante el protocolo TCP. tcping usa el protocolo TCP  para intentar establecer una conexión directa a un puerto TCP específico en la máquina destino (por ejemplo, puerto 80, 443, etc). Esto permite verificar si un servicio en ese puerto está disponible y funcionando, y no se basa en que ICMP esté permitido o no.
+Al no obtener respuesta con ICMP, probaremos la herramienta [tcping](https://github.com/cloverstd/tcping) para verificar la conexión mediante el protocolo TCP. tcping usa TCP para intentar establecer una conexión directa a un puerto específico en la máquina destino (por ejemplo, puerto 80, 443, etc.). Esto permite verificar si un servicio en ese puerto está disponible y funcionando, sin depender de que ICMP esté permitido.
 
-Una vez copilada ejecutamos:
+Una vez compilada, ejecutamos:
 ```
 ./tcping 172.16.23.129
 ```
@@ -132,5 +138,39 @@ Parámetros:
 >  Equipo con puerto 80/tcp abierto, serivicio Apache httpd  2.4.18 corriendo en maquina  Ubuntu | Aplicación web: IMF 
 
 
----
+### Reconocimiento: Aplicativo Web: IMF | Puerto 80
 
+Introducimos la IP de la máquina como URL en nuestro navegador web. Vemos que la misma cuenta con 3 "subdominios". Home (index.php), Projects (projects.php )y Contact Us (contact.php).
+
+![[Pasted image 20251031224714.png]]
+
+#### Index.php código fuente | Control + U 
+
+![[Pasted image 20251031230106.png]]
+	Encontramos unos archivos codeados en base64.
+
+Juntamos todo los caracteres 
+ZmxhZzJ7YVcxbVl
+XUnRhVzVwYzNS
+eVlYUnZjZz09fQ==
+
+ZmxhZzJ7YVcxbVlXUnRhVzVwYzNSeVlYUnZjZz09fQ==
+
+```
+ echo "ZmxhZzJ7YVcxbVlXUnRhVzVwYzNSeVlYUnZjZz09fQ==" | base64 -d; echo
+```
+
+![[Pasted image 20251031232251.png]]
+	Flag 2
+#### Pojects
+
+![[Pasted image 20251031231054.png]]
+
+
+#### Ccntact Us
+
+![[Pasted image 20251031231116.png]]
+
+
+![[Pasted image 20251031231606.png]]
+	obtenemos la flag 1.
