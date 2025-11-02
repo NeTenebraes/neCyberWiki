@@ -79,7 +79,7 @@ Después, abre un Pull Request con la descripción de tu aporte.
 - Usa formato Markdown limpio y sin exceso de formato  
 - Cita las fuentes cuando sea necesario  
 - Evita incluir material con derechos de autor no libres  
-- Respeta la ética hacker: el conocimiento es libre, el daño no  
+- Respeta la ética hacker: el conocimiento es libre, hacer daño es imperdonable.  
 
 
 ---
