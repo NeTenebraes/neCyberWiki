@@ -7,7 +7,26 @@
 La **neCyberWIKI** nace de una convicción: **el conocimiento de calidad debe ser universal y accesible**. Este es mi compromiso personal para derribar las barreras de entrada a la Informática y la Ciberseguridad. Aquí comparto mis apuntes profesionales y todo lo que aprendo, de forma 100% técnica, práctica y gratuita. 😎
 
 ---
+## Bases Fundamentales de la Ciberseguridad y la Ética
 
+La ciberseguridad, y por ende esta Wiki, se basan en proteger la confidencialidad, integridad y disponibilidad de la información y los sistemas digitales. Para lograrlo, se aplican controles técnicos, organizativos y humanos que evitan accesos no autorizados, ataques y fallos que puedan comprometer datos sensibles o la operatividad.
+
+Entre las bases más importantes destacan:
+
+- **Confidencialidad:** Asegurar que la información solo sea accesible a quienes están autorizados.
+- **Integridad:** Mantener la precisión y completitud de la información durante su ciclo de vida.
+- **Disponibilidad:** Garantizar que los sistemas y datos estén accesibles cuando se necesiten.
+- **Autenticación y Autorización:** Verificar la identidad y permisos de usuarios o procesos.
+- **Auditoría y Monitorización:** Registrar y revisar eventos para detectar anomalías y responder a incidentes.
+- **Educación y Conciencia:** Formar a todos los usuarios para minimizar riesgos humanos.
+
+La ética en ciberseguridad es fundamental para manejar correctamente el conocimiento y las herramientas. El conocimiento sobre vulnerabilidades, ataques y defensas debe usarse siempre con responsabilidad, bajo un marco legal y moral que respete la privacidad y los derechos de las personas y organizaciones.
+
+Esta wiki promueve un enfoque ético donde el objetivo es aprender para **proteger sistemas**, no para dañarlos o explotarlos sin consentimiento. Las técnicas presentadas aquí se deben practicar únicamente en entornos controlados o con permiso explícito, y en casos reales, reportar todas las vulnerabilidades de forma responsable.
+
+Respetar esta ética no solo fortalece la comunidad sino que también protege tu reputación profesional y contribuye a un internet más seguro para todos.
+
+---
 ## ¿Te sientes abrumado? No estás solo.
 
 Internet es un océano de información sobre ciberseguridad: tutoriales, cursos, blogs, videos... Es fácil perderse, saltar de un tema a otro sin orden y sentir una "fatiga de información" que desmotiva.
@@ -17,12 +36,12 @@ Internet es un océano de información sobre ciberseguridad: tutoriales, cursos,
 Aquí no encontrarás un simple listado de enlaces, sino un _roadmap_ curado y estructurado con los mejores recursos. Queremos ahorrarte cientos de horas de búsqueda para que te concentres en lo que de verdad importa: **aprender de forma efectiva y práctica.**
 
 El contenido abarca desde los fundamentos hasta temas avanzados:
-*   Ciencias de la Computación
-*   Redes Informáticas
-*   Sistemas Operativos y Programación
-*   Ciberseguridad (Red Team y Blue Team)
-*   Preparación para Certificaciones
-*   Write Ups de máquinas y retos
+* Ciencias de la Computación
+* Redes Informáticas
+* Sistemas Operativos y Programación
+* Ciberseguridad (Red Team y Blue Team)
+* Preparación para Certificaciones
+* Write Ups de máquinas y retos
 
 ---
 
@@ -60,10 +79,10 @@ La documentación técnica, las investigaciones de vanguardia y las herramientas
 
 La CyberWIKI es un proyecto vivo que mejora con cada aporte. Si te resulta útil, puedes devolver el favor:
 
-*   ✍️ **Mejora el Contenido**: ¿Puedes explicar un concepto de forma más clara? ¡Adelante!
-*   🌐 **Sugiere Recursos**: ¿Conoces un blog, video o curso gratuito que encaje aquí? ¡Compártelo!
-*   🐛 **Reporta Errores**: Enlaces rotos o información desactualizada. ¡Ayúdanos a mantener la calidad!
-*   📣 **Corre la Voz**: Comparte este repositorio con amigos, colegas y en tus redes.
+* ✍️ Mejora el Contenido: ¿Puedes explicar un concepto de forma más clara? ¡Adelante!
+* 🌐 Sugiere Recursos: ¿Conoces un blog, video o curso gratuito que encaje aquí? ¡Compártelo!
+* 🐛 Reporta Errores: Enlaces rotos o información desactualizada. ¡Ayúdanos a mantener la calidad!
+* 📣 Corre la Voz: Comparte este repositorio con amigos, colegas y en tus redes.
 
 Para contribuir, simplemente abre un **"Issue"** para proponer un cambio o un **"Pull Request"** si quieres editar el contenido directamente.
 
