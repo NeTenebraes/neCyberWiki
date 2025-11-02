@@ -218,7 +218,7 @@ SUBDOMINIO NUEVO
 Nada interesante en los codigos internos () quiero incluirlos
 
 
-# SQLi Attack Boolean blind based
+# SQLi Attack
 
 
 Nos damos cuenta de que la pagina tiene un subdominio `cms.php?pagename=home`. 
@@ -236,3 +236,40 @@ GET /imfadministrator/cms.php?pagename=home' or 1=1--
 ```
 
 El comando está URL encodeado al enviar las solicitudes, estos los puedes hacer facilmente con Burp Suite al presionar Control + U.
+
+![[Pasted image 20251102005955.png]]
+
+Veo que la solicitud en sí no cambia mucho pero al leer detenidamente podemos apreciar que hay error que dice:
+
+```
+mysqli_fetch_row() expects parameter 1 to be mysqli_result, boolean given in 
+```
+
+ese **bolean given in** es un claro indicio a que hay un error relacionado a parámetros booleanos, teniendo esto encuenta vamos a probar los payload: dando el servidor respuestas distintas y confirmando **boolean sqli** 
+
+```
+home' AND '1'='1'--  
+home' AND '1'='0'--
+```
+
+ESTADO TRUE
+![[Pasted image 20251102010548.png]]
+
+ESTADO FALSE:
+
+![[Pasted image 20251102010623.png]]
+
+Con esto en cuenta podemos empezar a probar payloads mas complejos
+
+---
+Probar brevemente union select para ver que no hay diferencia
+
+---
+# Blinded Based
+
+
+
+
+
+---
+
