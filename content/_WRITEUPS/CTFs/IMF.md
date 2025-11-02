@@ -197,10 +197,42 @@ Obviamente imfadministrator es una ruta del proyecto :V
 
 Aqui hice el array injection authetication bypass
 
-
+Al hacer clic en CMS me lleva a:
 
 http://172.16.23.129/imfadministrator/cms.php?pagename=home
 
 SUBDOMINIO NUEVO
 
-Aqui es donde se hace el SQLi Attack Boolean blind based
+![[Pasted image 20251101213827.png]]
+
+![[Pasted image 20251102000502.png]]
+
+![[Pasted image 20251102000333.png]]
+
+![[Pasted image 20251102000536.png]]
+
+![[Pasted image 20251102000317.png]]
+
+![[Pasted image 20251102000554.png]]
+
+Nada interesante en los codigos internos () quiero incluirlos
+
+
+# SQLi Attack Boolean blind based
+
+
+Nos damos cuenta de que la pagina tiene un subdominio `cms.php?pagename=home`. 
+
+![[Pasted image 20251102000703.png]]
+
+Ese "=" es bastante curioso ya que esta apuntando a recursos por lo que vamos a probar colocando una comilla "`'`". Esto me da un a pantalla WARNING de SQL por lo que tengo la idea de iniciaremos un ataque SQL
+
+![[Pasted image 20251102001557.png]]
+
+Interceptamos la solicitud GET con Burp Suite 
+
+```
+GET /imfadministrator/cms.php?pagename=home' or 1=1--
+```
+
+El comando está URL encodeado al enviar las solicitudes, estos los puedes hacer facilmente con Burp Suite al presionar Control + U.
