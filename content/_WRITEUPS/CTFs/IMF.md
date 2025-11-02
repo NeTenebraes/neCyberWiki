@@ -174,3 +174,33 @@ ZmxhZzJ7YVcxbVlXUnRhVzVwYzNSeVlYUnZjZz09fQ==
 
 ![[Pasted image 20251031231606.png]]
 	obtenemos la flag 1.
+
+> [!success] Información obtenida
+> flag1{allthefiles}
+> flag2{imfadministrator}
+> 
+> Usuarios: rmichaels, akeith y estone.
+
+---
+
+# Explotación: Array Injection Authentication Bypass
+
+Obviamente imfadministrator es una ruta del proyecto :V 
+
+![[Pasted image 20251101211134.png]]
+
+![[Pasted image 20251101211046.png]]
+
+
+![[Pasted image 20251101212005.png]]
+	`flag3{Y29udGludWVUT2Ntcw==}`
+
+Aqui hice el array injection authetication bypass
+
+
+
+http://172.16.23.129/imfadministrator/cms.php?pagename=home
+
+SUBDOMINIO NUEVO
+
+Aqui es donde se hace el SQLi Attack Boolean blind based
