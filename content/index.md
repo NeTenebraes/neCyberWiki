@@ -1,10 +1,15 @@
-# 📚 neCyberWIKI: Misión de Conocimiento Libre
-
-> Un proyecto creado por y para la comunidad, diseñado para ser la guía definitiva que te llevará desde cero hasta un nivel competitivo en ciberseguridad.
+---
+title: "📚 neCyberWIKI: Misión de Conocimiento Libre"
+tags:
+---
+> Proyecto creado para la comunidad, diseñado para ser la guía definitiva que te llevará desde cero hasta un nivel competitivo en ciberseguridad.
 
 ¡Bienvenido/a! Si estás aquí, es porque compartes la pasión por un campo que define nuestro futuro digital.
 
 La **neCyberWIKI** nace de una convicción: **el conocimiento de calidad debe ser universal y accesible**. Este es mi compromiso personal para derribar las barreras de entrada a la Informática y la Ciberseguridad. Aquí comparto mis apuntes profesionales y todo lo que aprendo, de forma 100% técnica, práctica y gratuita. 😎
+
+> [!WARNING] ¡Importante!  
+> Recuerda pasarme por [[Fundamentos y la Ética de la Ciberseguridad]]
 
 ---
 
