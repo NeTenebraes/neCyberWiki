@@ -18,7 +18,7 @@ El objetivo es fortalecer y proteger, no causar daño ni aprovecharte de debilid
  Esta wiki es para **fines educativos y práctica responsable**; ejecuta solo en tu laboratorio o en activos con autorización expresa y documentada. 
 
 > [!DANGER] ¡Cuidado con lo que haces!
-> Actúa dentro de la ley, del alcance aprobado y de las políticas correspondientes; **lo contrario es tú responsabilidad**. Vuelve cuando tengas alcance y permisos por escrito de los activos que quieras probar o mejor aún, **crea un laboratorio de pruebas**. Si encuentras algo en un activo autorizado, reporta por el canal oficial con reproducción.
+> Actúa dentro de la ley, del alcance aprobado y de las políticas correspondientes; **lo contrario es tú responsabilidad**. Vuelve cuando tengas alcance y permisos por escrito de los activos que quieras probar o mejor aún, **crea un laboratorio de pruebas**. Si encuentras algo en un activo autorizado, reporta por el canal oficial correspondiente.
 ### Práctica segura
 - Nada en producción; limítate a entornos aislados que puedas romper y revertir. 
 - Permisos claros: conserva evidencia del alcance y del autorizante.
