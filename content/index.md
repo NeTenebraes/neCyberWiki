@@ -1,5 +1,5 @@
 ---
-title: "📚 neCyberWIKI: Misión de Conocimiento Libre"
+title: "neCyberWIKI: Misión de Conocimiento Libre 📚"
 tags:
 ---
 > Proyecto creado para la comunidad, diseñado para ser la guía definitiva que te llevará desde cero hasta un nivel competitivo en ciberseguridad.
@@ -7,9 +7,6 @@ tags:
 ¡Bienvenido/a! Si estás aquí, es porque compartes la pasión por un campo que define nuestro futuro digital.
 
 La **neCyberWIKI** nace de una convicción: **el conocimiento de calidad debe ser universal y accesible**. Este es mi compromiso personal para derribar las barreras de entrada a la Informática y la Ciberseguridad. Aquí comparto mis apuntes profesionales y todo lo que aprendo, de forma 100% técnica, práctica y gratuita 😎
-
-> [!WARNING] ¡Importante!  
-> Recuerda pasarme por [[Fundamentos y la Ética de la Ciberseguridad]]
 
 ---
 ## ¿Te sientes abrumado? No estás solo.
@@ -28,9 +25,12 @@ El contenido abarca desde los fundamentos hasta temas avanzados:
 * Preparación para Certificaciones
 * Write Ups de máquinas y retos
 
+> [!WARNING] ¡Importante!  
+> Esta Wiki es para fines educativos y prácticas éticas. No ejecutes nada en producción ni sobre datos reales; detente si no puedes demostrar control del entorno. Lee primero [[Ética en la Ciberseguridad]] para alcance, límites y buenas prácticas.
+
 ---
 
-## Mi historia: ¿Para qué diablos hago esto?
+## ¿Para qué diablos hago esto?
 
 Aprender haciendo me funcionó: construí mis propias herramientas y documenté cada atajo, bug y mejora del proceso. La neCyberWIKI es mi cuaderno abierto: **notas que aplico tal cual**, pensadas para pentesting, scripting y privacidad, sin teorías ni promesas vacías.
 
@@ -49,15 +49,6 @@ Es una bitácora en tiempo real donde comparto notas rápidas, recursos que encu
 ![[Threads]()](https://i.postimg.cc/XJf9f4H7/Screenshot-2025-10-26-21-16-04.png)
 
 ---
-
-## La Importancia del Inglés
-
-Aunque esta guía está en español para derribar la primera barrera, seamos claros: en ciberseguridad, **el inglés es la llave maestra**.
-
-La documentación técnica, las investigaciones de vanguardia y las herramientas más potentes se publican en inglés. Mi recomendación es que, en paralelo a tu aprendizaje técnico, dediques tiempo a mejorar tu inglés. Te dará acceso directo a la fuente original del conocimiento.
-
----
-
 ## 🙌 ¡Tu Contribución es Clave!
 
 La CyberWIKI es un proyecto vivo que mejora con cada aporte. Si te resulta útil, puedes devolver el favor:
@@ -68,5 +59,3 @@ La CyberWIKI es un proyecto vivo que mejora con cada aporte. Si te resulta útil
 * 📣 Corre la Voz: Comparte este repositorio con amigos, colegas y en tus redes.
 
 Para contribuir, simplemente abre un **"[Issue](https://github.com/NeTenebraes/neCyberWiki/issues)"** para proponer un cambio o un **"[Pull Request](https://github.com/NeTenebraes/neCyberWiki/pulls)"** si quieres editar el contenido directamente.
-
----
