@@ -9,7 +9,7 @@ tags:
 La **neCyberWIKI** nace de una convicción: **el conocimiento de calidad debe ser universal y accesible**. Este es mi compromiso personal para derribar las barreras de entrada a la Informática y la Ciberseguridad. Aquí comparto mis apuntes profesionales y todo lo que aprendo, de forma 100% técnica, práctica y gratuita 😎
 
 ---
-## ¿Te sientes abrumado? Yo también xd
+## ¿Te sientes abrumado? No estás solo...
 
 **En Internet hay una fiesta de información sobre cualquier tema**, y la ciberseguridad no es la exepción: tutoriales, cursos, blogs, videos... Es fácil perderse, saltar de un tema a otro sin orden y sentir una "**fatiga de información**" que desmotiva.
 
@@ -33,12 +33,14 @@ El contenido abarca desde los fundamentos hasta temas avanzados:
 
 Aprender haciendo me funcionó: construí mis propias herramientas y documenté cada atajo, bug y mejora del proceso. La neCyberWIKI es mi cuaderno abierto: **notas que apliqué tal cual**, pensadas para pentesting, scripting y privacidad, sin teorías ni promesas vacías.
 
-Estoy afinando esto a diario para objetivos concretos como los programas de divulgación de vulnerabilidades; y, sobre todo, porque **el bug bounty me parece divertido**. Mientras, comparto lo que realmente me funciona para avanzar. Esta guía nació de la necesidad de dejar un camino claro para quien quiera aprender ciberseguridad de manera práctica, divertida y accesible. Y sobretodo para recordarme a mi mismo que **no hay excusas**.
+Sigo afinando mis habilidades a diario para objetivos concretos y, sobre todo, porque **el bug bounty me parece divertido**. Aquí comparto lo que realmente me funciona para avanzar.
+
+Esta guía nació de la necesidad de dejar un camino claro para quien quiera aprender ciberseguridad de manera práctica, divertida y accesible. además de recordarme a mi mismo que **no hay excusas**.
 
 ---
 ## 🚀 Sigue mi Progreso en Threads
 
-Este proyecto es un viaje en constante evolución. Para hacerlo más transparente y cercano, documento mi día a día, los descubrimientos, los retos y las pequeñas victorias directamente en Threads.
+Este proyecto es un viaje en constante evolución. Para hacerlo más transparente documento mi día a día, los descubrimientos, los retos y las pequeñas victorias directamente en Threads.
 
 Es una bitácora en tiempo real donde comparto notas rápidas, recursos que encuentro y el "detrás de cámaras" de la construcción de esta guía.
 
