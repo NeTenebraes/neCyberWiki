@@ -32,7 +32,7 @@ El análisis de datos codificados o cifrados es común en pentesting y análisis
 1. Conectar al servidor como usuario del nivel actual:
 
 ```
-ssh [bandit10@bandit.labs.overthewire.org](mailto:bandit10@bandit.labs.overthewire.org) -p 2220
+ssh bandit10@bandit.labs.overthewire.org -p 2220
 ```
 
 2. Decodificar el archivo `data.txt` para mostrar la contraseña:

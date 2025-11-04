@@ -36,13 +36,12 @@ Identificar anomalías o líneas únicas en archivos de logs o datos es un méto
 ### Solución
 
 1. Conectarse al servidor como `bandit8`.
-![[Pasted image 20251029203040.png]]
+
 
 2. Procesar el archivo para encontrar líneas únicas:  
 
 sort data.txt | uniq -u
 
-![[Pasted image 20251029203059.png]]
 
 El resultado es la línea que aparece una sola vez, que es la contraseña buscada.
 

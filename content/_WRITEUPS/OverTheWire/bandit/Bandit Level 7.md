@@ -40,14 +40,14 @@ Manejo de búsquedas y filtrados de texto en archivos es fundamental para análi
 ssh bandit7@bandit.labs.overthewire.org -p 2220
 ls
 ```
-![[Pasted image 20251029202541.png]]
+
 	   Luego de digitada la contraseña procedemos a confirmar la existencia del archivo `data.txt`.
    
 3. Buscar la palabra \"millionth\" dentro del archivo `data.txt`:  
 ```
 grep millionth data.txt
 ```
-![[Pasted image 20251029202226.png]]
+
 	Nos apoyamos del comando `grep` para buscar la palabra "millionth" dentro del archivo `data.txt`, esto nos muestra la línea donde aparece la palabra, que contiene también la contraseña.
 
 --- 
