@@ -6,7 +6,7 @@ tags:
 
 ¡Bienvenido/a! Si estás aquí, es porque compartes la pasión por un campo que define nuestro futuro digital.
 
-La **neCyberWIKI** nace de una convicción: **el conocimiento de calidad debe ser universal y accesible**. Este es mi compromiso personal para derribar las barreras de entrada a la Informática y la Ciberseguridad. Aquí comparto mis apuntes profesionales y todo lo que aprendo, de forma 100% técnica, práctica y gratuita 😎
+La **neCyberWIKI** nace de una convicción: **el conocimiento de calidad debe ser universal y accesible**. Este es mi compromiso personal para derribar las barreras de entrada a la Informática y la Ciberseguridad. Aquí comparto mis apuntes profesionales y todo lo que aprendo, de forma 100% técnica, práctica y gratuita.
 
 ---
 ## ¿Te sientes abrumado? No estás solo...
@@ -15,9 +15,9 @@ La **neCyberWIKI** nace de una convicción: **el conocimiento de calidad debe se
 
 **El propósito de esta guía es ser tu brújula en medio de ese caos.**
 
-Aquí no encontrarás un simple listado de enlaces, sino mi paso a paso curado y estructurado con los mejores recursos. Quiero ahorrarte cientos de horas de búsqueda para que te concentres en lo que de verdad importa: **aprender de forma efectiva y práctica.**
+Aquí no encontrarás un simple listado de enlaces, sino mi paso a paso curado y estructurado con los recursos que a mi me sirvieron. Quiero ahorrarte cientos de horas de búsqueda para que te concentres en lo que de verdad importa: **aprender de forma efectiva y práctica.**
 
-El contenido abarca desde los fundamentos hasta temas avanzados:
+El contenido abarcará desde los fundamentos hasta temas avanzados:
 * Ciencias de la Computación
 * Redes Informáticas
 * Sistemas Operativos y Programación
@@ -31,16 +31,16 @@ El contenido abarca desde los fundamentos hasta temas avanzados:
 ---
 ## ¿Por qué diablos hago esto? 💀
 
-Aprender haciendo me funcionó: construí mis propias herramientas y documenté cada atajo, bug y mejora del proceso. La neCyberWIKI es mi cuaderno abierto: **notas que apliqué tal cual**, pensadas para pentesting, scripting y privacidad, sin teorías ni promesas vacías.
+Sencillo, aprender haciendo me funcionó: construí mis propias herramientas y documenté cada atajo, bug y mejora del proceso. 
 
-Sigo afinando mis habilidades a diario para objetivos concretos y, sobre todo, porque **el bug bounty me parece divertido**. Aquí comparto lo que realmente me funciona para avanzar.
+La neCyberWIKI es mi cuaderno abierto: **notas que apliqué tal cual**, pensadas para pentesting, scripting y privacidad, sin teorías ni promesas vacías. Sigo afinando mis habilidades a diario para objetivos concretos y, sobre todo, porque **el bug bounty me parece divertido**. Aquí comparto lo que realmente me funciona para avanzar.
 
-Esta guía nació de la necesidad de dejar un camino claro para quien quiera aprender ciberseguridad de manera práctica, divertida y accesible. además de recordarme a mi mismo que **no hay excusas**.
+Esta guía nació de la necesidad de dejar un camino claro para quien quiera aprender ciberseguridad de manera práctica, divertida y accesible. Además, también sirve para recordarme a mi mismo que **no hay excusas**.
 
 ---
-## 🚀 Sigue mi Progreso en Threads
+## DESARROLLO: Sigue mi Progreso en Threads 🚀
 
-Este proyecto es un viaje en constante evolución. Para hacerlo más transparente documento mi día a día, los descubrimientos, los retos y las pequeñas victorias directamente en Threads.
+**Este proyecto es un viaje en constante evolución**. Para hacerlo más transparente documento mi día a día, los descubrimientos, los retos y las pequeñas victorias directamente en Threads.
 
 Es una bitácora en tiempo real donde comparto notas rápidas, recursos que encuentro y el "detrás de cámaras" de la construcción de esta guía.
 
