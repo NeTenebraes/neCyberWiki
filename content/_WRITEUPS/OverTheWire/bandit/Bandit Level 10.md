@@ -40,3 +40,4 @@ base64 -d data.txt
 ![[Pasted image 20251104023525.png]]
 
 ---
+
