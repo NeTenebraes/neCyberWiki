@@ -38,6 +38,3 @@ ssh bandit10@bandit.labs.overthewire.org -p 2220
 base64 -d data.txt
 ```
 ![[Pasted image 20251104023525.png]]
-
----
-

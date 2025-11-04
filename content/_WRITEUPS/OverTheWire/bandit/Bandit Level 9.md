@@ -41,6 +41,4 @@ strings data.txt | grep ==
 ```
 ![[Pasted image 20251104023430.png]]
 	**Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
-
----
-
+	
