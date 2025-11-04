@@ -9,7 +9,6 @@ El juego se estructura en niveles progresivos, iniciando en [[Bandit Level 0]]. 
 * **Toma de notas**: Mantén un archivo local con las contraseñas de cada nivel. Si tu conexión se interrumpe, no tendrás que empezar desde cero.
 * **Documenta el proceso**: Anota no solo la solución, sino también los comandos que probaste y por qué. Esto te ayudará a construir una metodología para resolver problemas más complejos.
 ----
-
 ## Conceptos Fundamentales
 
 ### ¿Qué es SSH?
@@ -21,10 +20,9 @@ SSH (Secure Shell) es un protocolo de red que permite establecer una conexión s
 El puerto estándar para SSH es el 22. Utilizar un puerto no estándar como el `2220` es una medida básica de seguridad por oscuridad. Ayuda a evitar la detección por parte de escáneres automatizados que buscan servicios SSH en el puerto predeterminado.
 
 ## Requisitos
-*   **Cliente SSH**: Sistemas como Linux, macOS o Windows (a través de PowerShell, WSL o CMD) lo incluyen por defecto. Puedes acceder al misto a través de su respectiva terminal.
-
+*   **Cliente SSH**: Sistemas como Linux, macOS o Windows (a través de PowerShell, WSL o CMD) lo incluyen por defecto. Puedes acceder al mismo a través de su respectiva terminal.
 ---
-# [Como Conectarte a bandit0 via SSH](https://overthewire.org/wargames/bandit/bandit0.html)
+# Como Conectarse a Servidor via SSH
 
 ## Objetivo
 
