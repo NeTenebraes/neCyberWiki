@@ -14,7 +14,6 @@ difficulty:
   - ★☆☆☆☆
 date: 2025-10-26
 ---
----
 ### Resumen
 Este write-up demuestra cómo localizar un archivo basándose en un conjunto complejo de criterios: ser legible, no ejecutable y tener un tamaño específico. La solución se centra en la construcción de un comando `find` preciso que filtra a través de una estructura de directorios anidada para aislar el único archivo que cumple con todas las condiciones.
 
@@ -25,10 +24,7 @@ La contraseña para el siguiente nivel, Bandit 6, está almacenada en un archivo
 3.  No tiene permisos de ejecución.
 
 ### Contexto
-Este nivel representa un paso adelante en la búsqueda de archivos. En lugar de buscar por un solo atributo (como el nombre o el tipo), el desafío requiere combinar múltiples predicados (filtros) en un solo comando `find`. Esta es una técnica esencial para realizar búsquedas granulares y eficientes en sistemas de archivos grandes y complejos.
-
-### Aplicación en Ciberseguridad
-En escenarios de Threat Hunting y análisis forense, los analistas a menudo buscan Indicadores de Compromiso (IOCs) que tienen características muy específicas. Por ejemplo, un malware puede crear archivos temporales con un tamaño exacto o sin permisos de ejecución para pasar desapercibido. La capacidad de construir un comando `find` con múltiples condiciones es fundamental para automatizar la búsqueda de estos artefactos en un sistema comprometido.
+Este nivel representa un paso adelante en la búsqueda de archivos. En lugar de buscar por un solo atributo (como el nombre o el tipo), el desafío requiere combinar múltiples predicados (filtros) en un solo comando `find`. Esta es una técnica esencial para realizar búsquedas granulares y eficientes en sistemas de archivos grandes y complejos. En escenarios de Threat Hunting y análisis forense, los analistas a menudo buscan Indicadores de Compromiso (IOCs) que tienen características muy específicas. Por ejemplo, un malware puede crear archivos temporales con un tamaño exacto o sin permisos de ejecución para pasar desapercibido. La capacidad de construir un comando `find` con múltiples condiciones es fundamental para automatizar la búsqueda de estos artefactos en un sistema comprometido.
 
 ### Comandos y Conceptos Relevantes
 *   **`find`**: Herramienta para buscar archivos y directorios.
@@ -45,14 +41,14 @@ En escenarios de Threat Hunting y análisis forense, los analistas a menudo busc
 ```
 ssh bandit5@bandit.labs.overthewire.org -p 2220
 ```
-![OverTheWire.bandit](_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit29.png)
+![[OverTheWire.bandit29.png]]
 
 2.  **Explorar la estructura del directorio `inhere`**
     Antes de buscar, es útil entender la complejidad del directorio.
 ```
 ls -R
 ```
-![OverTheWire.bandit](_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit28.png)
+![[OverTheWire.bandit28.png]]
     La salida mostrará muchos directorios anidados, lo que confirma que una búsqueda manual con `ls` y `cd` sería ineficiente.
 	- `-R`:  Hacemos que la respuesta sea **recursive.**
 
@@ -61,7 +57,7 @@ ls -R
 ```
 find . -type f -size 1033c
 ```
-![OverTheWire.bandit](_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit27.png)
+![[OverTheWire.bandit27.png]]
 	*   `find .`: Busca en el directorio actual y sus subdirectorios.
     *   `-type f`: Limita la búsqueda solo a archivos.
     *   `-size 1033c`: Especifica el tamaño exacto en bytes `(c)`.
@@ -72,8 +68,8 @@ Este comando devolverá la ruta al único archivo que cumple las condiciones cla
 ```
 cat ./inhere/maybehere07/.file2
 ```
-![OverTheWire.bandit](_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit26.png)
-    Una vez que `find` devuelve la ruta, se usa `cat` para leer el archivo y obtener la contraseña.
+![[OverTheWire.bandit26.png]]
+    Una vez que `find` devuelve la ruta, se usa `cat` para leer el archivo y obtener la contraseña. **Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
 
 ---
 ### TIPS

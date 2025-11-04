@@ -15,7 +15,7 @@ const config: QuartzConfig = {
     analytics: {
       provider: "plausible",
     },
-    locale: "en-US",
+    locale: "es-ES",
     baseUrl: 'NeTenebraes.github.io/neCyberWiki',
     ignorePatterns: ["private", "templates", ".obsidian"],
     defaultDateType: "modified",
