@@ -20,10 +20,7 @@ En este nivel se debe encontrar la única línea que aparece solo una vez en el 
 Extraer la línea única del archivo `data.txt` que no se repite para obtener la contraseña del siguiente nivel.
 
 ### Contexto
-Este nivel enseña comandos como `sort` y `uniq` que permiten identificar líneas únicas y duplicadas en archivos de texto, habilidades que son útiles para análisis y manipulación de datos de texto en sistemas Linux.
-
-### Aplicación en Ciberseguridad
-El filtrado de datos únicos o indicadores de interés dentro de grandes archivos de log o resultados de análisis es una habilidad fundamental para encontrar artefactos únicos en análisis forense o auditorías.
+Este nivel enseña comandos como `sort` y `uniq` que permiten identificar líneas únicas y duplicadas en archivos de texto, habilidades que son útiles para análisis y manipulación de datos de texto en sistemas Linux. El filtrado de datos únicos o indicadores de interés dentro de grandes archivos de log o resultados de análisis es una habilidad fundamental para encontrar artefactos únicos en análisis forense o auditorías.
 
 ### Comandos y Conceptos Relevantes
 - `sort`: Ordena líneas de texto.
@@ -32,16 +29,18 @@ El filtrado de datos únicos o indicadores de interés dentro de grandes archivo
 
 ### Solución
 1. Conectar al servidor usando SSH con la contraseña del nivel anterior:
-
 ```
 ssh bandit9@bandit.labs.overthewire.org -p 2220
 ```
+![[Pasted image 20251104023352.png]]
 
 2. Ejecutar el siguiente comando para mostrar la línea única en `data.txt`:
 
 ```
 strings data.txt | grep ==
 ```
+![[Pasted image 20251104023430.png]]
+	**Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
 
 ---
 

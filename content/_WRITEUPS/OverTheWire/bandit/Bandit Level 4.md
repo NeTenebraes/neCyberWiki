@@ -20,10 +20,7 @@ Este write-up detalla el proceso para identificar un archivo de texto plano (leg
 La contraseña para el siguiente nivel, Bandit 5, está almacenada en el único archivo legible por humanos que se encuentra dentro del directorio `inhere`.
 
 ### Contexto
-En sistemas Linux, no todos los archivos son texto plano. Muchos son binarios (ejecutables, imágenes, datos compilados). Este nivel enseña una habilidad fundamental: cómo determinar el tipo de un archivo antes de intentar leerlo. Esto previene la corrupción de la terminal y es un paso esencial en el análisis de sistemas de archivos desconocidos.
-
-### Aplicación en Ciberseguridad
-En análisis forense y respuesta a incidentes, es crucial distinguir entre archivos de registro (texto), ejecutables maliciosos (binarios) y otros tipos de datos. Un analista debe usar herramientas como `file` para clasificar rápidamente cientos de archivos y priorizar cuáles investigar. `cat`-ear un archivo binario no solo es inútil, sino que puede ocultar información o desestabilizar la sesión de análisis.
+En sistemas Linux, no todos los archivos son texto plano. Muchos son binarios (ejecutables, imágenes, datos compilados). Este nivel enseña una habilidad fundamental: cómo determinar el tipo de un archivo antes de intentar leerlo. Esto previene la corrupción de la terminal y es un paso esencial en el análisis de sistemas de archivos desconocidos. En análisis forense y respuesta a incidentes, es crucial distinguir entre archivos de registro (texto), ejecutables maliciosos (binarios) y otros tipos de datos. Un analista debe usar herramientas como `file` para clasificar rápidamente cientos de archivos y priorizar cuáles investigar. `cat`-ear un archivo binario no solo es inútil, sino que puede ocultar información o desestabilizar la sesión de análisis.
 
 ### Comandos y Conceptos Relevantes
 * **`file`**: Determina el tipo de un archivo examinando su tipo de contenido (**Magic Numbers**).
@@ -66,7 +63,7 @@ file ./*
 cat ./-file07
 ```
 ![[OverTheWire.bandit21.png]]
-	**Nota**: El nombre del archivo comienza con un guion, por lo que es necesario usar la ruta relativa `./` para que `cat` no lo interprete como una opción.
+	**Nota**: El nombre del archivo comienza con un guion, por lo que es necesario usar la ruta relativa `./` para que `cat` no lo interprete como una opción. **Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
 
 ### Métodos Alternativos (`grep`)
 

@@ -21,10 +21,7 @@ La contraseña para `bandit3` se encuentra en un archivo llamado `spaces in this
 ![[OverTheWire.bandit11.png]]
 
 ### Contexto
-El shell de Linux usa el espacio como delimitador por defecto para separar comandos y argumentos. Este nivel enseña las técnicas estándar para manejar nombres de archivo que contienen espacios, asegurando que el shell los trate como un único argumento.
-
-### Aplicación en Ciberseguridad
-El manejo incorrecto de espacios en nombres de archivo es una causa común de vulnerabilidades de "inyección de comandos" en scripts. Si un script ejecuta `rm $filename` y un atacante puede controlar `$filename` para que sea `nonexistent; whoami`, el script podría ejecutar el comando `whoami` si la variable no está entre comillas (`rm "$filename"`). Aprender a citar correctamente es una práctica de seguridad fundamental.
+El shell de Linux usa el espacio como delimitador por defecto para separar comandos y argumentos. Este nivel enseña las técnicas estándar para manejar nombres de archivo que contienen espacios, asegurando que el shell los trate como un único argumento. El manejo incorrecto de espacios en nombres de archivo es una causa común de vulnerabilidades de "inyección de comandos" en scripts. Si un script ejecuta `rm $filename` y un atacante puede controlar `$filename` para que sea `nonexistent; whoami`, el script podría ejecutar el comando `whoami` si la variable no está entre comillas (`rm "$filename"`). Aprender a citar correctamente es una práctica de seguridad fundamental.
 
 ### Comandos y Conceptos Relevantes
 * **Comillas Dobles (`"..."`)**: Agrupan los argumentos en una sola cadena.

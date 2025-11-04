@@ -25,7 +25,6 @@ Este nivel establece las bases para todos los desafíos futuros. Enseña las dos
 1.  **Acceso Remoto**: Conectarse de forma segura a otra máquina usando el protocolo SSH.
 2.  **Enumeración y Lectura Básica**: Listar los archivos en un directorio y leer el contenido de un archivo de texto.
 
-### Aplicación en Ciberseguridad
 El acceso vía SSH es el método estándar para administrar servidores de forma segura. En un pentest, obtener credenciales SSH válidas es un objetivo clave, ya que otorga al atacante un punto de entrada interactivo al sistema. Una vez dentro, los primeros comandos que se ejecutan son casi siempre `ls`, `pwd` y `cat` para realizar una enumeración básica y buscar archivos sensibles.
 
 ### Comandos y Conceptos Relevantes

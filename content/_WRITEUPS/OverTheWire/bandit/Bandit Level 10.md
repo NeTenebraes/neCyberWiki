@@ -19,10 +19,7 @@ Este nivel consiste en decodificar datos codificados en base64 contenidos en el 
 Decodificar el contenido base64 de `data.txt` y extraer la contraseña para el nivel siguiente.
 
 ### Contexto
-Base64 es un esquema de codificación que convierte datos binarios en texto ASCII. Aprender a decodificar base64 es básico para manejar datos codificados en sistemas y comunicaciones.
-
-### Aplicación en Ciberseguridad
-El análisis de datos codificados o cifrados es común en pentesting y análisis forense; manejar encoding y decodificaciones es crucial para entender y extraer información.
+Base64 es un esquema de codificación que convierte datos binarios en texto ASCII. Aprender a decodificar base64 es básico para manejar datos codificados en sistemas y comunicaciones. El análisis de datos codificados o cifrados es común en pentesting y análisis forense; manejar encoding y decodificaciones es crucial para entender y extraer información.
 
 ### Comandos y Conceptos Relevantes
 - `base64 -d`: Decodifica datos codificados en base64.
@@ -34,11 +31,12 @@ El análisis de datos codificados o cifrados es común en pentesting y análisis
 ```
 ssh bandit10@bandit.labs.overthewire.org -p 2220
 ```
+![[Pasted image 20251104023457.png]]
 
 2. Decodificar el archivo `data.txt` para mostrar la contraseña:
-
 ```
 base64 -d data.txt
 ```
+![[Pasted image 20251104023525.png]]
 
 ---

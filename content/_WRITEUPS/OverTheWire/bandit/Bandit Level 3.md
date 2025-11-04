@@ -12,10 +12,7 @@ Este write-up detalla dos métodos para encontrar una contraseña almacenada en 
 La contraseña para el siguiente nivel, Bandit 4, está guardada en un archivo oculto que se encuentra dentro del directorio `inhere`.
 
 ### Contexto
-Este nivel refuerza la comprensión sobre los archivos ocultos en sistemas Unix. Demuestra tanto el método de inspección manual como un enfoque de búsqueda automatizada, una habilidad crucial para escenarios donde los archivos no están en ubicaciones obvias.
-
-### Aplicación en Ciberseguridad
-El comando `find` es una herramienta indispensable en pentesting y análisis forense. Permite a los profesionales de la seguridad localizar rápidamente archivos de configuración, logs, credenciales o artefactos de malware en sistemas de archivos complejos, basándose en atributos como nombre, permisos, tamaño o fecha.
+Este nivel refuerza la comprensión sobre los archivos ocultos en sistemas Unix. Demuestra tanto el método de inspección manual como un enfoque de búsqueda automatizada, una habilidad crucial para escenarios donde los archivos no están en ubicaciones obvias. El comando `find` es una herramienta indispensable en pentesting y análisis forense. Permite a los profesionales de la seguridad localizar rápidamente archivos de configuración, logs, credenciales o artefactos de malware en sistemas de archivos complejos, basándose en atributos como nombre, permisos, tamaño o fecha.
 
 ### Comandos y Conceptos Relevantes
 *   **`ls -a`**: Lista todo el contenido de un directorio, incluyendo los archivos y directorios ocultos.
@@ -56,8 +53,7 @@ ls -a
 cat ...Hiding-From-You
 ```
 ![[OverTheWire.bandit14.png]]
-- Se utiliza `cat` para mostrar la contraseña.
-- **Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
+- Se utiliza `cat` para mostrar la contraseña. **Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
 ### Método Alternativo (Solución con `find`)
 
 Este método simplificado separa la búsqueda de la lectura, lo cual es útil para entender el proceso en dos pasos.

@@ -24,10 +24,7 @@ La contraseña para el siguiente nivel, Bandit 6, está almacenada en un archivo
 3.  No tiene permisos de ejecución.
 
 ### Contexto
-Este nivel representa un paso adelante en la búsqueda de archivos. En lugar de buscar por un solo atributo (como el nombre o el tipo), el desafío requiere combinar múltiples predicados (filtros) en un solo comando `find`. Esta es una técnica esencial para realizar búsquedas granulares y eficientes en sistemas de archivos grandes y complejos.
-
-### Aplicación en Ciberseguridad
-En escenarios de Threat Hunting y análisis forense, los analistas a menudo buscan Indicadores de Compromiso (IOCs) que tienen características muy específicas. Por ejemplo, un malware puede crear archivos temporales con un tamaño exacto o sin permisos de ejecución para pasar desapercibido. La capacidad de construir un comando `find` con múltiples condiciones es fundamental para automatizar la búsqueda de estos artefactos en un sistema comprometido.
+Este nivel representa un paso adelante en la búsqueda de archivos. En lugar de buscar por un solo atributo (como el nombre o el tipo), el desafío requiere combinar múltiples predicados (filtros) en un solo comando `find`. Esta es una técnica esencial para realizar búsquedas granulares y eficientes en sistemas de archivos grandes y complejos. En escenarios de Threat Hunting y análisis forense, los analistas a menudo buscan Indicadores de Compromiso (IOCs) que tienen características muy específicas. Por ejemplo, un malware puede crear archivos temporales con un tamaño exacto o sin permisos de ejecución para pasar desapercibido. La capacidad de construir un comando `find` con múltiples condiciones es fundamental para automatizar la búsqueda de estos artefactos en un sistema comprometido.
 
 ### Comandos y Conceptos Relevantes
 *   **`find`**: Herramienta para buscar archivos y directorios.

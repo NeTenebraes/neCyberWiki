@@ -20,10 +20,7 @@ El reto consiste en buscar dentro del archivo `data.txt` la contraseña para el 
 Extraer la contraseña para el nivel siguiente localizada junto a la palabra \"millionth\" dentro de `data.txt`.
 
 ### Contexto
-Este nivel enseña el uso de comandos como `grep` y herramientas para procesar texto en archivos grandes, habilidades comunes para análisis y extracción de datos en sistemas Linux.
-
-### Aplicación en Ciberseguridad
-Manejo de búsquedas y filtrados de texto en archivos es fundamental para análisis forense y búsquedas de indicadores durante auditorías y revisiones de seguridad.
+Este nivel enseña el uso de comandos como `grep` y herramientas para procesar texto en archivos grandes, habilidades comunes para análisis y extracción de datos en sistemas Linux. Manejo de búsquedas y filtrados de texto en archivos es fundamental para análisis forense y búsquedas de indicadores durante auditorías y revisiones de seguridad.
 
 ### Comandos y Conceptos Relevantes
 * **`grep`**: Buscar texto.
@@ -40,15 +37,15 @@ Manejo de búsquedas y filtrados de texto en archivos es fundamental para análi
 ssh bandit7@bandit.labs.overthewire.org -p 2220
 ls
 ```
-
+![[Pasted image 20251104022932.png]]
 	   Luego de digitada la contraseña procedemos a confirmar la existencia del archivo `data.txt`.
    
 3. Buscar la palabra \"millionth\" dentro del archivo `data.txt`:  
 ```
 grep millionth data.txt
 ```
-
-	Nos apoyamos del comando `grep` para buscar la palabra "millionth" dentro del archivo `data.txt`, esto nos muestra la línea donde aparece la palabra, que contiene también la contraseña.
+![[Pasted image 20251104023019.png]]
+	Nos apoyamos del comando `grep` para buscar la palabra "millionth" dentro del archivo `data.txt`, esto nos muestra la línea donde aparece la palabra, que contiene también la contraseña. **Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
 
 --- 
 
