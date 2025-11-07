@@ -1,13 +1,11 @@
+![[content/_assets/og-image.png]]
+> ### Visita la [Página Web](https://netenebraes.github.io/neCyberWiki/).
 
+La neCyberWiki es un proyecto tipo "Biblioteca Colaborativa" orientada a la ciberseguridad, el hacking ético, la informática y la privacidad digital. Su propósito es **centralizar conocimientos técnicos y prácticos, presentados de forma clara, libre y accesible**. 
 
-# neCyberWiki | Mis notas de Ciberseguridad
-![Repo](https://i.postimg.cc/hj5QHG75/ne-Cyber-Wiki-Repo-Card.png)
-> ### [Visita la Página Web](https://netenebraes.github.io/neCyberWiki/)
-
-La neCyberWiki es un proyecto tipo "Biblioteca Colaborativa" orientada a la ciberseguridad, el hacking ético, la informática y la privacidad digital. Su propósito es **centralizar conocimientos técnicos y prácticos, presentados de forma clara, libre y accesible**. La idea no es que **no vean esto como una "Academia", es más un proyecto nacido de mi necesidad personal por aprender**. Este proyecto me permite tener un foco claro y me obliga a hacer prácticas constantes de las cosas que voy aprendiendo para ser compartido con el mundo. 
+**No es una academia**: es mi bitácora de aprendizaje, donde practico, documento y comparto para que cualquiera pueda aprender y aportar.
 
 ---
-
 ## ⚖️ Aviso legal
 
 Todo el contenido de este repositorio tiene fines **educativos y formativos**.  
@@ -16,13 +14,11 @@ Las técnicas, conceptos y ejemplos descritos aquí deben practicarse **únicame
 El uso indebido de la información contenida en necyberwiki fuera de un contexto ético o legal es responsabilidad exclusiva del usuario. Los autores y contribuidores no se hacen responsables de posibles daños, sanciones o consecuencias derivadas del mal uso del material.
 
 ---
-
 ## 🚀 Objetivo
 
 Crear una wiki de referencia para profesionales, estudiantes y entusiastas de la ciberseguridad, ofreciendo contenido técnico, guías prácticas, referencias, herramientas y metodologías de ataque y defensa, todo en un mismo lugar de fácil acceso y mantenimiento.
 
 ---
-
 ## 🧠 Contenido
 
 El repositorio incluye:
@@ -35,7 +31,6 @@ El repositorio incluye:
 - Recursos educativos gratuitos  
 
 ---
-
 ## 🛠️ Tecnologías y dependencias
 
 El proyecto está realizado con [Obsidian](https://obsidian.md/) y [Quartz](https://github.com/quartz-scheduler/quartz) pero puede adaptarse fácilmente al motor de documentación de tu preferencia, como:
@@ -47,7 +42,6 @@ El proyecto está realizado con [Obsidian](https://obsidian.md/) y [Quartz](http
 El proceso de documentación está siendo realizado de forma pública en [threads](https://www.threads.com/@netenebrae).
 
 ---
-
 ## 🤝 Contribuciones
 
 Las contribuciones son bienvenidas. Puedes ayudar de las siguientes formas:
@@ -73,7 +67,7 @@ git push origin mejora-o-nueva-guia
 
 Después, abre un [Pull Request](https://github.com/NeTenebraes/neCyberWiki/pulls) con la descripción de tu aporte.
 
-## 🧩 Estilo y pautas de redacción
+### 🧩 Estilo y pautas de redacción
 
 - Prioriza la claridad técnica sobre la extensión  
 - Usa formato Markdown limpio y sin exceso de formato  
@@ -81,15 +75,12 @@ Después, abre un [Pull Request](https://github.com/NeTenebraes/neCyberWiki/pull
 - Evita incluir material con derechos de autor no libres  
 - Respeta la ética hacker: el conocimiento es libre, hacer daño es imperdonable.  
 
-
 ---
-
 ## 📜 Licencia
 
 Este proyecto está distribuido bajo la licencia MIT. Consulta el archivo LICENSE para más detalles.
 
 ---
-
 ## ✨ Agradecimientos
 
 A toda la comunidad hacker y de ciberseguridad que comparte su conocimiento abiertamente.

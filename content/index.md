@@ -2,11 +2,13 @@
 title: "neCyberWIKI: Misión de Conocimiento Libre 📚"
 tags:
 ---
-> Proyecto creado para la comunidad, diseñado para ser la guía definitiva que te llevará desde cero hasta un nivel competitivo en ciberseguridad.
+> Biblioteca Colaborativa sobre ciberseguridad, hacking ético, informática y privacidad digital. Centralizo conocimiento técnico y práctico, explicado de forma clara, libre y accesible. No es una academia: es mi bitácora de aprendizaje, donde practico, documento y comparto para que cualquiera pueda aprender y aportar.
+
+![[og-image.png]]
 
 ¡Bienvenido/a! Si estás aquí, es porque compartes la pasión por un campo que define nuestro futuro digital.
 
-La **neCyberWIKI** nace de una convicción: **el conocimiento de calidad debe ser universal y accesible**. Este es mi compromiso personal para derribar las barreras de entrada a la Informática y la Ciberseguridad. Aquí comparto mis apuntes profesionales y todo lo que aprendo, de forma 100% técnica, práctica y gratuita.
+La **neCyberWIKI** nace de una convicción: **el conocimiento de calidad debe ser universal y accesible**. Este es mi compromiso personal para derribar las barreras de entrada a la Informática y la Ciberseguridad. Aquí comparto mis apuntes profesionales y todo lo que aprendo, de forma **100% técnica, práctica y gratuita**.
 
 ---
 ## ¿Te sientes abrumado? No estás solo...
@@ -33,9 +35,9 @@ El contenido abarcará desde los fundamentos hasta temas avanzados:
 
 Sencillo, aprender haciendo me funcionó: construí mis propias herramientas y documenté cada atajo, bug y mejora del proceso. 
 
-La neCyberWIKI es mi cuaderno abierto: **notas que apliqué tal cual**, pensadas para pentesting, scripting y privacidad, sin teorías ni promesas vacías. Sigo afinando mis habilidades a diario para objetivos concretos y, sobre todo, porque **el bug bounty me parece divertido**. Aquí comparto lo que realmente me funciona para avanzar.
+La neCyberWIKI es mi cuaderno abierto: **notas que apliqué tal cual**, pensadas para pentesting, scripting y privacidad y  pura practica, nada de promesas vacías. Sigo afinando mis habilidades a diario para objetivos concretos y, sobre todo, porque **todo esto me apasiona**. Aquí comparto lo que realmente me funciona para avanzar.
 
-Esta guía nació de la necesidad de dejar un camino claro para quien quiera aprender ciberseguridad de manera práctica, divertida y accesible. Además, también sirve para recordarme a mi mismo que **no hay excusas**.
+Esta guía nació de la necesidad de dejar un **camino claro para quien quiera aprender ciberseguridad de manera práctica, divertida y accesible**. Además, también sirve para recordarme a mi mismo que **no hay excusas**.
 
 ---
 ## DESARROLLO: Sigue mi Progreso en Threads 🚀
