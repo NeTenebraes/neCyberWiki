@@ -13,9 +13,9 @@ La **neCyberWIKI** nace de una convicción: **el conocimiento de calidad debe se
 ---
 ## ¿Te sientes abrumado? No estás solo...
 
-**En Internet hay una fiesta de información sobre cualquier tema**, y la ciberseguridad no es la exepción: tutoriales, cursos, blogs, videos... Es fácil perderse, saltar de un tema a otro sin orden y sentir una "**fatiga de información**" que desmotiva.
+**En Internet hay una fiesta de información sobre cualquier tema, y la ciberseguridad no es la exepción: tutoriales, cursos, blogs, videos...** Es fácil perderse, saltar de un tema a otro sin orden y sentir una "**fatiga de información**" que desmotiva.
 
-**El propósito de esta guía es ser tu brújula en medio de ese caos.**
+**El propósito de esta guía es ser una brújula en medio de ese caos.**
 
 Aquí no encontrarás un simple listado de enlaces, sino mi paso a paso curado y estructurado con los recursos que a mi me sirvieron. Quiero ahorrarte cientos de horas de búsqueda para que te concentres en lo que de verdad importa: **aprender de forma efectiva y práctica.**
 
@@ -33,9 +33,9 @@ El contenido abarcará desde los fundamentos hasta temas avanzados:
 ---
 ## ¿Por qué diablos hago esto? 💀
 
-Sencillo, aprender haciendo me funcionó: construí mis propias herramientas y documenté cada atajo, bug y mejora del proceso. 
+Sencillo, **aprender haciendo me funcionó**: construí mis propias herramientas y documenté cada atajo, bug y mejora del proceso. 
 
-La neCyberWIKI es mi cuaderno abierto: **notas que apliqué tal cual**, pensadas para pentesting, scripting y privacidad y  pura practica, nada de promesas vacías. Sigo afinando mis habilidades a diario para objetivos concretos y, sobre todo, porque **todo esto me apasiona**. Aquí comparto lo que realmente me funciona para avanzar.
+**La neCyberWIKI es mi cuaderno abierto**: **notas que apliqué tal cual**, pensadas para pentesting, scripting, privacidad y pura practica, nada de promesas vacías. S**igo afinando mis habilidades a diario para objetivos concretos** y, sobre todo, porque **todo esto me apasiona**. Aquí comparto lo que realmente me funciona para avanzar.
 
 Esta guía nació de la necesidad de dejar un **camino claro para quien quiera aprender ciberseguridad de manera práctica, divertida y accesible**. Además, también sirve para recordarme a mi mismo que **no hay excusas**.
 
