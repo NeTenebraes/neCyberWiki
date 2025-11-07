@@ -1,8 +1,10 @@
 
 
-# necyberwiki
+# neCyberWiki | Mis notas de Ciberseguridad
+![Repo](https://i.postimg.cc/hj5QHG75/ne-Cyber-Wiki-Repo-Card.png)
+> ### [Vista la web](https://netenebraes.github.io/neCyberWiki/)
 
-necyberwiki es un proyecto de documentación colaborativo orientado a la ciberseguridad, hacking ético, pentesting y privacidad digital. Su propósito es centralizar conocimientos técnicos y prácticos de la comunidad, presentados de forma clara, libre y accesible.
+La neCyberWiki es un proyecto tipo "Biblioteca Colaborativa" orientada a la ciberseguridad, el hacking ético, la informática y la privacidad digital. Su propósito es **centralizar conocimientos técnicos y prácticos, presentados de forma clara, libre y accesible**. La idea no es que **no vean esto como una "Academia", es más un proyecto nacido de mi necesidad personal por aprender**. Este proyecto me permite tener un foco claro y me obliga a hacer prácticas constantes de las cosas que voy aprendiendo para ser compartido con el mundo. 
 
 ---
 
@@ -36,13 +38,13 @@ El repositorio incluye:
 
 ## 🛠️ Tecnologías y dependencias
 
-El proyecto puede adaptarse fácilmente al motor de documentación de tu preferencia, como:
+El proyecto está realizado con [Obsidian](https://obsidian.md/) y [Quartz](https://github.com/quartz-scheduler/quartz) pero puede adaptarse fácilmente al motor de documentación de tu preferencia, como:
 
-- Markdown simple (para repositorios o Wikis locales)  
-- MkDocs con el tema Material for MkDocs  
-- Docusaurus o similar para una interfaz más visual  
+- Markdown simple.
+- MkDocs con el tema Material for MkDocs.
+- Docusaurus o similar para una interfaz más visual.
 
-El proceso de documentación está siendo realizado de forma pública en threads y se gestiona con Obsidian, empleando la tecnología de Quartz para optimización y búsqueda avanzada.
+El proceso de documentación está siendo realizado de forma pública en [threads](https://www.threads.com/@netenebrae).
 
 ---
 
@@ -62,16 +64,14 @@ cd NeCyberWiki
 git checkout -b mejora-o-nueva-guia
 ```
 
-# Realiza tus cambios  
+Realiza tus cambios  
 ```
 git add .  
 git commit -m "Agrega nueva guía de pentesting web"  
 git push origin mejora-o-nueva-guia
 ```
 
-Después, abre un Pull Request con la descripción de tu aporte.
-
----
+Después, abre un [Pull Request](https://github.com/NeTenebraes/neCyberWiki/pulls) con la descripción de tu aporte.
 
 ## 🧩 Estilo y pautas de redacción
 
@@ -92,5 +92,5 @@ Este proyecto está distribuido bajo la licencia MIT. Consulta el archivo LICENS
 
 ## ✨ Agradecimientos
 
-A toda la comunidad hacker y de ciberseguridad que comparte su conocimiento abiertamente.  
+A toda la comunidad hacker y de ciberseguridad que comparte su conocimiento abiertamente.
 Especialmente a quienes dedican su tiempo a enseñar, investigar y mantener viva la cultura del hacking ético.
