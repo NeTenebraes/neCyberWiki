@@ -2,7 +2,7 @@
 
 # neCyberWiki | Mis notas de Ciberseguridad
 ![Repo](https://i.postimg.cc/hj5QHG75/ne-Cyber-Wiki-Repo-Card.png)
-> ### [Vista la web](https://netenebraes.github.io/neCyberWiki/)
+> ### [Visita la Página Web](https://netenebraes.github.io/neCyberWiki/)
 
 La neCyberWiki es un proyecto tipo "Biblioteca Colaborativa" orientada a la ciberseguridad, el hacking ético, la informática y la privacidad digital. Su propósito es **centralizar conocimientos técnicos y prácticos, presentados de forma clara, libre y accesible**. La idea no es que **no vean esto como una "Academia", es más un proyecto nacido de mi necesidad personal por aprender**. Este proyecto me permite tener un foco claro y me obliga a hacer prácticas constantes de las cosas que voy aprendiendo para ser compartido con el mundo. 
 
