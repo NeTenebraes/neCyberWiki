@@ -1,4 +1,15 @@
-
+---
+title: "OTW Bandit: Intro"
+cover:
+description: Bandit es un wargame de seguridad informática diseñado para principiantes que te introduce al uso de comandos básicos de Linux y scripting en un entorno controlado. Su objetivo es enseñarte conceptos fundamentales de administración de sistemas y seguridad a través de retos prácticos.
+tags:
+  - linux
+  - bash
+  - bandit
+difficulty:
+  - ★★☆☆☆
+date: 2025-11-07
+---
 ![[Cover OTW.png]]
 
 [OverTheWire](https://overthewire.org) ofrece wargames para aprender y practicar conceptos del terminal de Linux basados en seguridad, todo gracias a un entorno legal y controlado. El wargame **[Bandit](https://overthewire.org/wargames/bandit/)** está diseñado específicamente para **principiantes absolutos**. Su propósito es enseñar los comandos y conceptos fundamentales de la línea de comandos en sistemas GNU/Linux, todo mientras atacamos una máquina por medio de una conexión SSH.
