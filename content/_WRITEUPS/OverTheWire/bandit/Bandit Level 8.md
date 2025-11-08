@@ -12,7 +12,7 @@ tags:
   - texto
 difficulty:
   - ★☆☆☆☆
-date: 2025-10-29
+publishDate: 2025-10-29
 ---
 ### Resumen
 El objetivo es encontrar la contraseña que es representada por la única línea que aparece una sola vez en el archivo `data.txt`. Esto requiere procesar el archivo para identificar líneas únicas.

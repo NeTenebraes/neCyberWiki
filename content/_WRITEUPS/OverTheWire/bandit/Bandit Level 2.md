@@ -11,7 +11,7 @@ tags:
   - escaping
   - spaces-in-filename
 difficulty: ★☆☆☆☆
-date: 2025-10-26
+publishDate: 2025-10-26
 ---
 ### Resumen
 Este write-up aborda cómo manejar nombres de archivo que contienen espacios, lo que normalmente haría que el shell interpretara cada palabra como un argumento separado. Se demuestran tres técnicas para tratar el nombre del archivo como una sola entidad: comillas, escape de caracteres y autocompletado con TAB.

@@ -11,7 +11,7 @@ tags:
   - escaping
   - spaces-in-filename
 difficulty: ★☆☆☆☆
-date: 2025-10-26
+publishDate: 2025-10-26
 ---
 ### Resumen
 Este write-up detalla dos métodos para encontrar una contraseña almacenada en un archivo oculto (dotfile). El primer método utiliza `ls -a` para la enumeración manual, mientras que el segundo, más didáctico, emplea el comando `find` para localizar la ruta del archivo y `cat` para leerlo.

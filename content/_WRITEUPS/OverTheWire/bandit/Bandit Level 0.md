@@ -11,7 +11,7 @@ tags:
   - ls
   - cat
 difficulty: ★☆☆☆☆
-date: 2025-10-26
+publishDate: 2025-10-26
 ---
 ### Resumen
 Este write-up cubre el primer paso en los wargames de "OverTheWire: Bandit", **establecer una conexión remota vía SSH** y utilizar comandos básicos de la shell de Linux (`ls`, `cat`) para encontrar y leer un archivo que contiene la contraseña para el siguiente nivel.

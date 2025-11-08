@@ -12,7 +12,7 @@ tags:
   - find
 difficulty:
   - ★☆☆☆☆
-date: 2025-10-26
+publishDate: 2025-10-26
 ---
 ### Resumen
 Este write-up detalla el proceso para identificar un archivo de texto plano (legible por humanos) entre múltiples archivos binarios en un directorio. La solución principal se basa en el uso del comando `file` para analizar el contenido de cada archivo. Se incluye un método alternativo que combina `find` y `file` para automatizar la búsqueda.

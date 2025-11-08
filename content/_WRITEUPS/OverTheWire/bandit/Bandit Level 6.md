@@ -13,7 +13,7 @@ tags:
   - size
 difficulty:
   - ★☆☆☆☆
-date: 2025-10-29
+publishDate: 2025-10-29
 ---
 ### Resumen
 Este write-up explica cómo buscar un archivo basado en atributos específicos: propietario usuario y grupo, y tamaño exacto. Se utiliza el comando `find` combinando múltiples filtros para aislar el archivo deseado, que contiene la contraseña para avanzar al siguiente nivel.

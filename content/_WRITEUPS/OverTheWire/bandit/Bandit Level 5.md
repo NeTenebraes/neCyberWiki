@@ -13,7 +13,7 @@ tags:
   - size
 difficulty:
   - ★☆☆☆☆
-date: 2025-10-26
+publishDate: 2025-10-26
 ---
 ### Resumen
 Este write-up demuestra cómo localizar un archivo basándose en un conjunto complejo de criterios: ser legible, no ejecutable y tener un tamaño específico. La solución se centra en la construcción de un comando `find` preciso que filtra a través de una estructura de directorios anidada para aislar el único archivo que cumple con todas las condiciones.

@@ -11,7 +11,7 @@ tags:
   - stdin
   - argument-parsing
 difficulty: ★☆☆☆☆
-date: 2025-10-26
+publishDate: 2025-10-26
 ---
 ### Resumen
 Este write-up explica cómo acceder a un archivo cuyo nombre es un guion (`-`), un carácter que los comandos de shell suelen interpretar como una opción o como la entrada estándar (stdin). La solución se basa en desambiguar el nombre del archivo utilizando una ruta relativa.

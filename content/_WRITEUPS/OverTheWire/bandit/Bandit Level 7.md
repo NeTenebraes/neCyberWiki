@@ -12,7 +12,7 @@ tags:
   - strings
 difficulty:
   - ★☆☆☆☆
-date: 2025-10-29
+publishDate: 2025-10-29
 ---
 ### Resumen
 El reto consiste en buscar dentro del archivo `data.txt` la contraseña para el siguiente nivel. Esta contraseña se encuentra justo junto a la palabra \"millionth\", por lo que será necesario buscar esa palabra y extraer el texto relacionado.
