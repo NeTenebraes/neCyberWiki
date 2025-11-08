@@ -56,7 +56,7 @@ ssh -p 2220 bandit0@bandit.labs.overthewire.org
 
 Tras ejecutar el comando, la terminal solicitará la contraseña (`password:`). Escribe `bandit0` y presiona Enter. No verás los caracteres mientras escribes; es un comportamiento normal de seguridad.
 
-![[OverTheWire.bandit.png]]
+![[content/_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit.png]]
 
 ### Método 2: Sintaxis con flag `-l`
 
