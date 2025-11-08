@@ -45,13 +45,13 @@ Esto garantiza que cada letra original (desde `'A-Z'` y `'a-z'`) se rote un equi
     - De la `n` a la `z` es la segunda mitad de las minúsculas.        
     - De la `a` a la `m` es la primera mitad.
 
-![[Pasted image 20251107210221.png]]
+![[OverTheWire.bandit 3.png]]
 
 Así, cada letra en el conjunto original `'A-Za-z'`, corresponde exactamente con la letra 13 posiciones rotada. En resumen, `'N-ZA-Mn-za-m'` es la forma de escribir el alfabeto rotado 13 posiciones (ROT13) en un formato continuo que `tr` puede usar para traducir cada letra original a su equivalente cifrado correcto.
 
 Así usando `tr 'A-Za-z' 'N-ZA-Mn-za-m'` traduces cada letra alfabética a su versión ROT13 en una sola pasada. Si no te quieres complicar mucho la cabeza recuerda que hay herramientas que hacen esto de forma automática, solo necesitas una búsqueda rapida: 
 
-![[Pasted image 20251107201226.png]]
+![[OverTheWire.bandit 2.png]]
 Hay un montón en internet he incluso puede programar una para prácticar el lenguaje que gustes ya que, **suelen ser muy sencillas de hacer**. 
 
 Aquí te dejo un par de herramientas que encontré:
@@ -66,14 +66,14 @@ Aquí te dejo un par de herramientas que encontré:
 ```
 ssh bandit11@bandit.labs.overthewire.org -p 2220
 ```
-![[Pasted image 20251107210358.png]]
+![[OverTheWire.bandit 4.png]]
 
 2. Verifica el contenido del archivo:
 ```
 ls
 cat data.txt
 ```
-![[Pasted image 20251107210432.png]]
+![[OverTheWire.bandit 6.png]]
 	Verificamos la existencia y el contenido del archivo. Aquí verás texto cifrado que no es legible.
 
 3. Decodifica el archivo con ROT13 usando `tr` con la tubería `|` para pasar la salida de un comando como entrada de otro:
@@ -81,7 +81,7 @@ cat data.txt
 ```
 cat data.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m'
 ```
-![[Pasted image 20251107210511.png]]
+![[OverTheWire.bandit 7.png]]
 	Esto traduce las letras cifradas del archivo, rotándolas 13 posiciones, y muestra la contraseña original en texto claro.
 
 ### Por qué usar tuberías "|"
