@@ -2,7 +2,7 @@
 level: Bandit 11 → Bandit 12
 cover: content/_WRITEUPS/OverTheWire/bandit/assets/otwcover11.png
 title: "OTW: Bandit 11"
-description: "Aquí te guío para encontrar la contraseña del nivel descifrando un archivo protegido con ROT13. Aquí aprenderás no solo a aplicar y revertir este cifrado clásico desde la terminal usando el comando adecuado, sino también a profundizar en el manejo de texto y en los comandos básicos de Linux fundamentales para administración y pentesting. Mi objetivo es acompañarte paso a paso: conectarás por SSH, explorarás archivos y descifrarás información como lo haría un verdadero profesional de sistemas."
+description: Te guío para encontrar la contraseña del nivel descifrando un archivo protegido con ROT13. Aprenderás no solo a aplicar y revertir este cifrado clásico desde la terminal usando el comando adecuado, sino también a profundizar en el manejo de texto y en los comandos básicos de Linux fundamentales para administración y pentesting.
 tags:
   - linux
   - bash
