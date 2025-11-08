@@ -28,7 +28,6 @@ Decodificar el contenido del archivo `data.txt` aplicando ROT13 para mostrar la 
 
 - `ssh`: Para acceder al servidor donde se realiza el nivel.
 - `cat`: Muestra el contenido de un archivo en la terminal.  
-  
 - `tr`: Comando para traducir o transformar caracteres. Recibe dos parámetros de caracteres: 
 	- el primero es el de origen:  'A-Za-z'
 	- el segundo el de destino para la traducción: 'N-ZA-Mn-za-m'
@@ -38,9 +37,7 @@ Decodificar el contenido del archivo `data.txt` aplicando ROT13 para mostrar la 
 tr 'A-Za-z' 'N-ZA-Mn-za-m'
 ```
 
-Esto garantiza que cada letra original (desde `'A-Z'` y `'a-z'`) se rote un equivalente a  13 lugares.
- 
-La expresión `'N-ZA-Mn-za-m'` se usa para representar el alfabeto "rotado" 13 posiciones, separado en dos rangos, porque `tr` necesita que las listas de caracteres tengan la misma longitud:
+Esto garantiza que cada letra original (desde `'A-Z'` y `'a-z'`) se rote un equivalente a 13 lugares. La expresión `'N-ZA-Mn-za-m'` se usa para representar el alfabeto "rotado" 13 posiciones, separado en dos rangos, porque `tr` necesita que las listas de caracteres tengan la misma longitud:
 
 - Para mayúsculas:    
     - De la `N` a la `Z` cubre la segunda mitad del alfabeto (N, O, P, ..., Z).        
@@ -82,11 +79,7 @@ ls
 cat data.txt
 ```
 ![[Pasted image 20251107210432.png]]
-
-3. Verifica el contenido del archivo:
-
-
-Aquí verás texto cifrado que no es legible.
+	Verificamos la existencia y el contenido del archivo. Aquí verás texto cifrado que no es legible.
 
 3. Decodifica el archivo con ROT13 usando `tr` con la tubería `|` para pasar la salida de un comando como entrada de otro:
 
@@ -94,13 +87,13 @@ Aquí verás texto cifrado que no es legible.
 cat data.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m'
 ```
 ![[Pasted image 20251107210511.png]]
-
-Esto traduce las letras cifradas del archivo, rotándolas 13 posiciones, y muestra la contraseña original en texto claro.
+	Esto traduce las letras cifradas del archivo, rotándolas 13 posiciones, y muestra la contraseña original en texto claro.
 
 ### Por qué usar tuberías "|"
 
 Las tuberías permiten combinar comandos para procesar datos sin crear archivos temporales, haciendo que la manipulación sea rápida y eficiente.
 
+---
 ### Ejemplo simple para entender ROT13 con tr
 
 Si quieres probar en la terminal:
@@ -109,24 +102,13 @@ Salida:
 Ubyn
 Si vuelves a aplicar el comando a Ubyn, recuperarás Hola.
 
-### ¿Se pueden usar otros comandos con tr distintos a 'N-ZA-Mn-za-m'?
+El comando tr es muy flexible y permite muchas otras transformaciones distintas. Algunos ejemplos comunes son:
 
-Sí, el comando tr es muy flexible y permite muchas otras transformaciones distintas. Algunos ejemplos comunes son:
-
-- Convertir todas las letras minúsculas a mayúsculas:
-  tr 'a-z' 'A-Z'
-
-- Rotar números 5 posiciones (ROT5):
-  tr '0-9' '5-90-4'
-
-- Eliminar caracteres, por ejemplo borrar todas las 'a':
-  tr -d 'a'
-
-- Comprimir múltiples espacios seguidos en uno solo:
-  tr -s ' '
-
-- ROT47, que rota un rango amplio de caracteres imprimibles:
-  tr '\!-~' 'P-~\!-O'
+- Convertir todas las letras minúsculas a mayúsculas:  tr 'a-z' 'A-Z'
+- Rotar números 5 posiciones (ROT5):  tr '0-9' '5-90-4'
+- Eliminar caracteres, por ejemplo borrar todas las 'a':  tr -d 'a'
+- Comprimir múltiples espacios seguidos en uno solo:  tr -s ' '
+- ROT47, que rota un rango amplio de caracteres imprimibles:  tr '\!-~' 'P-~\!-O'
 
 Puedes crear cualquier par de conjuntos para traducir, siempre que tengan la misma longitud. Esto hace que tr sea muy útil para manipular y transformar texto de muchas formas.
 
