@@ -1,0 +1,135 @@
+---
+level: Bandit 11 → Bandit 12
+target: Obtener la contraseña decodificando el contenido cifrado con ROT13 del archivo data.txt.
+tags:
+  - linux
+  - bash
+  - ctf
+  - bandit
+  - rot13
+  - encoding
+difficulty:
+  - ★☆☆☆☆
+date: 2025-10-30
+---
+
+### Resumen
+El reto de este nivel es encontrar la contraseña para el siguiente nivel dentro del archivo `data.txt`. El archivo contiene texto cifrado usando [ROT13](https://es.wikipedia.org/wiki/ROT13), un cifrado que rota cada letra del alfabeto 13 posiciones. La tarea es revertir ese cifrado para revelar la contraseña.
+
+### Qué es ROT13 y por qué es útil
+ROT13 es una variante simple del cifrado César donde cada letra se reemplaza por la letra que está 13 posiciones adelante en el alfabeto. Como el alfabeto tiene 26 letras, aplicar ROT13 dos veces devuelve el texto original, lo que facilita su uso para ocultar información ligera. Entender ROT13 y cómo manipular texto con comandos **es interesante para la administración de sistemas y pentesting básico**.
+
+![[OverTheWire.bandit 1.png]]
+
+### Objetivo detallado
+Decodificar el contenido del archivo `data.txt` aplicando ROT13 para mostrar la contraseña legible.
+
+### Conceptos y comandos Linux clave
+
+- `ssh`: Para acceder al servidor donde se realiza el nivel.
+- `cat`: Muestra el contenido de un archivo en la terminal.  
+  
+- `tr`: Comando para traducir o transformar caracteres. Recibe dos parámetros de caracteres: 
+	- el primero es el de origen:  'A-Za-z'
+	- el segundo el de destino para la traducción: 'N-ZA-Mn-za-m'
+
+- La sintaxis usada para aplicar ROT13:
+```
+tr 'A-Za-z' 'N-ZA-Mn-za-m'
+```
+
+Esto garantiza que cada letra original (desde `'A-Z'` y `'a-z'`) se rote un equivalente a  13 lugares.
+ 
+La expresión `'N-ZA-Mn-za-m'` se usa para representar el alfabeto "rotado" 13 posiciones, separado en dos rangos, porque `tr` necesita que las listas de caracteres tengan la misma longitud:
+
+- Para mayúsculas:    
+    - De la `N` a la `Z` cubre la segunda mitad del alfabeto (N, O, P, ..., Z).        
+    - De la `A` a la `M` cubre la primera mitad (A, B, C, ..., M).
+        
+- Para minúsculas:    
+    - De la `n` a la `z` es la segunda mitad de las minúsculas.        
+    - De la `a` a la `m` es la primera mitad.
+
+![[Pasted image 20251107210221.png]]
+
+Así, cada letra en el conjunto original `'A-Za-z'` (A a Z, a a z en orden normal) se corresponde exactamente con la letra 13 posiciones rotada.
+
+En resumen, `'N-ZA-Mn-za-m'` es la forma de escribir el alfabeto rotado 13 posiciones (ROT13) en un formato continuo que `tr` puede usar para traducir cada letra original a su equivalente cifrado correcto.
+
+Así usando `tr 'A-Za-z' 'N-ZA-Mn-za-m'` traduces cada letra alfabética a su versión ROT13 en una sola pasada. Si no te quieres complicar mucho la cabeza recuerda que hay herramientas que hacen esto de forma automática, solo necesitas una búsqueda rapida: 
+
+![[Pasted image 20251107201226.png]]
+Hay un montón en internet he incluso puede programar una para prácticar el lenguaje que gustes ya que, **suelen ser muy sencillas de hacer**. 
+
+Aquí te dejo un par de herramientas que encontré:
+- [Cryptii](https://cryptii.com/pipes/rot13-decoder)
+- [dcode](https://www.dcode.fr/rot-13-cipher)
+
+---
+
+### Paso a paso para resolver el nivel
+
+1. Conéctate al servidor con el usuario del nivel 11:
+
+```
+ssh bandit11@bandit.labs.overthewire.org -p 2220
+```
+![[Pasted image 20251107210358.png]]
+
+2. Verifica el contenido del archivo:
+```
+ls
+cat data.txt
+```
+![[Pasted image 20251107210432.png]]
+
+3. Verifica el contenido del archivo:
+
+
+Aquí verás texto cifrado que no es legible.
+
+3. Decodifica el archivo con ROT13 usando `tr` con la tubería `|` para pasar la salida de un comando como entrada de otro:
+
+```
+cat data.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m'
+```
+![[Pasted image 20251107210511.png]]
+
+Esto traduce las letras cifradas del archivo, rotándolas 13 posiciones, y muestra la contraseña original en texto claro.
+
+### Por qué usar tuberías "|"
+
+Las tuberías permiten combinar comandos para procesar datos sin crear archivos temporales, haciendo que la manipulación sea rápida y eficiente.
+
+### Ejemplo simple para entender ROT13 con tr
+
+Si quieres probar en la terminal:
+echo Hola | tr 'A-Za-z' 'N-ZA-Mn-za-m'
+Salida:
+Ubyn
+Si vuelves a aplicar el comando a Ubyn, recuperarás Hola.
+
+### ¿Se pueden usar otros comandos con tr distintos a 'N-ZA-Mn-za-m'?
+
+Sí, el comando tr es muy flexible y permite muchas otras transformaciones distintas. Algunos ejemplos comunes son:
+
+- Convertir todas las letras minúsculas a mayúsculas:
+  tr 'a-z' 'A-Z'
+
+- Rotar números 5 posiciones (ROT5):
+  tr '0-9' '5-90-4'
+
+- Eliminar caracteres, por ejemplo borrar todas las 'a':
+  tr -d 'a'
+
+- Comprimir múltiples espacios seguidos en uno solo:
+  tr -s ' '
+
+- ROT47, que rota un rango amplio de caracteres imprimibles:
+  tr '\!-~' 'P-~\!-O'
+
+Puedes crear cualquier par de conjuntos para traducir, siempre que tengan la misma longitud. Esto hace que tr sea muy útil para manipular y transformar texto de muchas formas.
+
+---
+
+Con esta guía tienes no solo la solución al nivel 11, sino también una comprensión completa sobre el uso del comando tr para aplicar ROT13 y otras transformaciones en Linux.
