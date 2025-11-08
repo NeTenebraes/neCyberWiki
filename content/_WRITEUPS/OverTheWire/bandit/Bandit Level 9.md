@@ -12,7 +12,7 @@ tags:
   - uniq
 difficulty:
   - ★☆☆☆☆
-date: 2025-10-30
+publishDate: 2025-10-30
 ---
 ### Resumen
 En este nivel se debe encontrar la única línea que aparece solo una vez en el archivo `data.txt`. Esto es un buen ejercicio para aprender a usar comandos que filtren líneas duplicadas.

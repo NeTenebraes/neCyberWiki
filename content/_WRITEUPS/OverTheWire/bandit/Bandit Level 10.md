@@ -10,7 +10,7 @@ tags:
   - cifrado
 difficulty:
   - ★☆☆☆☆
-date: 2025-10-30
+publishDate: 2025-10-30
 ---
 ### Resumen
 Este nivel consiste en decodificar datos codificados en base64 contenidos en el archivo `data.txt` para obtener la contraseña del siguiente nivel.
