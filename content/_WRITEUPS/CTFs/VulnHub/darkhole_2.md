@@ -1,23 +1,17 @@
 ---
-title: "VulnHub: darkhole_2"
-date: 2025-10-09
+title: "CTF VulnHub: darkhole_2"
+publishDate: 2025-10-09
 tags:
   - writeup
   - vulnhub
   - sqli
   - git-enumeration
-  - ssh
   - privilege-escalation
   - web-exploitation
-related:
-  - "[[SQLi-Manual]]"
-  - "[[Git-Reconnaissance]]"
-  - "[[Linux-Privesc]]"
-  - "[[SSH-Techniques]]"
+  - ctf
 references:
   - https://www.vulnhub.com/entry/darkhole-2,740/
 ---
-# CTF: Darkhole_2
 ![[cover.png]] 
 >[!INFO] Información General
 >Aquí encontrarás un Writeup de como hackear la máquina "darkhole_2" de VulnHub. A lo largo de la cual aprenderás a como funcionan diversos ataques de inyección SQL, en que consiste la enumeración básica de subdominios y nos aprovecharemos de un servicios expuesto bajo el puerto 9999 para realizar una escalada de privilegios.
