@@ -1,8 +1,16 @@
 ---
-level: "Bandit 3 → Bandit 4"
-target: "Encontrar contraseña en archivo oculto con ls y find."
-tags: [linux, bash, ctf, bandit, hidden-files, ls, find]
-difficulty: "★☆☆☆☆"
+title: "OTW Bandit: 3"
+cover:
+description:
+tags:
+  - linux
+  - bash
+  - ctf
+  - bandit
+  - quoting
+  - escaping
+  - spaces-in-filename
+difficulty: ★☆☆☆☆
 date: 2025-10-26
 ---
 ### Resumen

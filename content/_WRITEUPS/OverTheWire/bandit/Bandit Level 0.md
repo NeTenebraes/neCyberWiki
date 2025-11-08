@@ -1,6 +1,7 @@
 ---
-level: Bandit 0 → Bandit 1
-target: Luego de conectarse vía SSH, leer un archivo para encontrar la primera contraseña.
+title: "OTW Bandit: 0"
+cover:
+description:
 tags:
   - linux
   - bash

@@ -1,6 +1,7 @@
 ---
-level: Bandit 8 → Bandit 9
-target: Encontrar la única línea de texto que aparece solo 1 vez en el archivo data.txt.
+title: "OTW Bandit: 8"
+cover:
+description:
 tags:
   - linux
   - bash

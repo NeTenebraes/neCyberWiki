@@ -1,6 +1,7 @@
 ---
-level: Bandit 4 → Bandit 5
-target: Identificar y leer un único archivo de texto legible por humanos en un directorio.
+title: "OTW Bandit: 4"
+cover:
+description:
 tags:
   - linux
   - bash

@@ -1,6 +1,7 @@
 ---
-level: Bandit 9 → Bandit 10
-target: Encontrar la contraseña para el siguiente nivel, que es la única línea en data.txt que aparece solo una vez.
+title: "OTW Bandit: 9"
+cover:
+description:
 tags:
   - linux
   - bash

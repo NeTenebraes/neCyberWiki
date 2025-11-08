@@ -1,6 +1,7 @@
 ---
-level: Bandit 5 → Bandit 6
-target: Encontrar un archivo con múltiples propiedades específicas usando 'find'.
+title: "OTW Bandit: 5"
+cover:
+description:
 tags:
   - linux
   - bash

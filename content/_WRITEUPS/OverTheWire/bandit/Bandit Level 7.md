@@ -1,6 +1,7 @@
 ---
-level: Bandit 7 → Bandit 8
-target: Encontrar la contraseña junto a la palabra \"millionth\" dentro del archivo data.txt.
+title: "OTW Bandit: 7"
+cover:
+description:
 tags:
   - linux
   - bash

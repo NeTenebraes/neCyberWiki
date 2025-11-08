@@ -1,8 +1,16 @@
 ---
-level: "Bandit 1 → Bandit 2"
-target: "Leer un archivo cuyo nombre es un carácter especial (un guion '-')."
-tags: [linux, bash, ctf, bandit, special-characters, stdin, argument-parsing]
-difficulty: "★☆☆☆☆"
+title: "OTW Bandit: 1"
+cover:
+description:
+tags:
+  - linux
+  - bash
+  - ctf
+  - bandit
+  - special-characters
+  - stdin
+  - argument-parsing
+difficulty: ★☆☆☆☆
 date: 2025-10-26
 ---
 ### Resumen

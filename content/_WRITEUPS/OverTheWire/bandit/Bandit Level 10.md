@@ -1,13 +1,13 @@
 ---
-level: Bandit 10 → Bandit 11
-target: Obtener la contraseña decodificando el contenido base64 del archivo data.txt.
+title: "OTW Bandit: 10"
+cover: content/_WRITEUPS/OverTheWire/bandit/assets/otwcover11.png
+description: Te guío para encontrar la contraseña del nivel descifrando un archivo protegido con ROT13. Aprenderás no solo a aplicar y revertir este cifrado clásico desde la terminal usando el comando adecuado, sino también a profundizar en el manejo de texto y en los comandos básicos de Linux fundamentales para administración y pentesting.
 tags:
   - linux
   - bash
-  - ctf
   - bandit
   - base64
-  - encoding
+  - cifrado
 difficulty:
   - ★☆☆☆☆
 date: 2025-10-30

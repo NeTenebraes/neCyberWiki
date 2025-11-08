@@ -1,6 +1,7 @@
 ---
-level: Bandit 6 → Bandit 7
-target: Encontrar un archivo propiedad de usuario bandit7 y grupo bandit6, con tamaño exacto de 33 bytes.
+title: "OTW Bandit: 6"
+cover:
+description:
 tags:
   - linux
   - bash

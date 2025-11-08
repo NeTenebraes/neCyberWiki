@@ -1,6 +1,7 @@
 ---
-level: Bandit 2 → Bandit 3
-target: "Leer un archivo cuyo nombre contiene espacios: '--spaces in this filename--'."
+title: "OTW Bandit: 2"
+cover:
+description:
 tags:
   - linux
   - bash
