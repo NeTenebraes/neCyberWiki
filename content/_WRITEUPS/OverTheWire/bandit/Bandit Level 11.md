@@ -82,8 +82,7 @@ cat data.txt
 cat data.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m'
 ```
 ![[OverTheWire.bandit 7.png]]
-	Esto traduce las letras cifradas del archivo, rotándolas 13 posiciones, y muestra la contraseña original en texto claro.
-
+	Esto traduce las letras cifradas del archivo, rotándolas 13 posiciones, y muestra la contraseña original en texto claro. **Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
 ### Por qué usar tuberías "|"
 
 Las tuberías permiten combinar comandos para procesar datos sin crear archivos temporales, haciendo que la manipulación sea rápida y eficiente.
