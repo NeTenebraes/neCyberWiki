@@ -1,5 +1,6 @@
 ---
 level: Bandit 11 → Bandit 12
+cover: content/_WRITEUPS/OverTheWire/bandit/assets/otwcover11.png
 title: "OTW: Bandit 11"
 description: "Aquí te guío para encontrar la contraseña del nivel descifrando un archivo protegido con ROT13. Aquí aprenderás no solo a aplicar y revertir este cifrado clásico desde la terminal usando el comando adecuado, sino también a profundizar en el manejo de texto y en los comandos básicos de Linux fundamentales para administración y pentesting. Mi objetivo es acompañarte paso a paso: conectarás por SSH, explorarás archivos y descifrarás información como lo haría un verdadero profesional de sistemas."
 tags:
@@ -11,7 +12,6 @@ tags:
 difficulty:
   - ★★☆☆☆
 date: 2025-11-07
-cover: "![[otwcover11.png]]"
 ---
 ### Resumen
 [El reto de este nivel ](https://overthewire.org/wargames/bandit/bandit12.html)es encontrar la contraseña del usuario siguiente dentro del archivo `data.txt`. El archivo contiene un texto cifrado usando [ROT13](https://es.wikipedia.org/wiki/ROT13), un cifrado que rota cada letra del alfabeto 13 posiciones. **El objetivo es revertir ese cifrado para revelar la contraseña**.
