@@ -1,9 +1,8 @@
 ---
 title: "neCyberWIKI: Misión de Conocimiento Libre 📚"
+description: "Biblioteca Colaborativa sobre ciberseguridad, hacking ético, informática y privacidad digital. Centralizo conocimiento técnico y práctico, explicado de forma clara, libre y accesible. No es una academia: es mi bitácora de aprendizaje, donde practico, documento y comparto para que cualquiera pueda aprender y aportar."
 tags:
 ---
-> Biblioteca Colaborativa sobre ciberseguridad, hacking ético, informática y privacidad digital. Centralizo conocimiento técnico y práctico, explicado de forma clara, libre y accesible. No es una academia: es mi bitácora de aprendizaje, donde practico, documento y comparto para que cualquiera pueda aprender y aportar.
-
 ![[og-image.png]]
 
 ¡Bienvenido/a! Si estás aquí, es porque compartes la pasión por un campo que define nuestro futuro digital.
