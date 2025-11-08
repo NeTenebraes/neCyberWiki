@@ -26,11 +26,9 @@ El juego se estructura en niveles progresivos, iniciando en [Bandit Level 0](htt
 ### ¿Qué es SSH?
 
 SSH (Secure Shell) es un protocolo de red que permite establecer una conexión segura y cifrada entre dos máquinas. A través de esta conexión, se obtiene un ***shell*** (una terminal o línea de comandos) para ejecutar comandos en el sistema remoto como si se estuviera físicamente frente a él. En español crack, **controlas esa máquina a distancia**.
-
 #### ¿Por qué el puerto 2220?
 
 **El puerto estándar para SSH es el 22**. Utilizar un puerto no estándar como el `2220` e**s una medida básica de seguridad** por oscuridad. Ayuda a evitar la detección por parte de escáneres automatizados que buscan servicios SSH en el puerto predeterminado.
-
 ## Requisitos para jugar
 
 * **Cliente SSH**: La verdad no necesitas mucho, **sistemas como Linux, macOS o Windows incluyen SSH por defecto** (Incluso lo puedes hace en Android, revisa [Termux](https://wiki.termux.com/wiki/Remote_Access)). ¡Solo debes acceder al mismo a través de tu respectiva terminal!
@@ -48,7 +46,6 @@ El objetivo de esta introducción es que logres iniciar sesión en el servidor d
 * **Contraseña**: `bandit0`
 
 La contraseña para el nivel `bandit1` se encuentra en un archivo llamado `readme` en el directorio `home` del usuario `bandit0`, **una vez dentro de la máquina hay que leer el contenido del archivo.**
-
 ### Comandos y Conceptos Relevantes
 * **`ssh`**: Permite iniciar una sesión de shell segura en un sistema remoto.
 * **`ls`**: Lista los archivos y directorios en la ubicación actual.
@@ -82,7 +79,6 @@ ssh -p 2220 bandit0@bandit.labs.overthewire.org
 Tras ejecutar el comando, la terminal solicitará la contraseña (`password:`). Escribe `bandit0` y presiona Enter. No verás los caracteres mientras escribes; es un comportamiento normal de seguridad.
 
 ![[content/_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit.png]]
-
 ### Método 2: Sintaxis con flag `-l`
 
 Una alternativa funcionalmente idéntica que utiliza el flag `-l` (*login name*) para definir el usuario.
@@ -117,7 +113,6 @@ cat readme
 	**Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
 
 ---
-
 ## Errores Comunes y Soluciones
 
 - **Error: No se encuentra el archivo `readme`**
@@ -146,7 +141,6 @@ cat readme
     - **Causa**: La firma criptográfica del servidor cambió. Esto puede ocurrir si es tu primera conexión o si la clave del servidor fue actualizada.
     - **Solución**: Elimina la clave antigua en tu archivo de hosts conocidos ejecutando:  
         `ssh-keygen -R bandit.labs.overthewire.org`
-
 
 ---
 ## Conceptos Adicionales | Material de lectura
