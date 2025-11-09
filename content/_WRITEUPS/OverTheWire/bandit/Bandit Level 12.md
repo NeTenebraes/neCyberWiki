@@ -171,9 +171,13 @@ cd /tmp/netenebrae
 
 ![[Pasted image 20251108221715.png]]
 
-Nos aconsejan crear una carpeta que ya vamos manejar la descompresion de varios archivos, por lo que vamos a usar comandos simples para crear las carpetas y hacer todo lo necesario
+3. Nos aconsejan crear una carpeta que ya vamos manejar la descompresion de varios archivos, por lo que vamos a usar comandos simples para crear las carpetas y hacer todo lo necesario
 
+![[Pasted image 20251108221903.png]]
 
+hacemos el hexdump y lanzamos un file para identificar el tipo de archivo ESto nos prepara para uzar la herramienta gzip. nos damos cuenta que el archivo anteriormente se llamada data2.bin y esta usando gzip.
+
+4. 
 
 ---
 
