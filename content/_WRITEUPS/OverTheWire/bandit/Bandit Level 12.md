@@ -157,7 +157,7 @@ Conocer cómo funcionan juntos estos formatos te da una gran ventaja para maneja
 
 conectarnos
 
-![[Pasted image 20251108221334.png]]
+![[OverTheWire.bandit 8.png]]
 
 
 
@@ -169,17 +169,46 @@ mkdir /tmp/netenebrae
 cp data.txt /tmp/netenebrae
 cd /tmp/netenebrae
 
-![[Pasted image 20251108221715.png]]
+![[OverTheWire.bandit 9.png]]
+	Nos aconsejan crear una carpeta que ya vamos manejar la descompresion de varios archivos, por lo que vamos a usar comandos simples para crear las carpetas y hacer todo lo necesario
 
-3. Nos aconsejan crear una carpeta que ya vamos manejar la descompresion de varios archivos, por lo que vamos a usar comandos simples para crear las carpetas y hacer todo lo necesario
+verificamos, hexxdumpeamos verificamos y renombremos 
+![[OverTheWire.bandit 16.png]]
+	hacemos el hexdump y lanzamos un file para identificar el tipo de archivo. Esto nos indica que es un tipo de archivo gzip que antes se llamaba data2.bin, renombrear  "archivo" a data2.bin.
 
-![[Pasted image 20251108221903.png]]
+3. Repetir,
+![[OverTheWire.bandit 15.png]]
+	Repetimos lo mismo, solo que en esta ocasion vemos data 2 esta vez nos da un archivo descomprimido en formato bzip2.
 
-hacemos el hexdump y lanzamos un file para identificar el tipo de archivo ESto nos prepara para uzar la herramienta gzip. nos damos cuenta que el archivo anteriormente se llamada data2.bin y esta usando gzip.
+4. Repetir
+![[OverTheWire.bandit 14.png]]
+	
+verificamos el contenido, usamos la herramienta de descompresion, . verificamos el contenido descomrpimido. mirara que la herramienta nos da el archivo "data2.out". verificamos con file y vemos que un archivo gzip anteriormente llamado data4.bin, lo renombramos.
 
-4. 
+5. Repetir
+   
+   ![[OverTheWire.bandit 17.png]]
+
+	verificamos el contenido de data4.bin, uzamos la herramienta gzip para descomprirmirla ya que  verificamos que es ese tipo. verificamos el contenido y vemos que esta vez nos da un archivo tar.
+
+6. Repetir
+![[OverTheWire.bandit 12.png]]
+	usamos la herramienta tar para extrar el archivo data4, esto nos da el archivo data5.bin , al usar file a data5.bin vemos que tambien es un archivo tar por lo que usamos nuevamente el comando, pero esta vez sombre el archivo data5.bin, esto nos da el archivo data6.bin por lo que usamos el comando file para confirmar el tipo de archivo y vemos que esta vez es bzip2. 
+
+7.  Repetir
+
+![[OverTheWire.bandit 11.png]]
+	Usamos las herramienta para extrar el contenido del archivo, me da un resultador data6.bin.out. Solo que esta vez es un archivo tar, usamos la herramienta tar y extramos el archivo data8.bin y al verificarlo vemos que es un archivo gzip anteriormente llamado data9.bin.
+
+8. Repetir
+
+Usamos la herramienta para extrar, verificamos el contenido extraido y vemos que es un archivo de texto. usamos cat y vemos la contraseña :v 
+
+![[OverTheWire.bandit 10.png]]
+
 
 ---
+
 
 
 bzip2: Can't guess original name for data2 -- using data2.out﻿
