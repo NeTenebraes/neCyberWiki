@@ -155,6 +155,25 @@ Conocer cómo funcionan juntos estos formatos te da una gran ventaja para maneja
 ---
 ### Paso a paso para resolver el nivel
 
+conectarnos
+
+![[Pasted image 20251108221334.png]]
+
+
+
+listamos, creamos copiamos y nos mevemos al directorio de trabajo
+
+ls
+data.txt
+mkdir /tmp/netenebrae
+cp data.txt /tmp/netenebrae
+cd /tmp/netenebrae
+
+![[Pasted image 20251108221715.png]]
+
+Nos aconsejan crear una carpeta que ya vamos manejar la descompresion de varios archivos, por lo que vamos a usar comandos simples para crear las carpetas y hacer todo lo necesario
+
+
 
 ---
 
