@@ -9,7 +9,7 @@ tags:
 > [!QUOTE]  El conocimiento es poder
 > Recuerda... "*un gran poder, conlleva una gran responsabilidad*”.
 
-El objetivo es fortalecer y proteger, no causar daño ni aprovecharte de debilidades fuera del marco legal permitido. Realiza pruebas en laboratorio controlados o con permiso formal y documentado; si no existe, no ejecutes **NADA**. Define mínimos éticos, legales y operativos antes de aplicar técnicas ofensivas/defensivas, recuerda siempre proteger todo activo y/o sistemas por encima de cualquier experimento técnico. **Se aplica a todo el contenido de la wiki y debe leerse antes de ejecutar cualquier snippet, PoC, Script o automatización**.
+El objetivo es fortalecer y proteger, no causar daño ni aprovecharte de debilidades fuera del marco legal permitido. Realiza pruebas en laboratorios controlados o con permiso formal y documentado; si no existe, no ejecutes **NADA**. Define mínimos éticos, legales y operativos antes de aplicar técnicas ofensivas/defensivas, recuerda siempre proteger todo activo y sistemas por encima de cualquier experimento técnico. **Se aplica a todo el contenido de la wiki y debe leerse antes de ejecutar cualquier snippet, PoC, Script o automatización**.
 ### Principios básicos
 - Confidencialidad: acceso solo para quien corresponde. 
 - Integridad: datos completos y exactos durante su ciclo de vida.
