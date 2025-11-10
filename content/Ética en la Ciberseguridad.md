@@ -1,13 +1,14 @@
 ---
 title: Ética de la Ciberseguridad
+cover:
+description: La ética en la ciberseguridad es sobre hacer las cosas bien cuando trabajamos con tecnología y datos. Significa proteger la información y los sistemas respetando la privacidad y las leyes, siempre actuando con responsabilidad. Recuerda nunca usar tus conocimientos para dañar a otros
 tags:
-  - fundamentos
-  - ética
+  - etica
   - legal
-  - buenas-prácticas
+publishDate: 2025-11-01
 ---
 > [!QUOTE]  El conocimiento es poder
-> Recuerda... "*un gran poder, conlleva una gran responsabilidad*”.
+> Recuerda... "***un gran poder, conlleva una gran responsabilidad***”.
 
 El objetivo es fortalecer y proteger, no causar daño ni aprovecharte de debilidades fuera del marco legal permitido. Realiza pruebas en laboratorios controlados o con permiso formal y documentado; si no existe, no ejecutes **NADA**. Define mínimos éticos, legales y operativos antes de aplicar técnicas ofensivas/defensivas, recuerda siempre proteger todo activo y sistemas por encima de cualquier experimento técnico. **Se aplica a todo el contenido de la wiki y debe leerse antes de ejecutar cualquier snippet, PoC, Script o automatización**.
 ### Principios básicos
