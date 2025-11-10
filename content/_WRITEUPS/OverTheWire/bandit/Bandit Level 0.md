@@ -120,18 +120,12 @@ cat readme
     - **Solución**: Regresa al directorio `home` con `cd ~` y lista los archivos con `ls`.   
     
 - **Error: `Permission denied` al conectar por SSH**
-    - **Causa**: La contraseña fue copiada o pegada incorrectamente.        
+    - **Causa**: La contraseña o usuario son incorrectos.        
     - **Solución**: Muestra nuevamente el contenido del archivo `readme` y copia la contraseña con cuidado, sin espacios adicionales.
-    
-- **Error: `Connection refused` o `Timeout` al conectar por SSH**
-    - **Causa**: El usuario o el puerto son incorrectos.        
-    - **Solución**: Usa el flag `-p 2220` y el usuario `bandit1`.
-    
-    - **Nota adicional**: Si el error es `ssh: command not found`, significa que el cliente OpenSSH no está instalado o no está en el PATH. En Windows, usa PowerShell, WSL o instala un cliente como Git Bash.
-    
+        
 - **Error: `Connection refused` (rechazo de conexión)**
     - **Causa**: El host no acepta la conexión. Puede deberse a un puerto incorrecto (`-p 2220`) o a un firewall local o de red.
-    - **Solución**: Verifica el número de puerto y que no haya restricciones de conexión.
+    - **Solución**: Verifica el número de puerto, credenciales y que no haya restricciones de conexión.
     
 - **Error: `Permission denied (publickey,password)`**
     - **Causa**: La contraseña ingresada es incorrecta.
