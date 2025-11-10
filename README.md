@@ -33,7 +33,7 @@ El repositorio incluye:
 ---
 ## 🛠️ Tecnologías y dependencias
 
-El proyecto está realizado con [Obsidian](https://obsidian.md/) y [Quartz](https://github.com/quartz-scheduler/quartz) pero puede adaptarse fácilmente al motor de documentación de tu preferencia, como:
+El proyecto está realizado con [Obsidian](https://obsidian.md/) y [Quartz](https://github.com/jackyzha0/quartz) pero puede adaptarse fácilmente al motor de documentación de tu preferencia, como:
 
 - Markdown simple.
 - MkDocs con el tema Material for MkDocs.
