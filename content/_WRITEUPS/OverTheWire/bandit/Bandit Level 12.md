@@ -5,14 +5,16 @@ tags:
   - linux
   - bash
   - bandit
-  - descompresión
   - hexdump
+  - gzip
+  - bzip2
+  - tar
 difficulty:
   - ★★☆☆☆
 publishDate: 2025-11-08
 ---
 ## Introducción
-[Este nivel](https://overthewire.org/wargames/bandit/bandit13.html) consiste en revertir un [hexdump](https://es.wikipedia.org/wiki/Volcado_hexadecimal) contenido en el archivo `data.txt`. Esto con el fin de obtener un archivo binario que está comprimido **múltiples veces** por herramientas como **tar, bzip2 y gzip**. El objetivo es extraer la contraseña del siguiente nivel deshaciendo todas las capas de compresión.
+[Este nivel](https://overthewire.org/wargames/bandit/bandit13.html) consiste en revertir un [hexdump](https://es.wikipedia.org/wiki/Volcado_hexadecimal) contenido en el archivo `data.txt`. Esto con el fin de obtener un archivo binario que está comprimido **múltiples veces** por herramientas como **`tar`, `bzip2` y `gzip`**. El objetivo es extraer la contraseña del siguiente nivel deshaciendo todas las capas de compresión.
 ## Hexdump
 Un **hexdump** es la **representación en texto de un archivo binario** mostrando los datos en formato hexadecimal. Es útil porque los archivos binarios no se pueden leer directamente con comandos normales (como `cat`), el hexdump convierte esos datos en un formato legible para humanos y herramientas.
 
@@ -35,15 +37,15 @@ Solemos identificar un hexdump porque el archivo contiene líneas formadas por c
 ```
 ## Herramientas para este nivel
 
-Este nivel trata de la decompresion de un archivo varias vecces Conocer cómo funcionan juntos estos formatos te da una gran ventaja para manejar archivos eficientemente en Linux, especialmente en contextos de administración de sistemas, desarrollo y ciberseguridad.
+Este nivel también va de la multiple decompresión archivos, por lo que conocer cómo funcionan juntos estos formatos te da una gran ventaja para manejar archivos eficientemente en Linux, especialmente en contextos de administración de sistemas, desarrollo y ciberseguridad.
 ### 1. Gzip
-Herramienta muy popular en Linux para **comprimir archivos**. Usa un algoritmo que comprime rápido y bien para textos, código o páginas web. Cuando ves un archivo que termina en `.gz`, generalmente es un archivo comprimido con gzip. Por sí mismo, gzip trabaja con un solo archivo, pero normalmente lo combinamos con tar﻿ para empaquetar y comprimir varias carpetas o archivos en uno solo (por ejemplo, `.tar.gz`).
+Herramienta muy popular en Linux para **comprimir archivos**. Usa un algoritmo que comprime rápido y bien para textos, código o páginas web. Cuando ves un archivo que termina en `.gz`, generalmente es un archivo comprimido con `gzip`. Por sí mismo, `gzip` trabaja con un solo archivo, pero normalmente lo combinamos con `tar`﻿ para empaquetar y comprimir varias carpetas o archivos en uno solo (por ejemplo, `.tar.gz`).
 
 ### 2. Bzip2
-Ofrece una compresión más eficiente que gzip, aunque tarda un poco más. Genera archivos con extensión `.bz2`. Su algoritmo es distinto y usa técnicas avanzadas para lograr archivos aún más pequeños, ideal para archivos pesados o donde importar un poco más de tiempo para comprimir vale la pena. Como gzip, también suele combinarse con tar﻿ para comprimir directorios completos.
+Ofrece una compresión más eficiente que `gzip`, aunque tarda un poco más. Genera archivos con extensión `.bz2`. Su algoritmo es distinto y usa técnicas avanzadas para lograr archivos aún más pequeños, ideal para archivos pesados o donde importar un poco más de tiempo para comprimir vale la pena. Como `gzip`, también suele combinarse con `tar`﻿ para comprimir directorios completos.
 
 ### 3. Tar
-**La función de "Tape Archive" no es comprimir**, sino agrupar varios archivos y carpetas en uno solo llamado "**tarball**". Por sí solo, tar no reduce el tamaño, solo **crea un archivo que contiene todo lo que agrupaste**, luego se se combina con gzip o bzip2 para crear archivos comprimidos que además están empaquetados, como `.tar.gz` o `.tar.bz2`.
+**La función de "Tape Archive" no es comprimir**, sino agrupar varios archivos y carpetas en uno solo llamado "**tarball**". Por sí solo, tar no reduce el tamaño, solo **crea un archivo que contiene todo lo que agrupaste**, luego se se combina con `gzip` o `bzip2` para crear archivos comprimidos que además están empaquetados, como `.tar.gz` o `.tar.bz2`.
 
 Además, tar conserva la estructura original de carpetas y permisos, lo que es fundamental para preservar la integridad en backups o migraciones.
 
@@ -54,6 +56,7 @@ Además, tar conserva la estructura original de carpetas y permisos, lo que es f
 - **`file`**: Identifica el tipo de archivo analizando su contenido (no solo extensión).
 - **`cat`**: Muestra contenido del archivo en terminal. Útil para ver texto plano.
 - **`mkdir`** Crea directorios.
+- **`mv`:**
 - **`cp`**: Copia archivos o directorios.
 	- Parámetros Comunes: 
         - `-r` copia recursiva (directorios).            
@@ -102,13 +105,13 @@ Además, tar conserva la estructura original de carpetas y permisos, lo que es f
 ---
 ## Solución 
 
-### Conectarnos al servidor
+### 1. Conectarnos al servidor
 ```
 ssh -p 2220 bandit12@bandit.labs.overthewire.org
 ```
 ![[OverTheWire.bandit 8.png]]
 
-### Creamos directorio de trabajo
+### 2. Creamos directorio de trabajo
 ```
 ls
 mkdir /tmp/netenebrae
@@ -117,25 +120,39 @@ cd /tmp/netenebrae
 ```
 
 ![[OverTheWire.bandit 9.png]]
-	 Intro de mkdir y cp. Nos aconsejan crear una carpeta que ya vamos manejar la descompresion de varios archivos, por lo que vamos a usar comandos simples para crear las carpetas y hacer todo lo necesario
 
+El comando `mkdir` (make directory) se utiliza para crear nuevos directorios o carpetas en el sistema de archivos. Puede crear desde un solo directorio hasta estructuras jerárquicas completas, y también permite asignar permisos específicos o crear varios directorios a la vez. Su sintaxis básica es `mkdir nombre/ubicacion_del_directorio`.
 
----
-### Revertimos Hexdump 
+Por otro lado, `cp` se utiliza para copiar archivos o directorios de un lugar a otro, replicando datos sin modificar el original. **Por recomendación de OverTheWire**, crearemos una carpeta temporal dentro de `/tmp` con un nombre aleatorio para trabajar cómodamente con la descompresión de archivos y copiaremos el archivo `data.txt` a dicho directorio.
+### 3. Revertimos Hexdump 
 
+```
 xxd -d data.txt data
+file data 
+mv data data2.bin
+```
 
 ![[OverTheWire.bandit 16.png]]
-	hacemos el hexdump y lanzamos un file para identificar el tipo de archivo. Esto nos indica que es un tipo de archivo gzip que antes se llamaba data2.bin, renombrear  "archivo" a data2.bin.
 
-3. Repetir,
+Usamos el comando `xxd -r` para convertir el hexdump guardado en `data.txt` de nuevo a su forma binaria, y lo guardamos en un nuevo archivo llamado `data`. Luego ejecutamos `file` para identificar el tipo de archivo, que nos indica que es un archivo `gzip` previamente llamado `data2.bin`. Finalmente, usamos `mv` para renombrar `data` a `data2.bin`. Este paso es necesario porque, si no renombramos el archivo, la herramienta de descompresión no nos permite extraerlo correctamente. Renombrar garantiza que el archivo tenga la extensión esperada y facilita su manejo en los siguientes pasos.
+
+
+### 4. Extracción con gzip
+```
+gzip -d -S .bin data2.bin
+file data2
+```
 ![[OverTheWire.bandit 15.png]]
-	Repetimos lo mismo, solo que en esta ocasion vemos data 2 esta vez nos da un archivo descomprimido en formato bzip2.
+	
 
-4. Repetir
+Procedemos a extraer el archivo `data2.bin` utilizando el comando `gzip -d -S .bin`, la opción `-S .bin` especifica que el archivo tiene la extensión `.bin` en lugar de la estándar `.gz` y genera un nuevo archivo llamado `data2`. A continuación, identificamos el contenido del archivo resultante con `file`, y esta vez nos indica que el archivo está en formato `bzip2`.
+
+### 5. Extracción con bzip2
 ![[OverTheWire.bandit 14.png]]
 	
-verificamos el contenido, usamos la herramienta de descompresion, . verificamos el contenido descomrpimido. mirara que la herramienta nos da el archivo "data2.out". verificamos con file y vemos que un archivo gzip anteriormente llamado data4.bin, lo renombramos.
+Usamos la herramienta de descompresión `bzip2` con el archivo `data2`. Al descomprimir, `bzip2` genera un archivo llamado `data2.out`. Esto se debe a que cuando `bzip2` descomprime un archivo que no tiene la extensión estándar `.bz2`, añade `.out` al nombre del archivo de salida para diferenciarlo y evitar sobrescribir archivos existentes.
+
+Después, verificamos con `file` y vemos que el archivo resultante es un archivo `gzip` que antes se llamaba `data4.bin`. Por último, renombramos el archivo.
 
 5. Repetir
    
