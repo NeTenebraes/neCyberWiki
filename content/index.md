@@ -50,16 +50,13 @@ Es una bitácora en tiempo real donde comparto notas rápidas, recursos que encu
 ![[Threads]()](https://i.postimg.cc/XJf9f4H7/Screenshot-2025-10-26-21-16-04.png)
 
 ---
-## ⚡ Tu Aporte Mantiene Viva la CyberWIKI
+## ⚡ ¡Puedes aportar a la neCyberWiki!
 
 Este proyecto está abierto a la comunidad. Si algo de aquí te sirvió, puedes devolver el favor:
-
-* 🛠️ **Mejora el Contenido:** Si puedes explicar un tema mejor o detectar lagunas, ¡mándale refactor!
-* 🔗 **Comparte Recursos:** ¿Conoces un blog, video o curso gratuito útil? ¡Súmalo al conocimiento colectivo!
+* 🛠️ **Mejora el Contenido:** Si puedes explicar un tema mejor o detectar lagunas, ¡Haz un pull request!
+* 🔗 **Comparte Recursos:** ¿Conoces un blog, video o curso gratuito útil? ¡Haz un pull request!
 * 🧩 **Reporta Bugs:** Enlaces rotos, info vieja o errores. Todo feedback mejora la base de datos.
 * 🚀 **Difunde el Proyecto:** Siéntete libre de compartir la neCyberWIKI a quien creas que le pueda servir.
 
 Para contribuir:
 - Abre un **[Issue](https://github.com/NeTenebraes/neCyberWiki/issues)** si quieres proponer algo o crea un **[Pull Request](https://github.com/NeTenebraes/neCyberWiki/pulls)** y modifica directamente el contenido.
-
-Cada aporte cuenta. Esto es código abierto, y sigue vivo porque gente como tú sigue aquí.
