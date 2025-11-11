@@ -1,6 +1,6 @@
 ---
 title: "OTW Bandit: 12"
-description: Explicación detallada paso a paso de cómo resolver el nivel 12 de Bandit, abordando hexdump hasta la obtención final de la contraseña, explicada de forma clara para enseñar a alguien más.
+description: "Explicación detallada paso a paso de cómo resolver el nivel 12 de OverTheWire: Bandit. Abordando hexdump y extracción de archivos con herramientas gzip, bzip2 y tar."
 tags:
   - linux
   - bash
