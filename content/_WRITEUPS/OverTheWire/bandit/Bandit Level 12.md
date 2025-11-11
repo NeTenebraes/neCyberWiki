@@ -193,7 +193,7 @@ Siguiendo la misma metodología, utilizamos la herramienta adecuada para extraer
 
 Repetimos el proceso: extraemos el archivo, verificamos el formato, y en **este caso final vemos que el contenido ya es un archivo de texto**. Usando `cat` revisamos su contenido… ¡y finalmente encontramos la contraseña! 
 
-Esta rutina de identificar el formato, aplicar la herramienta correcta y verificar el resultado garantiza que ningún tipo de archivo comprimido o empaquetado se resista durante el reto técnico.
+Esta rutina de identificar el formato, aplicar la herramienta correcta y verificar el resultado garantiza que ningún tipo de archivo comprimido o empaquetado se resista durante el reto técnico. **Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
 
 ---
 ## Errores comunes
@@ -205,5 +205,3 @@ aparece cuando el archivo comprimido no tiene una extensión estándar reconocid
 Puedes seguir adelante con la descompresión sin renombrar el archivo, el archivo extraído aparecerá con la extensión `.out` y podrás renombrarlo después si lo deseas para mayor claridad.
 
 Sin embargo, renombrar el archivo comprimido para que tenga una extensión estándar (`.bz2`) antes de descomprimir puede hacer que `bzip2` asigne automáticamente un nombre adecuado al archivo extraído y evites el sufijo `.out`. Esto puede ser útil para mantener un flujo de trabajo más ordenado.
-
-
