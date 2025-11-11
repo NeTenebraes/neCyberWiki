@@ -184,7 +184,6 @@ file data8.bin
 gzip -d -S .bin data8.bin
 file data8.bin
 cat data8.bin
-
 ```
 
 
