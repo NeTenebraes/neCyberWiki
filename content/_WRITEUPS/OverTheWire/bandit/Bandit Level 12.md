@@ -123,6 +123,8 @@ cd /tmp/netenebrae
 ---
 ### Revertimos Hexdump 
 
+xxd -d data.txt data
+
 ![[OverTheWire.bandit 16.png]]
 	hacemos el hexdump y lanzamos un file para identificar el tipo de archivo. Esto nos indica que es un tipo de archivo gzip que antes se llamaba data2.bin, renombrear  "archivo" a data2.bin.
 
@@ -155,6 +157,8 @@ verificamos el contenido, usamos la herramienta de descompresion, . verificamos 
 Usamos la herramienta para extrar, verificamos el contenido extraido y vemos que es un archivo de texto. usamos cat y vemos la contraseña :v 
 
 ![[OverTheWire.bandit 10.png]]
+
+
 
 
 ---
