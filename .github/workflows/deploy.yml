@@ -18,10 +18,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 22 # Quartz necesita Node 22 o superior
           cache: 'npm'
@@ -33,7 +33,7 @@ jobs:
         run: npx quartz build
 
       - name: Upload artifact for deployment
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: './public' # Sube la carpeta 'public' que contiene el sitio
 
