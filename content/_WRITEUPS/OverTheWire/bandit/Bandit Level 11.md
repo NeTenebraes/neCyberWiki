@@ -51,7 +51,7 @@ Así, cada letra en el conjunto original `'A-Za-z'`, corresponde exactamente con
 
 Así usando `tr 'A-Za-z' 'N-ZA-Mn-za-m'` traduces cada letra alfabética a su versión ROT13 en una sola pasada. Si no te quieres complicar mucho la cabeza recuerda que hay herramientas que hacen esto de forma automática, solo necesitas una búsqueda rapida: 
 
-![[OverTheWire.bandit 2.png]]
+![[content/_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit 2.png]]
 Hay un montón en internet he incluso puede programar una para prácticar el lenguaje que gustes ya que, **suelen ser muy sencillas de hacer**. 
 
 Aquí te dejo un par de herramientas que encontré:
