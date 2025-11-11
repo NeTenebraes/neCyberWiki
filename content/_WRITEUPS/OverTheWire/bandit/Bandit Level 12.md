@@ -135,8 +135,6 @@ mv data data2.bin
 ![[OverTheWire.bandit 16.png]]
 
 Usamos el comando `xxd -r` para convertir el hexdump guardado en `data.txt` de nuevo a su forma binaria, y lo guardamos en un nuevo archivo llamado `data`. Luego ejecutamos `file` para identificar el tipo de archivo, que nos indica que es un archivo `gzip` previamente llamado `data2.bin`. Finalmente, usamos `mv` para renombrar `data` a `data2.bin`. Este paso es necesario porque, si no renombramos el archivo, la herramienta de descompresión no nos permite extraerlo correctamente. Renombrar garantiza que el archivo tenga la extensión esperada y facilita su manejo en los siguientes pasos.
-
-
 ### 4. Extracción con gzip
 ```
 gzip -d -S .bin data2.bin
@@ -159,7 +157,6 @@ Después, verificamos con `file` y vemos que el archivo resultante es un archivo
 gzip -d -S .bin data4.bin
 file data4
 ```
-   
    ![[OverTheWire.bandit 17.png]]
 
 Descomprimimos el archivo utilizando `gzip` con las opciones `-d -S .bin`, ya que, como sabemos, la extensión  del archivo no es la habitual "`.gz`". Esto genera un nuevo archivo llamado `data4`. Para comprobar su nuevo formato, ejecutamos el comando `file` y observamos que ahora se trata de un archivo `tar`.
@@ -199,7 +196,6 @@ Repetimos el proceso: extraemos el archivo, verificamos el formato, y en **este 
 Esta rutina de identificar el formato, aplicar la herramienta correcta y verificar el resultado garantiza que ningún tipo de archivo comprimido o empaquetado se resista durante el reto técnico.
 
 ---
-
 ## Errores comunes
 
 bzip2: `Can't guess original name for "file"﻿`
