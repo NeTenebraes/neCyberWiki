@@ -1,5 +1,4 @@
 ---
-level: Bandit 12 → Bandit 13
 title: "OTW Bandit: 12"
 description: Explicación detallada paso a paso de cómo resolver el nivel 12 de Bandit, abordando hexdump hasta la obtención final de la contraseña, explicada de forma clara para enseñar a alguien más.
 tags:
@@ -12,9 +11,8 @@ difficulty:
   - ★★☆☆☆
 publishDate: 2025-11-08
 ---
-### Resumen
-[Este nivel](https://overthewire.org/wargames/bandit/bandit13.html) consiste en revertir un [hexdump](https://es.wikipedia.org/wiki/Volcado_hexadecimal) contenido en el archivo `data.txt` para obtener un archivo binario que está comprimido **múltiples veces** por herramientas como tar, bzip2 y gzip. El objetivo es extraer la contraseña del siguiente nivel deshaciendo todas las capas de compresión.
-
+## Introducción
+[Este nivel](https://overthewire.org/wargames/bandit/bandit13.html) consiste en revertir un [hexdump](https://es.wikipedia.org/wiki/Volcado_hexadecimal) contenido en el archivo `data.txt`. Esto con el fin de obtener un archivo binario que está comprimido **múltiples veces** por herramientas como **tar, bzip2 y gzip**. El objetivo es extraer la contraseña del siguiente nivel deshaciendo todas las capas de compresión.
 ## Hexdump
 Un **hexdump** es la **representación en texto de un archivo binario** mostrando los datos en formato hexadecimal. Es útil porque los archivos binarios no se pueden leer directamente con comandos normales (como `cat`), el hexdump convierte esos datos en un formato legible para humanos y herramientas.
 
@@ -35,95 +33,65 @@ Solemos identificar un hexdump porque el archivo contiene líneas formadas por c
 000000b0: d068 6868 c04c d400 0003 4d06 87a8 d000  .hhh.L....M.....
 000000c0: 3086 8c20 3268 068d 000c 9a64 0698 8d04  0.. 2h.....d....
 ```
+## Herramientas para este nivel
 
+Este nivel trata de la decompresion de un archivo varias vecces Conocer cómo funcionan juntos estos formatos te da una gran ventaja para manejar archivos eficientemente en Linux, especialmente en contextos de administración de sistemas, desarrollo y ciberseguridad.
+### 1. Gzip
+Herramienta muy popular en Linux para **comprimir archivos**. Usa un algoritmo que comprime rápido y bien para textos, código o páginas web. Cuando ves un archivo que termina en `.gz`, generalmente es un archivo comprimido con gzip. Por sí mismo, gzip trabaja con un solo archivo, pero normalmente lo combinamos con tar﻿ para empaquetar y comprimir varias carpetas o archivos en uno solo (por ejemplo, `.tar.gz`).
 
-## Compresión de archivos y herramientas útiles 
+### 2. Bzip2
+Ofrece una compresión más eficiente que gzip, aunque tarda un poco más. Genera archivos con extensión `.bz2`. Su algoritmo es distinto y usa técnicas avanzadas para lograr archivos aún más pequeños, ideal para archivos pesados o donde importar un poco más de tiempo para comprimir vale la pena. Como gzip, también suele combinarse con tar﻿ para comprimir directorios completos.
 
-La compresión de archivos es un proceso que reduce el tamaño de uno o varios archivos para ahorrar espacio en disco o facilitar su traslado entre dispositivos. Imagina que quieres enviar un paquete muy grande y voluminoso; al comprimirlo, lo haces más pequeño sin perder nada importante, para que ocupe menos espacio y se mueva más rápido.
-
-La compresión funciona detectando patrones repetidos y eliminando redundancias. Así, aunque el archivo se ve distinto (y ocupa menos), es posible recuperarlo exactamente igual que el original más adelante.
-
----
-
-## Gzip: 
-herramienta muy popular en Linux para comprimir archivos. Usa un algoritmo que comprime rápido y bien para textos, código o páginas web. Cuando ves un archivo que termina en `.gz`, generalmente es un archivo comprimido con gzip.
-
-Por sí mismo, gzip trabaja con un solo archivo, pero normalmente lo combinamos con tar﻿
-
-para empaquetar y comprimir varias carpetas o archivos en uno solo (por ejemplo, `.tar.gz`).
-
----
-
-## Bzip2;
-Ofrece una compresión más eficiente que gzip, aunque tarda un poco más. Genera archivos con extensión `.bz2`. Su algoritmo es distinto y usa técnicas avanzadas para lograr archivos aún más pequeños, ideal para archivos pesados o donde importar un poco más de tiempo para comprimir vale la pena.
-
-Como gzip, también suele combinarse con tar﻿
-
-para comprimir directorios completos.
-
----
-
-## Tar
-Tape Archive, su función no es comprimir, sino agrupar varios archivos y carpetas en uno solo llamado "tarball". Por sí solo, tar no reduce el tamaño; solo crea un archivo que contiene todo lo que agrupaste.
-
-Luego, para reducir realmente el tamaño del archivo tar, se combina con gzip o bzip2 para crear archivos comprimidos que además están empaquetados, como `.tar.gz` o `.tar.bz2`.
+### 3. Tar
+**La función de "Tape Archive" no es comprimir**, sino agrupar varios archivos y carpetas en uno solo llamado "**tarball**". Por sí solo, tar no reduce el tamaño, solo **crea un archivo que contiene todo lo que agrupaste**, luego se se combina con gzip o bzip2 para crear archivos comprimidos que además están empaquetados, como `.tar.gz` o `.tar.bz2`.
 
 Además, tar conserva la estructura original de carpetas y permisos, lo que es fundamental para preservar la integridad en backups o migraciones.
 
 ---
-
-Conocer cómo funcionan juntos estos formatos te da una gran ventaja para manejar archivos eficientemente en Linux, especialmente en contextos de administración de sistemas, desarrollo y ciberseguridad.
-
-### Conceptos y comandos Linux clave
+## Comandos Clave
 
 - **`ssh`**: Comando para conectarse de forma segura a un servidor remoto mediante protocolo Secure Shell (SSH).
-
 - **`file`**: Identifica el tipo de archivo analizando su contenido (no solo extensión).
-
-    - Sintaxis: `file archivo`
-
-    - Parámetros comunes:        
-        - `-b` muestra solo el tipo sin nombre.
-        - `-i` muestra tipo MIME.
-
 - **`cat`**: Muestra contenido del archivo en terminal. Útil para ver texto plano.
+- **`mkdir`** Crea directorios.
+- **`cp`**: Copia archivos o directorios.
+	- Parámetros Comunes: 
+        - `-r` copia recursiva (directorios).            
+        - `-p` preserva permisos.            
+        - `-i` confirma sobrescritura.            
+        - `-v` muestra detalle.
+
+- **`rm`**: Borra archivos o directorios.
+	- Parámetros Comunes: 
+        - `-r` o `-R`: Borra recursivamente (directorios y su contenido).
+        - `-f`: Fuerza la eliminación sin preguntar confirmación.
+        - `-i`: Pide confirmación antes de borrar cada archivo.
+        - `-v`: Muestra detalles de los archivos borrados.
 
 - **`xxd`**: Crea y revierte hexdumps; convierte entre texto hexadecimal y binario.
-
-    - Sintaxis: `xxd -r archivo.hex archivo.bin`
-
-    - Parámetros comunes:        
+	- Parámetros Comunes: 
         - `-r` revierte de hexdump a binario.            
         - `-p` usa/espera hex “plano” sin offsets ni ASCII.            
         - `-u` muestra hex en mayúsculas (cuando generas hexdump).            
         - `-s OFFSET` comienza en un desplazamiento específico (útil al revertir parciales).
 
 - **`gzip`**: Comprime y descomprime datos en formato gzip.
-    
-    - Sintaxis: `gzip -d -S .bin archivo.bin`
-
-    - Parámetros comunes:        
+	- Parámetros Comunes: 
         - `-d` descomprime.            
         - `-S SUF` usa/espera el sufijo indicado (p. ej., `.bin`).            
         - `-k` conserva el archivo original (por defecto lo elimina).            
         - `-c` escribe la salida a stdout (no crea archivo).            
         - `-v` modo detallado.
-
+   
 - **`bzip2`**: Comprime y descomprime datos en formato bzip2.
-    
-    - Sintaxis: `bzip2 -d archivo.bz2`
-
-    - Parámetros comunes:        
-        - `-d` descomprime.            
+    - Parámetros Comunes: 
+		- `-d` descomprime.            
         - `-k` conserva el archivo original.            
         - `-v` modo detallado.            
 
 - **`tar`**: Empaqueta y extrae archivos de un contenedor tar.
-
-	Sintaxis: `tar -xvf archivo.tar`
-
-    - Parámetros comunes:        
-        - `-x` extrae contenido.            
+	- Parámetros Comunes: 
+		- `-x` extrae contenido.            
         - `-v` salida detallada de los archivos procesados.            
         - `-f ARCHIVO` especifica el archivo tar a usar.            
         - `-C DIR` extrae en el directorio indicado.            
@@ -131,48 +99,30 @@ Conocer cómo funcionan juntos estos formatos te da una gran ventaja para maneja
         - `-z` filtra por gzip (tar.gz).            
         - `-j` filtra por bzip2 (tar.bz2).
 
-- **`mkdir`** Crea directorios.
-
-- **`cp`**: Copia archivos o directorios.
-
-    - Sintaxis: `cp [opciones] archivo_origen archivo_destino`
-
-    - Parámetros comunes:        
-        - `-r` copia recursiva (directorios).            
-        - `-p` preserva permisos.            
-        - `-i` confirma sobrescritura.            
-        - `-v` muestra detalle.
-
-- **`rm`**: Borra archivos o directorios.
-
-    - Sintaxis: `rm [opciones] archivo_o_directorio`
-
-    - Parámetros comunes:        
-        - `-r` o `-R`: Borra recursivamente (directorios y su contenido).
-        - `-f`: Fuerza la eliminación sin preguntar confirmación.
-        - `-i`: Pide confirmación antes de borrar cada archivo.
-        - `-v`: Muestra detalles de los archivos borrados.
 ---
-### Paso a paso para resolver el nivel
+## Solución 
 
-conectarnos
-
+### Conectarnos al servidor
+```
+ssh -p 2220 bandit12@bandit.labs.overthewire.org
+```
 ![[OverTheWire.bandit 8.png]]
 
-
-
-listamos, creamos copiamos y nos mevemos al directorio de trabajo
-
+### Creamos directorio de trabajo
+```
 ls
-data.txt
 mkdir /tmp/netenebrae
 cp data.txt /tmp/netenebrae
 cd /tmp/netenebrae
+```
 
 ![[OverTheWire.bandit 9.png]]
-	Nos aconsejan crear una carpeta que ya vamos manejar la descompresion de varios archivos, por lo que vamos a usar comandos simples para crear las carpetas y hacer todo lo necesario
+	 Intro de mkdir y cp. Nos aconsejan crear una carpeta que ya vamos manejar la descompresion de varios archivos, por lo que vamos a usar comandos simples para crear las carpetas y hacer todo lo necesario
 
-verificamos, hexxdumpeamos verificamos y renombremos 
+
+---
+### Revertimos Hexdump 
+
 ![[OverTheWire.bandit 16.png]]
 	hacemos el hexdump y lanzamos un file para identificar el tipo de archivo. Esto nos indica que es un tipo de archivo gzip que antes se llamaba data2.bin, renombrear  "archivo" a data2.bin.
 
