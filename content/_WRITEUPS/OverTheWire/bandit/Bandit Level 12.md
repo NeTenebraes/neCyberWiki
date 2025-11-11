@@ -154,35 +154,56 @@ Usamos la herramienta de descompresión `bzip2` con el archivo `data2`. Al desco
 
 Después, verificamos con `file` y vemos que el archivo resultante es un archivo `gzip` que antes se llamaba `data4.bin`. Por último, renombramos el archivo.
 
-5. Repetir
+### 6. Extracción con tar
+```
+gzip -d -S .bin data4.bin
+file data4
+```
    
    ![[OverTheWire.bandit 17.png]]
 
-	verificamos el contenido de data4.bin, uzamos la herramienta gzip para descomprirmirla ya que  verificamos que es ese tipo. verificamos el contenido y vemos que esta vez nos da un archivo tar.
+Descomprimimos el archivo utilizando `gzip` con las opciones `-d -S .bin`, ya que, como sabemos, la extensión  del archivo no es la habitual "`.gz`". Esto genera un nuevo archivo llamado `data4`. Para comprobar su nuevo formato, ejecutamos el comando `file` y observamos que ahora se trata de un archivo `tar`.
 
-6. Repetir
 ![[OverTheWire.bandit 12.png]]
-	usamos la herramienta tar para extrar el archivo data4, esto nos da el archivo data5.bin , al usar file a data5.bin vemos que tambien es un archivo tar por lo que usamos nuevamente el comando, pero esta vez sombre el archivo data5.bin, esto nos da el archivo data6.bin por lo que usamos el comando file para confirmar el tipo de archivo y vemos que esta vez es bzip2. 
+Utilizamos la herramienta `tar` para extraer el archivo `data4`, lo que nos genera el archivo `data5.bin`. Al analizar `data5.bin` con el comando `file`, notamos que también es un archivo tar. Por eso, repetimos el proceso y usamos nuevamente `tar` sobre `data5.bin`, obteniendo así el archivo `data6.bin`. Para asegurarnos del siguiente paso, volvemos a emplear `file` y vemos que ahora se trata de un archivo en formato `bzip2`.
 
-7.  Repetir
+Esta metodología es sencilla pero poderosa:
+
+- Primero identificamos el tipo de archivo usando `file`.    
+- Luego, aplicamos la herramienta correspondiente (tar, gzip, bzip2, etc.) según el formato detectado.    
+- Finalmente, verificamos el resultado antes de avanzar al siguiente paso.
+
+De esta forma, mantenemos un flujo controlado y organizado, asegurándonos de no perder nunca la pista del tipo de archivo en cada etapa del reto técnico. **¡Así ningún formato raro nos toma por sorpresas!**
+
+### 7.  Usamos la metodología
+```
+bzip2 -d data6.bin
+file data6.bin.out
+tar -xvf data6.bin.out
+file data8.bin
+gzip -d -S .bin data8.bin
+file data8.bin
+cat data8.bin
+
+```
+
 
 ![[OverTheWire.bandit 11.png]]
-	Usamos las herramienta para extrar el contenido del archivo, me da un resultador data6.bin.out. Solo que esta vez es un archivo tar, usamos la herramienta tar y extramos el archivo data8.bin y al verificarlo vemos que es un archivo gzip anteriormente llamado data9.bin.
+Siguiendo la misma metodología, utilizamos la herramienta adecuada para extraer el contenido de `data6.bin.out`, que nuevamente resulta ser un archivo tar. Usamos `tar` para extraerlo, lo que nos da el archivo `data8.bin`. Al analizarlo con `file`, comprobamos que ahora es un archivo gzip que anteriormente se llamaba `data9.bin`.
 
-8. Repetir
-
-Usamos la herramienta para extrar, verificamos el contenido extraido y vemos que es un archivo de texto. usamos cat y vemos la contraseña :v 
-
+![[OverTheWire.bandit 2 1.png]]
 ![[OverTheWire.bandit 10.png]]
 
 
+Repetimos el proceso: extraemos el archivo, verificamos el formato, y en **este caso final vemos que el contenido ya es un archivo de texto**. Usando `cat` revisamos su contenido… ¡y finalmente encontramos la contraseña! 
 
+Esta rutina de identificar el formato, aplicar la herramienta correcta y verificar el resultado garantiza que ningún tipo de archivo comprimido o empaquetado se resista durante el reto técnico.
 
 ---
 
+## Errores comunes
 
-
-bzip2: Can't guess original name for data2 -- using data2.out﻿
+bzip2: `Can't guess original name for "file"﻿`
 
 aparece cuando el archivo comprimido no tiene una extensión estándar reconocida (como `.bz2`). En ese caso, `bzip2` no puede inferir automáticamente cuál debería ser el nombre del archivo descomprimido, por lo que le asigna el mismo nombre del archivo comprimido con la extensión `.out`.
 
