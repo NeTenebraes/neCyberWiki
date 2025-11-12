@@ -32,7 +32,7 @@ Los permisos en Linux controlan **quién puede leer, escribir o ejecutar archivo
 
 Para mantener la integridad y privacidad de la clave privada, usamos el comando `chmod` para establecer permisos restrictivos, por ejemplo `chmod 600`, que permite solo al propietario leer y escribir, bloqueando acceso a otros usuarios.
 ### Ejemplos
-![[OverTheWire.bandit 111.png]]
+![[OverTheWire.bandit 3.png]]
 
 - `chmod 600 sshkey.private` restringe acceso solo a ti, **el dueño**.    
 - Otros permisos comunes incluyen `644` para archivos de solo lectura pública, o agregar ejecución con `+x`.
