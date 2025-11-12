@@ -24,7 +24,6 @@ Las llaves SSH son un método de autenticación basado en criptografía asimétr
 
 Para conectarnos usando la llave privada, usamos el comando `ssh` con la opción `-i`, indicando el archivo de la clave privada:
 
-
 `ssh -i llave_privada bandit14@localhost`
 
 Aquí, `llave_privada` es el archivo que recibimos en este nivel y `localhost` hace referencia a la misma máquina donde estamos trabajando.
