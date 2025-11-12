@@ -5,8 +5,8 @@ tags:
   - linux
   - bash
   - bandit
-  - descompresión
-  - hexdump
+  - ssh
+  - chmod
 difficulty:
   - ★★☆☆☆
 publishDate: 2025-11-08
@@ -79,12 +79,17 @@ Para mantener la integridad y privacidad de la clave privada, usamos el comando 
         Ejemplo: `cat -n archivo.txt`
 
 ---
+## Solución
+Este nivel es realmente sencillo: solo necesitas conectarte al servidor remoto usando la cuenta bandit13. No hay trucos ocultos ni pasos extraños, es puro SSH básico, así que lo único que debes tener a mano es el password correspondiente.
+
 ### 1. Conectarnos al servidor.
 ```
 ssh -p 2220 bandit13@bandit.labs.overthewire.org
 ```
 
 ![[OverTheWire.bandit 20.png]]
+Aparecerá el logo clásico de OverTheWire y la máquina te pedirá la contraseña de bandit13, obtenida en [[Bandit Level 12]].
+
 ### 2. Verificación de llave SSH.
 ```
 ls
