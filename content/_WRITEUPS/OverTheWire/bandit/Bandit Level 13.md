@@ -11,15 +11,12 @@ difficulty:
   - ★★☆☆☆
 publishDate: 2025-11-08
 ---
-
 ## Introducción
 
 En este nivel de [Over The Wire Bandit](https://overthewire.org/wargames/bandit/bandit14.html), el objetivo no es descubrir una contraseña tradicional, sino utilizar una llave privada SSH que nos permite establecer la conexión segura como el usuario bandit14. Este método de autenticación mediante llaves SSH nos invita a romper la cuarta pared y experimentar un nivel más real utlizando nuestro propio ordenador, avanzado de acceso remoto cifrado
-
 ## Llaves SSH
 
 Las llaves SSH son un método de autenticación basado en criptografía asimétrica, donde se usa una clave pública en el servidor y una clave privada en el cliente para establecer una conexión segura sin necesidad de contraseñas. Esto proporciona una capa adicional de seguridad y facilita accesos automatizados.
-
 ### Ejemplos
 
 Para conectarnos usando la llave privada, usamos el comando `ssh` con la opción `-i`, indicando el archivo de la clave privada:
@@ -29,16 +26,15 @@ ssh -i llave_privada bandit14@localhost
 ```
 
 Aquí, `llave_privada` es el archivo que recibimos en este nivel y `localhost` hace referencia a la misma máquina donde estamos trabajando.
-
 ## Permisos en Linux
 
 Los permisos en Linux controlan **quién puede leer, escribir o ejecutar archivos**. Esto es fundamental para proteger archivos sensibles, como llaves privadas.
 
 Para mantener la integridad y privacidad de la clave privada, usamos el comando `chmod` para establecer permisos restrictivos, por ejemplo `chmod 600`, que permite solo al propietario leer y escribir, bloqueando acceso a otros usuarios.
-
 ### Ejemplos
+![[content/_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit 1.png]]
 
-- `chmod 600 sshkey.private` restringe acceso solo a ti, el dueño.    
+- `chmod 600 sshkey.private` restringe acceso solo a ti, **el dueño**.    
 - Otros permisos comunes incluyen `644` para archivos de solo lectura pública, o agregar ejecución con `+x`.
 
 ---
@@ -48,35 +44,28 @@ Para mantener la integridad y privacidad de la clave privada, usamos el comando 
     Parámetros comunes:
     
     - `-i <archivo>`: Usa una llave privada específica para la autenticación.
-        
     - `-p <puerto>`: Conecta a un puerto distinto del 22 por defecto.
-        
     - `-C`: Comprime la sesión para mejorar el rendimiento.
-        
     - `-v`: Muestra información detallada para depuración.
-        
-- **chmod**: Cambia los permisos de archivos en Linux, controlando quién puede leer, escribir o ejecutar.  
-    Parámetros comunes:
-    
-    - `600`: Permisos restrictivos, solo el propietario puede leer y escribir.
-        
-    - `644`: Lectura para todos, escritura solo para el propietario.
-        
-    - `+x`: Añade permiso de ejecución.  
-        Ejemplo: `chmod 600 llave_privada` para proteger llaves SSH.
-        
-- **touch**: Crea archivos vacíos o actualiza la fecha de último acceso/modificación de un archivo.
-    
-- **bat** (alternativa moderna a `cat`): Muestra el contenido de archivos con resaltado de sintaxis y paginación, ideal para lectura cómoda en terminal.
-    
-- **nvim** (similares: `vim`, `nano`, `micro`): Editor de texto avanzado para la terminal, perfecto para editar configuraciones o llaves SSH de manera rápida y eficaz.
-    
+
 - **cat**: Muestra el contenido de archivos por pantalla.  
     Parámetros comunes:
     
     - `-n`: Numera las líneas en la salida.        
     - `-E`: Marca el final de cada línea con un `$`.  
-        Ejemplo: `cat -n archivo.txt`
+
+- **chmod**: Cambia los permisos de archivos en Linux, controlando quién puede leer, escribir o ejecutar.  
+    Parámetros comunes:
+    
+    - `600`: Permisos restrictivos, solo el propietario puede leer y escribir.
+    - `644`: Lectura para todos, escritura solo para el propietario.
+    - `+x`: Añade permiso de ejecución.  
+
+- **touch**: Crea archivos vacíos o actualiza la fecha de último acceso/modificación de un archivo.
+
+- **bat** (alternativa moderna a `cat`): Muestra el contenido de archivos con resaltado de sintaxis y paginación, ideal para lectura cómoda en terminal.
+
+- **nvim** (similares: `vim`, `nano`, `micro`): Editor de texto avanzado para la terminal, perfecto para editar configuraciones o llaves SSH de manera rápida y eficaz.
 
 ---
 ## Solución
@@ -88,7 +77,7 @@ ssh -p 2220 bandit13@bandit.labs.overthewire.org
 ```
 
 ![[OverTheWire.bandit 20.png]]
-Aparecerá el logo clásico de OverTheWire y la máquina te pedirá la contraseña de bandit13, obtenida en [[Bandit Level 12]].
+Aparecerá el logo clásico de OverTheWire y la máquina te pedirá la contraseña de `bandit13`, obtenida en [[Bandit Level 12]].
 
 ### 2. Verificación de llave SSH.
 ```
@@ -99,7 +88,7 @@ exit
 
 ![[OverTheWire.bandit 19.png]]
 
-Al ejecutar estos comandos veremos el contenido de un archivo llamado `sshkey.private`, que almacena la clave RSA privada necesaria para acceder como el usuario bandit14 en el siguiente nivel. Puedes copiar todo el contenido de la clave y guardarla en tu máquina local (en cualquier archivo nuevo, por ejemplo, `bandit14.key`). Recuerda que esta información es altamente sensible: es fundamental **no compartirla nunca y protegerla** en tu entorno local asegurando los permisos correctos (`chmod 600 bandit14.key`) para evitar accesos indebidos.​
+Al ejecutar estos comandos veremos el contenido de un archivo llamado `sshkey.private`, que almacena la clave RSA privada necesaria para acceder como el usuario `bandit14` en el siguiente nivel. Puedes copiar todo el contenido de la clave y guardarla en tu máquina local (en cualquier archivo nuevo, por ejemplo, `bandit14.key`). Recuerda que esta información es altamente sensible: es fundamental **no compartirla nunca y protegerla** en tu entorno local asegurando los permisos correctos (`chmod 600 bandit14.key`) para evitar accesos indebidos.​
 ### 3. Creación de llave SSH.
 ```
 touch bandit14.key
@@ -110,16 +99,16 @@ bat bandit14.key
 Primero, en tu PC local, creamos un archivo para guardar la clave privada usando el comando que quieras (yo uso `touch`, pero puedes llamarlo como te dé la gana):
 
 ![[OverTheWire.bandit 22.png]]
-Luego, pegamos el contenido copiado de `sshkey.private` dentro del archivo recién creado. Personalmente, prefiero usar `nvim` (mi favorito), pero aquí aplica cualquier editor de texto con el que te sientas cómodo: `vim`, `nano`, `micro`, hasta un editor gráfico si lo prefieres. El punto es que edites el archivo en tu entorno local y pegues toda la clave, cien por ciento.
+Luego, pegamos el contenido copiado de `sshkey.private` dentro del archivo recién creado. Personalmente, prefiero usar `nvim`, pero aquí aplica cualquier editor de texto con el que te sientas cómodo: `vim`, `nano`, `micro`, hasta un editor gráfico si lo prefieres. El punto es que edites el archivo en tu entorno local y pegues toda la clave, cien por ciento.
 
 No olvides guardar y cerrar el archivo (en `nvim` sería `:wq`). Al final, tu sistema tendrá el archivo privado listo para autenticación SSH.
 ![[OverTheWire.bandit 23.png]]
-Por último, puedes verificar que la clave esté bien copiada revisando el contenido del archivo con cualquier comando que prefieras. Si eres tradicional, puedes usar `cat bandit14.key`. En mi caso, suelo preferir `bat`, una versión más moderna y colorida (pero al final es lo mismo, solo cuestión de gustos)
+Por último, puedes verificar que la clave esté bien copiada revisando el contenido del archivo con cualquier comando que prefieras. Si eres tradicional, puedes usar `cat bandit14.key`. En mi caso, suelo preferir `bat`, una versión más moderna y colorida (pero al final es lo mismo, solo cuestión de gustos).
 
 **Notas rápidas:**
 - El nombre del archivo es elección tuya, lo importante es que recuerdes cuál usaste.    
 - Puedes verificar el contenido con `bat` (o `cat`).    
-- No te olvides del siguiente paso crítico: ¡asigna permisos seguros a tu clave.
+- No te olvides del siguiente paso crítico: ¡asigna permisos seguros a tu clave!
 ### 4. Cambio de permisos del fichero
 ```
 chmod 600 bandit14.key
@@ -131,7 +120,6 @@ Con esto, el archivo `bandit14.key` queda accesible **solo para el usuario propi
 Puedes verificar que el cambio fue exitoso usando `ls -l`, donde el archivo debe mostrar permisos `-rw-------`.
 
 En resumen: igual que con contraseñas, aquí la seguridad manda y el sistema no te deja pasar si la llave privada no está bien protegida.
-
 
 ### 5. Verificación de conexión 
 ```

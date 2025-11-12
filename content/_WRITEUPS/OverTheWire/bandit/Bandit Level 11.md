@@ -19,7 +19,7 @@ publishDate: 2025-11-07
 ### Qué es ROT13 y por qué es útil
 ROT13 es una variante simple del cifrado César donde cada letra se reemplaza por la letra que está 13 posiciones adelante en el alfabeto. Como el alfabeto tiene 26 letras, aplicar ROT13 dos veces devuelve el texto original, lo que facilita su uso para ocultar información ligera. Entender ROT13 y cómo manipular texto con comandos **es interesante para la administración de sistemas y pentesting básico**.
 
-![[OverTheWire.bandit 1.png]]
+![[content/_WRITEUPS/OverTheWire/bandit/assets/bandit 1/OverTheWire.bandit 1.png]]
 
 ### Conceptos y comandos Linux clave
 
