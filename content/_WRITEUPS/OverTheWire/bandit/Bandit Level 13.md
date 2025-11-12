@@ -148,26 +148,19 @@ Si todo está bien, deberías ver el logo clásico de OverTheWire y ya estarás 
 ## Errores comunes
 
 - **Permiso denegado (publickey)**  
-    El clásico. Suele pasar si la clave privada no tiene permisos 600, si el archivo está corrupto o si usas la clave incorrecta. Confirma el nombre exacto del archivo y que el comando incluya la opción `-i` correctamente.[](https://help.dreamhost.com/hc/es/articles/115001755351-Soluci%C3%B3n-de-problemas-de-errores-de-inicio-de-sesi%C3%B3n-de-SSH)
+    El clásico. Suele pasar si la clave privada no tiene permisos 600, si el archivo está corrupto o si usas la clave incorrecta. Confirma el nombre exacto del archivo y que el comando incluya la opción `-i` correctamente.
   
 - **Connection refused / Timeout**  
-    Ocurre si el puerto (`-p 2220`) está mal, el servidor está caído o la red/firewall te bloquea. Revisa que el nombre de host y puerto sean correctos, y que tu conexión a internet está estable.[](https://www.hostingplus.com.co/blog/guia-para-arreglar-errores-en-conexiones-ssh/)
-    ​
-    
+    Ocurre si el puerto (`-p 2220`) está mal, el servidor está caído o la red/firewall te bloquea. Revisa que el nombre de host y puerto sean correctos, y que tu conexión a internet está estable.
+
 - **Bad permissions**  
-    SSH es muy paranoico con los permisos. Si la clave privada tiene permisos demasiado abiertos, el cliente te bloquea. Usa `chmod 600 bandit14.key` sí o sí.[](https://www.datacamp.com/es/tutorial/ssh-keys)
-    ​
+    SSH es muy paranoico con los permisos. Si la clave privada tiene permisos demasiado abiertos, el cliente te bloquea. Usa `chmod 600 bandit14.key` sí o sí.
     
 - **Clave privada dañada o formato incorrecto**  
-    Si copias la clave a tu archivo y faltan líneas (o se agrega un salto de línea raro), no vas a conectar. Verifica que el archivo empieza y termina bien (`-----BEGIN RSA PRIVATE KEY-----` y `-----END RSA PRIVATE KEY-----`), sin espacios extra.[](https://10web.io/blog/es/como-solucionar-el-error-de-conexion-ssh-rechazada/)
-    ​
-    
+    Si copias la clave a tu archivo y faltan líneas (o se agrega un salto de línea raro), no vas a conectar. Verifica que el archivo empieza y termina bien (`-----BEGIN RSA PRIVATE KEY-----` y `-----END RSA PRIVATE KEY-----`), sin espacios extra.
+
 - **Usuario o dirección mal escrita**  
-    Errores de tipeo en el usuario (`bandit14`) o el hostname suele terminar en intentos fallidos. Cópialo cuidadosamente.
-    
+    Errores de tipeo en el usuario (`bandit14`) o el hostname suele terminar en intentos fallidos. Escribelo cuidadosamente.
+
 - **Clave privada perdida o borrada**  
-    Si eliminaste tu archivo por error, descarga o crea de nuevo tu llave a partir de la fuente y repite el proceso.[](https://docs.oracle.com/es-ww/iaas/Content/Compute/Tasks/troubleshooting-ssh-connection.htm)
-    
-    
-- **Versión o formato de la clave incompatible**  
-    PuTTY y OpenSSH tienen formatos distintos: asegúrate de usar una clave OpenSSH para el reto, nunca una .ppk directa.[](https://docs.oracle.com/es-ww/iaas/Content/Compute/Tasks/troubleshooting-ssh-connection.htm)
+    Si eliminaste tu archivo por error, descarga o crea de nuevo tu llave a partir de la fuente y repite el proceso.
