@@ -20,24 +20,25 @@ En este nivel de [Over The Wire Bandit](https://overthewire.org/wargames/bandit/
 
 Las llaves SSH son un método de autenticación basado en criptografía asimétrica, donde se usa una clave pública en el servidor y una clave privada en el cliente para establecer una conexión segura sin necesidad de contraseñas. Esto proporciona una capa adicional de seguridad y facilita accesos automatizados.
 
-## Ejemplos
+### Ejemplos
 
 Para conectarnos usando la llave privada, usamos el comando `ssh` con la opción `-i`, indicando el archivo de la clave privada:
 
-`ssh -i llave_privada bandit14@localhost`
+```
+ssh -i llave_privada bandit14@localhost
+```
 
 Aquí, `llave_privada` es el archivo que recibimos en este nivel y `localhost` hace referencia a la misma máquina donde estamos trabajando.
 
 ## Permisos en Linux
 
-Los permisos en Linux controlan quién puede leer, escribir o ejecutar archivos. Esto es fundamental para proteger archivos sensibles, como llaves privadas.
+Los permisos en Linux controlan **quién puede leer, escribir o ejecutar archivos**. Esto es fundamental para proteger archivos sensibles, como llaves privadas.
 
 Para mantener la integridad y privacidad de la clave privada, usamos el comando `chmod` para establecer permisos restrictivos, por ejemplo `chmod 600`, que permite solo al propietario leer y escribir, bloqueando acceso a otros usuarios.
 
 ### Ejemplos
 
-- `chmod 600 sshkey.private` restringe acceso solo a ti, el dueño.
-    
+- `chmod 600 sshkey.private` restringe acceso solo a ti, el dueño.    
 - Otros permisos comunes incluyen `644` para archivos de solo lectura pública, o agregar ejecución con `+x`.
 
 ---
