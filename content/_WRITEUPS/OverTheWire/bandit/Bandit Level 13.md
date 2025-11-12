@@ -11,40 +11,158 @@ difficulty:
   - ★★☆☆☆
 publishDate: 2025-11-08
 ---
-Conexion SSH por medio de llave privada
 
-en este nivel no hay contraseña, solo hay una archivo que contiene la infor necesario par aestablecer conexion a bandit14
+## Introducción
 
-vamos a romper la 4ta pared un poco xd
+En este nivel de [Over The Wire Bandit](https://overthewire.org/wargames/bandit/bandit14.html), el objetivo no es descubrir una contraseña tradicional, sino utilizar una llave privada SSH que nos permite establecer la conexión segura como el usuario bandit14. Este método de autenticación mediante llaves SSH nos invita a romper la cuarta pared y experimentar un nivel más real utlizando nuestro propio ordenador, avanzado de acceso remoto cifrado
+
+## Llaves SSH
+
+Las llaves SSH son un método de autenticación basado en criptografía asimétrica, donde se usa una clave pública en el servidor y una clave privada en el cliente para establecer una conexión segura sin necesidad de contraseñas. Esto proporciona una capa adicional de seguridad y facilita accesos automatizados.
+
+## Ejemplos
+
+Para conectarnos usando la llave privada, usamos el comando `ssh` con la opción `-i`, indicando el archivo de la clave privada:
 
 
+`ssh -i llave_privada bandit14@localhost`
 
+Aquí, `llave_privada` es el archivo que recibimos en este nivel y `localhost` hace referencia a la misma máquina donde estamos trabajando.
 
-## Commands you may need to solve this level
+## Permisos en Linux
 
-ssh, telnet, nc, openssl, s_client, nmap
+Los permisos en Linux controlan quién puede leer, escribir o ejecutar archivos. Esto es fundamental para proteger archivos sensibles, como llaves privadas.
 
-## Helpful Reading Material
+Para mantener la integridad y privacidad de la clave privada, usamos el comando `chmod` para establecer permisos restrictivos, por ejemplo `chmod 600`, que permite solo al propietario leer y escribir, bloqueando acceso a otros usuarios.
 
-- [SSH/OpenSSH/Keys](https://help.ubuntu.com/community/SSH/OpenSSH/Keys)
+### Ejemplos
+
+- `chmod 600 sshkey.private` restringe acceso solo a ti, el dueño.
+    
+- Otros permisos comunes incluyen `644` para archivos de solo lectura pública, o agregar ejecución con `+x`.
 
 ---
+## Comandos Clave
 
-![[OverTheWire.bandit 18.png]]
+- - **ssh**: Establece una conexión segura a un servidor remoto mediante el protocolo Secure Shell (SSH).  
+    Parámetros comunes:
+    
+    - `-i <archivo>`: Usa una llave privada específica para la autenticación.
+        
+    - `-p <puerto>`: Conecta a un puerto distinto del 22 por defecto.
+        
+    - `-C`: Comprime la sesión para mejorar el rendimiento.
+        
+    - `-v`: Muestra información detallada para depuración.
+        
+- **chmod**: Cambia los permisos de archivos en Linux, controlando quién puede leer, escribir o ejecutar.  
+    Parámetros comunes:
+    
+    - `600`: Permisos restrictivos, solo el propietario puede leer y escribir.
+        
+    - `644`: Lectura para todos, escritura solo para el propietario.
+        
+    - `+x`: Añade permiso de ejecución.  
+        Ejemplo: `chmod 600 llave_privada` para proteger llaves SSH.
+        
+- **touch**: Crea archivos vacíos o actualiza la fecha de último acceso/modificación de un archivo.
+    
+- **bat** (alternativa moderna a `cat`): Muestra el contenido de archivos con resaltado de sintaxis y paginación, ideal para lectura cómoda en terminal.
+    
+- **nvim** (similares: `vim`, `nano`, `micro`): Editor de texto avanzado para la terminal, perfecto para editar configuraciones o llaves SSH de manera rápida y eficaz.
+    
+- **cat**: Muestra el contenido de archivos por pantalla.  
+    Parámetros comunes:
+    
+    - `-n`: Numera las líneas en la salida.        
+    - `-E`: Marca el final de cada línea con un `$`.  
+        Ejemplo: `cat -n archivo.txt`
 
-copiamos y nos salimos
-![[OverTheWire.bandit 19.png]]
-
-creamos y pegamos 
+---
+### 1. Conectarnos al servidor.
+```
+ssh -p 2220 bandit13@bandit.labs.overthewire.org
+```
 
 ![[OverTheWire.bandit 20.png]]
+### 2. Verificación de llave SSH.
+```
+ls
+cat sshkey.private
+exit
+```
 
-Yo utilizo nvim pero puedes usar CUALQUIER EDITOR DE TEXTO QUE GUSTES
+![[OverTheWire.bandit 19.png]]
 
-cambiamos los permisos y nos conectamos a lserver
-chmod 600 sshbandit14
+Al ejecutar estos comandos veremos el contenido de un archivo llamado `sshkey.private`, que almacena la clave RSA privada necesaria para acceder como el usuario bandit14 en el siguiente nivel. Puedes copiar todo el contenido de la clave y guardarla en tu máquina local (en cualquier archivo nuevo, por ejemplo, `bandit14.key`). Recuerda que esta información es altamente sensible: es fundamental **no compartirla nunca y protegerla** en tu entorno local asegurando los permisos correctos (`chmod 600 bandit14.key`) para evitar accesos indebidos.​
+### 3. Creación de llave SSH.
+```
+touch bandit14.key
+nvim bandit14.key
+bat bandit14.key
+```
 
-Hay que cambiar los permisos ya que si no no nos deja conectarnos, la conexion es exactamente igual, solo que usando una SSH
+Primero, en tu PC local, creamos un archivo para guardar la clave privada usando el comando que quieras (yo uso `touch`, pero puedes llamarlo como te dé la gana):
+
+![[OverTheWire.bandit 22.png]]
+Luego, pegamos el contenido copiado de `sshkey.private` dentro del archivo recién creado. Personalmente, prefiero usar `nvim` (mi favorito), pero aquí aplica cualquier editor de texto con el que te sientas cómodo: `vim`, `nano`, `micro`, hasta un editor gráfico si lo prefieres. El punto es que edites el archivo en tu entorno local y pegues toda la clave, cien por ciento.
+
+No olvides guardar y cerrar el archivo (en `nvim` sería `:wq`). Al final, tu sistema tendrá el archivo privado listo para autenticación SSH.
+![[OverTheWire.bandit 23.png]]
+Por último, puedes verificar que la clave esté bien copiada revisando el contenido del archivo con cualquier comando que prefieras. Si eres tradicional, puedes usar `cat bandit14.key`. En mi caso, suelo preferir `bat`, una versión más moderna y colorida (pero al final es lo mismo, solo cuestión de gustos)
+
+**Notas rápidas:**
+- El nombre del archivo es elección tuya, lo importante es que recuerdes cuál usaste.    
+- Puedes verificar el contenido con `bat` (o `cat`).    
+- No te olvides del siguiente paso crítico: ¡asigna permisos seguros a tu clave.
+### 4. Cambio de permisos del fichero
+```
+chmod 600 bandit14.key
+ls -l
+```
+![[OverTheWire.bandit 24.png]]
+Con esto, el archivo `bandit14.key` queda accesible **solo para el usuario propietario**: puede leerlo y modificarlo, pero nadie más puede tocarlo. Si intentas conectarte sin este paso, SSH te lanzará un error y no te dejará entrar, así que este **cambio es obligatorio**.
+
+Puedes verificar que el cambio fue exitoso usando `ls -l`, donde el archivo debe mostrar permisos `-rw-------`.
+
+En resumen: igual que con contraseñas, aquí la seguridad manda y el sistema no te deja pasar si la llave privada no está bien protegida.
 
 
-![[OverTheWire.bandit 21.png]]y listo crack, ya dentro de bandit 14 v: 
+### 5. Verificación de conexión 
+```
+ssh -i bandit14.key -p 2220 bandit14@bandit.labs.overthewire.org
+```
+
+Hora de la verdad, crack. Con la llave privada y los permisos en regla, tu comando debería verse así:
+
+![[OverTheWire.bandit 21.png]]
+
+Si todo está bien, deberías ver el logo clásico de OverTheWire y ya estarás dentro como bandit14. Recuerda: **en este nivel la llave SSH es tu pase de entrada, así que procura guardarla y manejarla con cuidado** (piensa en esto como tu pase VIP, ¡no lo pierdas!).
+
+--- 
+## Errores comunes
+
+- **Permiso denegado (publickey)**  
+    El clásico. Suele pasar si la clave privada no tiene permisos 600, si el archivo está corrupto o si usas la clave incorrecta. Confirma el nombre exacto del archivo y que el comando incluya la opción `-i` correctamente.[](https://help.dreamhost.com/hc/es/articles/115001755351-Soluci%C3%B3n-de-problemas-de-errores-de-inicio-de-sesi%C3%B3n-de-SSH)
+  
+- **Connection refused / Timeout**  
+    Ocurre si el puerto (`-p 2220`) está mal, el servidor está caído o la red/firewall te bloquea. Revisa que el nombre de host y puerto sean correctos, y que tu conexión a internet está estable.[](https://www.hostingplus.com.co/blog/guia-para-arreglar-errores-en-conexiones-ssh/)
+    ​
+    
+- **Bad permissions**  
+    SSH es muy paranoico con los permisos. Si la clave privada tiene permisos demasiado abiertos, el cliente te bloquea. Usa `chmod 600 bandit14.key` sí o sí.[](https://www.datacamp.com/es/tutorial/ssh-keys)
+    ​
+    
+- **Clave privada dañada o formato incorrecto**  
+    Si copias la clave a tu archivo y faltan líneas (o se agrega un salto de línea raro), no vas a conectar. Verifica que el archivo empieza y termina bien (`-----BEGIN RSA PRIVATE KEY-----` y `-----END RSA PRIVATE KEY-----`), sin espacios extra.[](https://10web.io/blog/es/como-solucionar-el-error-de-conexion-ssh-rechazada/)
+    ​
+    
+- **Usuario o dirección mal escrita**  
+    Errores de tipeo en el usuario (`bandit14`) o el hostname suele terminar en intentos fallidos. Cópialo cuidadosamente.
+    
+- **Clave privada perdida o borrada**  
+    Si eliminaste tu archivo por error, descarga o crea de nuevo tu llave a partir de la fuente y repite el proceso.[](https://docs.oracle.com/es-ww/iaas/Content/Compute/Tasks/troubleshooting-ssh-connection.htm)
+    
+    
+- **Versión o formato de la clave incompatible**  
+    PuTTY y OpenSSH tienen formatos distintos: asegúrate de usar una clave OpenSSH para el reto, nunca una .ppk directa.[](https://docs.oracle.com/es-ww/iaas/Content/Compute/Tasks/troubleshooting-ssh-connection.htm)
