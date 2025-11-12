@@ -1,6 +1,6 @@
 ---
 title: "OTW Bandit: 13"
-description: "Writeup: OverTheWire Bandit13. Aqui se presenta un reto donde el usuario recibe una clave privada SSH en lugar de una contraseña. El objetivo es aprender a usar claves privadas para autenticarse por SSH y comprender la importancia de los controles de acceso en sistemas Linux."
+description: Aqui se presenta un reto donde el usuario recibe una clave privada SSH en lugar de una contraseña. El objetivo es aprender a usar claves privadas para autenticarse por SSH y comprender la importancia de los controles de acceso en sistemas Linux.
 tags:
   - linux
   - bash
