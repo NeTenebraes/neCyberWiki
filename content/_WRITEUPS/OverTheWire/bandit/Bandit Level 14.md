@@ -81,25 +81,22 @@ El servicio objetivo está accesible en la misma máquina del nivel (localhost) 
 
 `ssh -i sshkey.private bandit14@bandit.labs.overthewire.org -p 2220`
 
-![[Pasted image 20251113025322.png]]
+![[OverTheWire.bandit.webp]]
 
 Esto te sitúa en el entorno donde corre el servicio en localhost.
 
- 
- 2. 
-
-`cat /etc/bandit_pass/bandit14`
-![[Pasted image 20251113025615.png]]
+ 2. `cat /etc/bandit_pass/bandit14`
+![[OverTheWire.bandit 1.webp]]
 	Copia este valor porque es lo que debes enviar al servicio en localhost:30000.
 	
 3. `ss -ltn `
-![[Pasted image 20251113031215.png]]`
+![[OverTheWire.bandit 4.webp]]`
 
 4. `nc localhost 30000
-![[Pasted image 20251113031318.png]]
+![[OverTheWire.bandit 3.webp]]
 	Pega la contraseña y presiona Enter; copia la respuesta que contiene la contraseña de bandit15.
 
-  ![[Pasted image 20251113025724.png]]
+  ![[OverTheWire.bandit 2.webp]]
 - Guarda la contraseña de bandit15  
 La cadena devuelta por el servicio es tu credencial para el siguiente nivel; consérvala para iniciar sesión como bandit15.​
 ---
