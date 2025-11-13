@@ -26,7 +26,7 @@ El juego se estructura en niveles progresivos, iniciando en [Bandit Level 0](htt
 ### ¿Qué es SSH?
 
 ![[OverTheWire.bandit.webp]]
-SSH (Secure Shell) es un protocolo de red que permite establecer una conexión segura y cifrada entre dos máquinas. A través de esta conexión, se obtiene un ***shell*** (una terminal o línea de comandos) para ejecutar comandos en el sistema remoto como si se estuviera físicamente frente a él. En español crack, **controlas esa máquina a distancia**.
+SSH (Secure Shell) es un protocolo de red que permite establecer una conexión segura y cifrada entre dos máquinas. A través de esta conexión, se obtiene un **shell** (una terminal o línea de comandos) para ejecutar comandos en el sistema remoto como si se estuviera físicamente frente a él. En español crack, **controlas esa máquina a distancia**.
 #### ¿Por qué el puerto 2220?
 
 **El puerto estándar para SSH es el 22**. Utilizar un puerto no estándar como el `2220` e**s una medida básica de seguridad** por oscuridad. Ayuda a evitar la detección por parte de escáneres automatizados que buscan servicios SSH en el puerto predeterminado.
