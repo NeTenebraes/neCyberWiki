@@ -12,7 +12,7 @@ difficulty:
   - ★☆☆☆
 publishDate: 2025-11-07
 ---
-![[Cover OTW.png]]
+![[Cover OTW.webp]]
 
 [OverTheWire](https://overthewire.org) ofrece wargames para aprender y practicar conceptos del terminal de Linux basados en seguridad, todo gracias a un entorno legal y controlado. El wargame **[Bandit](https://overthewire.org/wargames/bandit/)** está diseñado específicamente para **principiantes absolutos**. Su propósito es enseñar los comandos y conceptos fundamentales de la línea de comandos en sistemas GNU/Linux, todo mientras atacamos una máquina por medio de una conexión SSH.
 
@@ -78,7 +78,7 @@ ssh -p 2220 bandit0@bandit.labs.overthewire.org
 
 Tras ejecutar el comando, la terminal solicitará la contraseña (`password:`). Escribe `bandit0` y presiona Enter. No verás los caracteres mientras escribes; es un comportamiento normal de seguridad.
 
-![[content/_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit.png]]
+![[OverTheWire.bandit.webp]]
 ### Método 2: Sintaxis con flag `-l`
 
 Una alternativa funcionalmente idéntica que utiliza el flag `-l` (*login name*) para definir el usuario.
@@ -89,27 +89,27 @@ ssh bandit.labs.overthewire.org -p 2220 -l bandit0
 
 Tras ejecutar cualquiera de los comandos, el sistema solicitará la contraseña. Escribe `bandit0` y presiona Enter. La entrada de la contraseña es invisible por seguridad. Una vez autenticado, habrás completado el nivel.
 
-![[OverTheWire.bandit0.png]]
+![[OverTheWire.bandit0.webp]]
 #### Lectura de contenido
 
 1.  **Listar el contenido del directorio `home` para localizar el archivo.**
 ```
 ls
 ```
-![[OverTheWire.bandit2.png]]
+![[OverTheWire.bandit2.webp]]
 
 2.  **Confirmar que el archivo es de texto plano (Opcional)**
 ```
 file readme
 ```
-![[OverTheWire.bandit3.png]]
+![[OverTheWire.bandit3.webp]]
 	La entra nos da una respuesta "ASCII text" lo que nos da a entender que el mismo contiene texto.
 
 3.  **Leer el contenido del archivo `readme` para obtener la contraseña.**
 ```
 cat readme
 ```
-![[OverTheWire.bandit4.png]]
+![[OverTheWire.bandit4.webp]]
 	**Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
 
 ---
