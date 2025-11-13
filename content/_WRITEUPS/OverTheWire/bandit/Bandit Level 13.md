@@ -40,7 +40,7 @@ Para mantener la integridad y privacidad de la clave privada, usamos el comando 
 ---
 ## Comandos Clave
 
-- - **ssh**: Establece una conexión segura a un servidor remoto mediante el protocolo Secure Shell (SSH).  
+- **ssh**: Establece una conexión segura a un servidor remoto mediante el protocolo Secure Shell (SSH).  
     Parámetros comunes:
     
     - `-i <archivo>`: Usa una llave privada específica para la autenticación.
