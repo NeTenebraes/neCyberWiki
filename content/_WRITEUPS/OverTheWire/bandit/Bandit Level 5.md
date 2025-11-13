@@ -42,14 +42,14 @@ Este nivel representa un paso adelante en la búsqueda de archivos. En lugar de 
 ```
 ssh bandit5@bandit.labs.overthewire.org -p 2220
 ```
-![[OverTheWire.bandit29.png]]
+![[OverTheWire.bandit29.webp]]
 
 2.  **Explorar la estructura del directorio `inhere`**
     Antes de buscar, es útil entender la complejidad del directorio.
 ```
 ls -R
 ```
-![[OverTheWire.bandit28.png]]
+![[OverTheWire.bandit28.webp]]
     La salida mostrará muchos directorios anidados, lo que confirma que una búsqueda manual con `ls` y `cd` sería ineficiente.
 	- `-R`:  Hacemos que la respuesta sea **recursive.**
 
@@ -58,7 +58,7 @@ ls -R
 ```
 find . -type f -size 1033c
 ```
-![[OverTheWire.bandit27.png]]
+![[OverTheWire.bandit27.webp]]
 	*   `find .`: Busca en el directorio actual y sus subdirectorios.
     *   `-type f`: Limita la búsqueda solo a archivos.
     *   `-size 1033c`: Especifica el tamaño exacto en bytes `(c)`.
@@ -69,7 +69,7 @@ Este comando devolverá la ruta al único archivo que cumple las condiciones cla
 ```
 cat ./inhere/maybehere07/.file2
 ```
-![[OverTheWire.bandit26.png]]
+![[OverTheWire.bandit26.webp]]
     Una vez que `find` devuelve la ruta, se usa `cat` para leer el archivo y obtener la contraseña. **Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
 
 ---

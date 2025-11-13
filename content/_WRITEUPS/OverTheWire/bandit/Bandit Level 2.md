@@ -19,7 +19,7 @@ Este write-up aborda cómo manejar nombres de archivo que contienen espacios, lo
 ### Objetivo
 La contraseña para `bandit3` se encuentra en un archivo llamado `spaces in this filename`.
 
-![[OverTheWire.bandit11.png]]
+![[OverTheWire.bandit11.webp]]
 
 ### Contexto
 El shell de Linux usa el espacio como delimitador por defecto para separar comandos y argumentos. Este nivel enseña las técnicas estándar para manejar nombres de archivo que contienen espacios, asegurando que el shell los trate como un único argumento. El manejo incorrecto de espacios en nombres de archivo es una causa común de vulnerabilidades de "inyección de comandos" en scripts. Si un script ejecuta `rm $filename` y un atacante puede controlar `$filename` para que sea `nonexistent; whoami`, el script podría ejecutar el comando `whoami` si la variable no está entre comillas (`rm "$filename"`). Aprender a citar correctamente es una práctica de seguridad fundamental.
@@ -38,19 +38,19 @@ El shell de Linux usa el espacio como delimitador por defecto para separar coman
 ```
 ssh -p 2220 bandit2@bandit.labs.overthewire.org
 ```
-![[OverTheWire.bandit11.png]]
+![[OverTheWire.bandit11.webp]]
 
 2.  **Listar los archivos del home para ver el nombre exacto:**
 ```
 ls -la
 ```
-![[OverTheWire.bandit5.png]]
+![[OverTheWire.bandit5.webp]]
 
 3.  **Leer el archivo usando comillas, escape de caracteres o autocompletado:**
 ```
 cat ./--spaces in this filename--
 ```
-![[OverTheWire.bandit12.png]]
+![[OverTheWire.bandit12.webp]]
 	**Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
 
 ---
@@ -63,5 +63,3 @@ cat ./--spaces in this filename--
 *   **Error: `cat: spaces: No such file or directory`**.
     *   **Causa**: No se usaron comillas ni caracteres de escape, por lo que `cat` intentó abrir tres archivos diferentes: `spaces`, `in`, y `this`.
     *   **Solución**: Encierra el nombre completo del archivo entre comillas (`"..."` o `'...'`) o usa la tecla `TAB` para que el shell lo haga por ti.
-
----
