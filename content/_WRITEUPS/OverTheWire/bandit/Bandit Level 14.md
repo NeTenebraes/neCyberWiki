@@ -39,6 +39,22 @@ nc (o netcat) actúa como un cliente/servidor TCP/UDP genérico: puedes abrir co
 
 En este nivel, nc se usa como cliente TCP hacia localhost en el puerto 30000: abres la conexión, envías la password de bandit14 con un salto de línea y lees la respuesta que contiene la password de bandit15.​
 
+## Por qué el 30000
+
+El puerto 30000 no tiene un significado especial fuera del juego; es el puerto que el nivel define para exponer el servicio que valida la contraseña actual y devuelve la siguiente, de modo que la instrucción es conectar exactamente a localhost:30000.
+
+​  
+El objetivo práctico es que pruebes cómo enviar datos por TCP a un proceso que está escuchando localmente y leer su respuesta, y por eso el documento indica “conéctate a localhost en el puerto 30000 y envía la contraseña de bandit14”.
+
+​
+
+## Qué es un servicio
+
+En este contexto, un servicio es un proceso que está “escuchando” en un puerto TCP de la máquina local y espera recibir la contraseña por la conexión para contestar con la credencial del siguiente nivel.
+
+​  
+La interacción es de texto plano por TCP: abres la conexión, envías la contraseña con un salto de línea y lees la respuesta que devuelve el propio servicio.​
+
 
 ## Servicios en localhost
 
