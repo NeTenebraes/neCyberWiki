@@ -12,8 +12,8 @@ difficulty:
   - ★☆☆☆
 publishDate: 2025-11-07
 ---
+# Introducción
 ![[Cover OTW.webp]]
-
 [OverTheWire](https://overthewire.org) ofrece wargames para aprender y practicar conceptos del terminal de Linux basados en seguridad, todo gracias a un entorno legal y controlado. El wargame **[Bandit](https://overthewire.org/wargames/bandit/)** está diseñado específicamente para **principiantes absolutos**. Su propósito es enseñar los comandos y conceptos fundamentales de la línea de comandos en sistemas GNU/Linux, todo mientras atacamos una máquina por medio de una conexión SSH.
 
 El juego se estructura en niveles progresivos, iniciando en [Bandit Level 0](https://overthewire.org/wargames/bandit/bandit0.html). Cada nivel consiste en un desafío que, al ser resuelto, proporciona la información necesaria para acceder al siguiente, generalmente en forma de una contraseña para el siguiente usuario.
@@ -25,6 +25,7 @@ El juego se estructura en niveles progresivos, iniciando en [Bandit Level 0](htt
 
 ### ¿Qué es SSH?
 
+![[OverTheWire.bandit.webp]]
 SSH (Secure Shell) es un protocolo de red que permite establecer una conexión segura y cifrada entre dos máquinas. A través de esta conexión, se obtiene un ***shell*** (una terminal o línea de comandos) para ejecutar comandos en el sistema remoto como si se estuviera físicamente frente a él. En español crack, **controlas esa máquina a distancia**.
 #### ¿Por qué el puerto 2220?
 
