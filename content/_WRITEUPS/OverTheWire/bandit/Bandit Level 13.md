@@ -7,7 +7,7 @@ tags:
   - bandit
   - ssh
   - chmod
-publishDate: 2025-11-08
+publishDate: 2025-11-12
 Dificultad:
   - ★☆☆☆☆
 ---
