@@ -84,90 +84,27 @@ El servicio objetivo está accesible en la misma máquina del nivel (localhost) 
 ![[Pasted image 20251113025322.png]]
 
 Esto te sitúa en el entorno donde corre el servicio en localhost.
-- ​
-    
-- Obtén la contraseña actual (bandit14)  
-    Ejecuta:
-    
 
-bash
+ 
+ 2. 
 
 `cat /etc/bandit_pass/bandit14`
 ![[Pasted image 20251113025615.png]]
+	Copia este valor porque es lo que debes enviar al servicio en localhost:30000.
+	
+3. `ss -ltn `
+![[Pasted image 20251113031215.png]]`
 
-Copia este valor porque es lo que debes enviar al servicio en localhost:30000.
-- ​
-`nc localhost 30000
+4. `nc localhost 30000
+![[Pasted image 20251113031318.png]]
+	Pega la contraseña y presiona Enter; copia la respuesta que contiene la contraseña de bandit15.
 
-![[Pasted image 20251113025702.png]]`
-
-Pega la contraseña y presiona Enter; si la sesión queda esperando, envía EOF con Ctrl+D y copia la respuesta que contiene la contraseña de bandit15.
-- ​
-  
   ![[Pasted image 20251113025724.png]]
-    
 - Guarda la contraseña de bandit15  
-    La cadena devuelta por el servicio es tu credencial para el siguiente nivel; consérvala para iniciar sesión como bandit15.[](https://thegrayarea.tech/overthewire-wargames-bandit-l14-e554d51f1b9e)
-    
-
-1. ​
-    
+La cadena devuelta por el servicio es tu credencial para el siguiente nivel; consérvala para iniciar sesión como bandit15.​
 ---
 ## Errores comunes
 
-- Enviar la contraseña sin salto de línea: añade un \n con printf o presiona Enter al pegar en nc interactivo.[](https://mayadevbe.me/posts/overthewire/bandit/level15/)
-    
 
-- ​
-    
-- Olvidar cerrar la entrada en nc: en modo interactivo, usa Ctrl+D para enviar EOF si el servicio sigue esperando datos.[](https://thegrayarea.tech/overthewire-wargames-bandit-l14-e554d51f1b9e)
-    
-- ​
-    
-- Usar una contraseña incorrecta: asegúrate de leer exactamente /etc/bandit_pass/bandit14 desde la sesión de bandit14.[](https://mayadevbe.me/posts/overthewire/bandit/level15/)
-    
 
-- ​
-    
-
-## Conceptos reforzados
-
-- Cliente TCP simple con nc: conexión a un puerto local y envío/recepción de texto por stdin/stdout.[](https://thegrayarea.tech/overthewire-wargames-bandit-l14-e554d51f1b9e)
-    
-
-- ​
-    
-- Flujo de datos en shell: canalizar con | y finalizar entradas con salto de línea o EOF según lo que espere el servicio[](https://mayadevbe.me/posts/overthewire/bandit/level15/)
-    
-
-- ​.
-    
-
-## Comandos resumen
-
-- Conexión al nivel:
-    
-
-- bash
-    
-    `ssh -i sshkey.private bandit14@bandit.labs.overthewire.org -p 2220`
-    
-- Leer contraseña actual:
-    
-- bash
-    
-    `cat /etc/bandit_pass/bandit14`
-    
-- Enviar contraseña (no interactivo):
-    
-- bash
-    
-    `printf "<PASS>\n" | nc localhost 30000`
-    
-- Enviar contraseña (interactivo):
-    
-- bash
-    
-    `nc localhost 30000 # pegar PASS, presionar Enter, y si es necesario Ctrl+D`
-    
-- Copiar la salida como contraseña de bandit15 y continuar al siguiente nivel.
+## Material Útil
