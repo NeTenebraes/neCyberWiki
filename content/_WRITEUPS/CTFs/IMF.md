@@ -16,7 +16,6 @@ related:
 references:
   - https://www.vulnhub.com/entry/imf-1,162/
 ---
-
 # CTF: IMF: 1
 
 PORTADA
@@ -452,6 +451,11 @@ mvfvenom para crear payload
 
 script de python con socket
 
+
+
+TUVE QUE HACER UN KNOCK qY EJECUTAR EL ARCHIVO DIRECTAMENTE EN MI PC
+
+flag6{R2gwc3RQcm90MGMwbHM=}
 
 
 
