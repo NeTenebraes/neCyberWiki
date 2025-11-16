@@ -25,7 +25,7 @@ El juego se estructura en niveles progresivos, iniciando en [Bandit Level 0](htt
 
 ### ¿Qué es SSH?
 
-![[OverTheWire.bandit.webp]]
+![[OTW14.03.webp]]
 SSH (Secure Shell) es un protocolo de red que permite establecer una conexión segura y cifrada entre dos máquinas. A través de esta conexión, se obtiene un **shell** (una terminal o línea de comandos) para ejecutar comandos en el sistema remoto como si se estuviera físicamente frente a él. En español crack, **controlas esa máquina a distancia**.
 #### ¿Por qué el puerto 2220?
 
@@ -79,7 +79,7 @@ ssh -p 2220 bandit0@bandit.labs.overthewire.org
 
 Tras ejecutar el comando, la terminal solicitará la contraseña (`password:`). Escribe `bandit0` y presiona Enter. No verás los caracteres mientras escribes; es un comportamiento normal de seguridad.
 
-![[OverTheWire.bandit.webp]]
+![[OTW14.03.webp]]
 ### Método 2: Sintaxis con flag `-l`
 
 Una alternativa funcionalmente idéntica que utiliza el flag `-l` (*login name*) para definir el usuario.

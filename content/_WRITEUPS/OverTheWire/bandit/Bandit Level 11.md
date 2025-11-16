@@ -19,7 +19,7 @@ publishDate: 2025-11-07
 ### Qué es ROT13 y por qué es útil
 ROT13 es una variante simple del cifrado César donde cada letra se reemplaza por la letra que está 13 posiciones adelante en el alfabeto. Como el alfabeto tiene 26 letras, aplicar ROT13 dos veces devuelve el texto original, lo que facilita su uso para ocultar información ligera. Entender ROT13 y cómo manipular texto con comandos **es interesante para la administración de sistemas y pentesting básico**.
 
-![[OverTheWire.bandit 1.webp]]
+![[OTW14.04.webp]]
 
 ### Conceptos y comandos Linux clave
 
@@ -51,7 +51,7 @@ Así, cada letra en el conjunto original `'A-Za-z'`, corresponde exactamente con
 
 Así usando `tr 'A-Za-z' 'N-ZA-Mn-za-m'` traduces cada letra alfabética a su versión ROT13 en una sola pasada. Si no te quieres complicar mucho la cabeza recuerda que hay herramientas que hacen esto de forma automática, solo necesitas una búsqueda rapida: 
 
-![[OverTheWire.bandit 2.webp]]
+![[OTW14.07.webp]]
 Hay un montón en internet he incluso puede programar una para prácticar el lenguaje que gustes ya que, **suelen ser muy sencillas de hacer**. 
 
 Aquí te dejo un par de herramientas que encontré:
@@ -66,7 +66,7 @@ Aquí te dejo un par de herramientas que encontré:
 ```
 ssh bandit11@bandit.labs.overthewire.org -p 2220
 ```
-![[OverTheWire.bandit 4.webp]]
+![[OTW14.05.webp]]
 
 2. Verifica el contenido del archivo:
 ```

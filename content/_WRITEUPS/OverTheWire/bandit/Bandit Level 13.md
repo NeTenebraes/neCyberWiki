@@ -7,13 +7,13 @@ tags:
   - bandit
   - ssh
   - chmod
-publishDate: 2025-11-08
+publishDate: 2025-11-12
 Dificultad:
   - ★☆☆☆☆
 ---
 ## Introducción
 
-En este nivel de [Over The Wire Bandit](https://overthewire.org/wargames/bandit/bandit14.html), el objetivo no es descubrir una contraseña tradicional, sino utilizar una llave privada SSH que nos permite establecer la conexión segura como el usuario bandit14. Este método de autenticación mediante llaves SSH nos invita a romper la cuarta pared y experimentar un nivel más real utlizando nuestro propio ordenador, avanzado de acceso remoto cifrado
+En este nivel de [Over The Wire Bandit](https://overthewire.org/wargames/bandit/bandit14.html), el objetivo no es descubrir una contraseña tradicional, sino utilizar una llave privada SSH que nos permite establecer la conexión segura como el usuario bandit14. Este método de autenticación mediante llaves SSH nos invita a romper la cuarta pared y experimentar un nivel más real utlizando nuestro propio ordenador, avanzado de acceso remoto cifrado.
 ## Llaves SSH
 
 Las llaves SSH son un método de autenticación basado en criptografía asimétrica, donde se usa una clave pública en el servidor y una clave privada en el cliente para establecer una conexión segura sin necesidad de contraseñas. Esto proporciona una capa adicional de seguridad y facilita accesos automatizados.
@@ -32,7 +32,7 @@ Los permisos en Linux controlan **quién puede leer, escribir o ejecutar archivo
 
 Para mantener la integridad y privacidad de la clave privada, usamos el comando `chmod` para establecer permisos restrictivos, por ejemplo `chmod 600`, que permite solo al propietario leer y escribir, bloqueando acceso a otros usuarios.
 ### Ejemplos
-![[OverTheWire.bandit 3.webp]]
+![[OTW14.06.webp]]
 
 - `chmod 600 sshkey.private` restringe acceso solo a ti, **el dueño**.    
 - Otros permisos comunes incluyen `644` para archivos de solo lectura pública, o agregar ejecución con `+x`.
