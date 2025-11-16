@@ -26,7 +26,6 @@ El repositorio incluye:
 - Guías prácticas de pentesting (web, redes, sistemas)  
 - Cheatsheets rápidas y resúmenes para uso en campo  
 - Listados de herramientas comunes y sus usos  
-- Ejemplos de reportes, análisis y metodologías  
 - Recursos educativos gratuitos  
 
 ---
