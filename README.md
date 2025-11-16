@@ -8,8 +8,7 @@ La neCyberWiki es un proyecto tipo "Biblioteca Colaborativa" orientada a la cibe
 ---
 ## ⚖️ Aviso legal
 
-Todo el contenido de este repositorio tiene fines **educativos y formativos**.  
-Las técnicas, conceptos y ejemplos descritos aquí deben practicarse **únicamente en entornos controlados, laboratorios personales, escenarios autorizados o sistemas de prueba diseñados para este propósito**.
+Todo el contenido de este repositorio tiene fines **educativos y formativos**. Las técnicas, conceptos y ejemplos descritos aquí deben practicarse **únicamente en entornos controlados, laboratorios personales, escenarios autorizados o sistemas de prueba diseñados para este propósito**.
 
 El uso indebido de la información contenida en necyberwiki fuera de un contexto ético o legal es responsabilidad exclusiva del usuario. Los autores y contribuidores no se hacen responsables de posibles daños, sanciones o consecuencias derivadas del mal uso del material.
 
