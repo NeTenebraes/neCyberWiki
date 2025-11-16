@@ -67,7 +67,7 @@ ssh -i bandit14.key -p 2220 bandit14@bandit.labs.overthewire.org
 ```
 
 ![[OverTheWire.bandit.webp]]
-	Esto te situará en el entorno donde corre el servicio bajo localhost.
+	El clásico, nos conectamos directamente a la máquina como el usuario `badit14`.
 
 ### 2. Verificación de contraseña (bandit14)
 ```
@@ -75,7 +75,6 @@ ssh -i bandit14.key -p 2220 bandit14@bandit.labs.overthewire.org
 ```
 ![[OverTheWire.bandit 1.webp]]
 	Recuerda que en [[Bandit Level 13]] nos confirmaron que la contraseña de cada usuario está en `/etc/bandit_pass/`, y solo ese usuario puede leerla, ahí es obtenemos la **contraseña actual** que luego enviaremos al servicio del puerto 30000.
-	
 ### 3. Verificación del servicio.
 ```
 ss -ltn
@@ -96,13 +95,11 @@ nc localhost 30000
 	- `30000` es el puerto donde vimos que el servicio está escuchando.  
   
 Al ejecutar el comando se abrirá una sesión interactiva en ese momento pega la contraseña de `bandit14`, pulsa Enter y el servicio responderá con la contraseña de `bandit15`.
-
   ![[OverTheWire.bandit 2.webp]]
 	La máquina te devolverá una cadena la cual es tu credencial para el siguiente nivel; consérvala para iniciar sesión como bandit15.​
-
+	
 ---
 ## Lecturas recomendadas
-
 - [Protocolo de control de transmisión (TCP)](https://es.wikipedia.org/wiki/Protocolo_de_control_de_transmisi%C3%B3n).
 - [Qué es el protocolo TCP, cómo funciona y su papel crucial en las redes de hoy](https://www.polimetro.com/que-es-el-protocolo-tcp/).
 - [Netcat](https://es.wikipedia.org/wiki/Netcat).
