@@ -1,6 +1,6 @@
 ---
 title: "OTW Bandit: 14"
-description: Conecta como bandit14, lee la contraseña en /etc/bandit_pass/bandit14 y envíala a localhost:30000 con nc para que el servicio devuelva la credencial de bandit15. ​Incluye pasos concisos con SSH, uso de nc y recomendaciones sobre salto de línea/EOF para evitar bloqueos al enviar la entrada.
+description: Conecta como bandit14, lee la contraseña en /etc/bandit_pass/bandit14 y envíala a localhost:30000 con nc para que el servicio devuelva la credencial de bandit15. ​Incluye pasos concisos con SSH, uso de nc y recomendaciones para evitar bloqueos al enviar la entrada.
 tags:
   - linux
   - bash
@@ -13,32 +13,25 @@ difficulty:
 publishDate: 2025-11-13
 ---
 ## Introducción
-
-En este nivel aprenderás a interactuar con un servicio local mediante conexiones TCP: Debes conectarte al localhost en el puerto 30000 y enviar la contraseña de bandit14 para recibir la contraseña de bandit15 como respuesta. Este ejercicio introduce el uso práctico de netcat y el flujo de datos por stdin/EOF en una sesión de terminal.
-
+En este nivel aprenderás a interactuar con un servicio local mediante conexiones TCP. Debes conectarte al localhost en el puerto 30000 y enviar la contraseña de bandit14 para recibir la contraseña de bandit15 como respuesta. Este ejercicio introduce el uso práctico de netcat en una sesión de terminal y el entendimiento básico de conexiones TCP. 
 ## Conexiones TCP
+**El protocolo TCP es una forma ordenada de enviar datos** entre dos equipos en la red por medio del **three‑way handshake**, pero para no entrar en tecnicismos, puedes imaginarlo como una llamada telefónica: los equipos primero se saludan, luego se comunican entre sí y al final cuelgan la conexión. 
 
-El protocolo TCP establece una conexión mediante el three‑way handshake (SYN, SYN/ACK, ACK) antes de transferir datos, y finaliza con un cierre en cuatro pasos, lo que permite sincronizar números de secuencia y parámetros de la sesión.
-​  
-Durante la transferencia, implementa control de flujo con ventana deslizante y control de congestión, confirmando recepción con ACKs y retransmitiendo segmentos perdidos para mantener fiabilidad y orden de entrega extremo a extremo.
+Mientras la conexión está abierta, **TCP se encarga de que todo llegue completo y en el orden correcto**, reenviando lo que se pierda por el camino. Al terminar, la conexión se cierra de forma ordenada para que ninguna de las dos partes se quede esperando datos.
+### Three‑way handshake
+Antes de enviar datos por TCP, los dos equipos se mandan tres mensajes rápidos para abrir la conexión, como cuando saludas antes de empezar a hablar. 
+![[Pasted image 20251116001722.png]]
+1. Tu máquina envía un mensaje al servidor diciendo: “¿Estás ahí? Quiero hablar” (SYN). 
+2. El servidor responde: “Sí, estoy aquí y también quiero hablar” (SYN‑ACK).
+3. Tu máquina contesta: “Perfecto, empecemos” (ACK). 
 
-### Cómo funciona
-
-En TCP, el flujo típico es: negociación en tres pasos para abrir, transferencia con numeración y ACKs, y cierre ordenado de la conexión, todo gestionado por el protocolo para asegurar integridad y orden de los datos.
-
-### Cuándo usar
-
-TCP se elige cuando el contenido debe llegar completo y en orden, como en SSH, HTTP/HTTPS, correo o transferencias de archivos, ya que una pérdida rompe la experiencia o el contenido.
-​ ​
+A esta secuencia de tres pasos se le llama **"three‑way handshake"** y, cuando termina, ya ambas máquinas pueden empezar a intercambiar datos por TCP de forma normal.
 ## Netcat
-
 nc (netcat) es una herramienta de línea de comandos que lee y escribe datos a través de la red usando TCP o UDP, hoy la usaremos para conectar a localhost:30000 y enviar la contraseña de bandit14 mediante TCP para recibir la contraseña del siguiente nivel.
 
-nc (o netcat) actúa como un cliente/servidor TCP/UDP genérico: puedes abrir conexiones a puertos, enviarles datos por stdin y leer la respuesta por stdout. Es llamado el “cuchillo suizo” de redes porque sirve para depurar servicios, probar puertos, transferir archivos simples y hacer pruebas de conectividad.
-
-### Para qué sirve aquí
-
-En este nivel, nc se usa como cliente TCP hacia localhost en el puerto 30000: abres la conexión, envías la password de bandit14 con un salto de línea y lees la respuesta que contiene la password de bandit15.​
+netcat actúa como un cliente/servidor TCP/UDP genérico: puedes abrir conexiones a puertos, enviarles datos por stdin y leer la respuesta por stdout. Es llamado el “cuchillo suizo” de redes porque sirve para depurar servicios, probar puertos, transferir archivos simples y hacer pruebas de conectividad.
+![[Pasted image 20251116015945.png]]
+En este nivel, nc se usa como cliente TCP. Abres la conexión, envías la password de bandit14 con un salto de línea y lees la respuesta que contiene la password de bandit15.​
 
 ### ¿Por qué el puerto 30000?
 
@@ -46,37 +39,39 @@ El puerto 30000 no tiene un significado especial fuera del juego; es el puerto q
 ​  
 El objetivo práctico es que pruebes cómo enviar datos por TCP a un proceso que está escuchando localmente y leer su respuesta, y por eso el documento indica “conéctate a localhost en el puerto 30000 y envía la contraseña de bandit14”.
 
-## Servicios
-
-En este contexto, un servicio es un proceso que está “escuchando” en un puerto TCP de la máquina local y espera recibir la contraseña por la conexión para contestar con la credencial del siguiente nivel.
-​  
-La interacción es de texto plano por TCP: abres la conexión, envías la contraseña con un salto de línea y lees la respuesta que devuelve el propio servicio.​
-
-### Servicios en localhost
-
-El servicio objetivo está accesible en la misma máquina del nivel (localhost) y escucha en el puerto 30000, esperando que envíes la contraseña 'actual para devolverte la del siguiente nivel. La conexión se realiza como usuario bandit14, y el intercambio es de texto plano por TCP, por lo que basta con escribir o canalizar la contraseña y leer la respuesta.
-
-
 ## Comandos Clave
 
-- ssh: establece la sesión como bandit14 para ejecutar los pasos desde la máquina correcta y acceder al servicio local.
+- **`ssh`**: Comando para conectarse de forma segura a un servidor remoto mediante el protocolo Secure Shell (SSH).
+    
+    - Parámetros comunes:        
+        - `-i CLAVE` usa una llave privada concreta.            
+        - `-p PUERTO` especifica el puerto remoto (por ejemplo, `-p 2220`).            
+        - `usuario@host` define el usuario y el servidor al que te conectas.
 
-- nc: abre una conexión TCP a localhost:30000 y permite enviar la contraseña por stdin o pegándola en la sesión interactiva.​
-- ss -ltn
+- **`cat`**: Muestra contenido del archivo en terminal.
 
-- printf/echo: imprimen la contraseña seguida de salto de línea para canalizarla a netcat sin entrar en modo interactivo.
+- **`nc`**: Navaja suiza de conexiónes TCP/UDP.
+    
+    - Parámetros comunes:        
+        - `-n` evita resolver DNS (usa solo IPs numéricas).            
+        - `-v` modo “verbose”, muestra más detalles de la conexión.            
+        - `-l` lo pone en modo escucha (servidor).            
+        - `-p PUERTO` define el puerto local a usar.
 
-- Ctrl+D: envía EOF cuando usas nc en modo interactivo para indicar que ya no enviarás más datos.
-
-
+- **`ss -ltn`**: Muestra los sockets TCP en escucha, útil para comprobar que el servicio está activo en `localhost:30000`.
+    
+    - Parámetros comunes:        
+        - `-l` solo puertos en escucha.            
+        - `-t` solo conexiones TCP.            
+        - `-n` muestra puertos/IPs numéricos sin resolver nombres.
 
 ---
 ## Solución
 
-### 1. Inicia sesión como bandit14 (usando la llave del nivel anterior)  
+### 1. Conectarnos al server (Llave Privada)  
    
 ```
-ssh -i sshkey.private bandit14@bandit.labs.overthewire.org -p 2220
+ssh -i bandit14.key -p 2220 bandit14@bandit.labs.overthewire.org
 ```
 
 ![[OverTheWire.bandit.webp]]
@@ -87,26 +82,30 @@ ssh -i sshkey.private bandit14@bandit.labs.overthewire.org -p 2220
  cat /etc/bandit_pass/bandit14
 ```
 ![[OverTheWire.bandit 1.webp]]
-	Recuerda que en [[Bandit Level 13]] con confirmaron que la contraseña se encontraba en `/etc/bandit_pass/bandit14`.
+	Recuerda que en [[Bandit Level 13]] nos confirmaron que la contraseña de cada usuario está en `/etc/bandit_pass/`, y solo ese usuario puede leerla, ahí es obtenemos la **contraseña actual** que luego enviaremos al servicio del puerto 30000.
 	
 ### 3. Verificación del servicio.
 ```
 ss -ltn
 ```
 ![[OverTheWire.bandit 4.webp]]`
+- `-l` → solo sockets en escucha (listening).   
+- `-t` → solo TCP.   
+- `-n` → no resuelve nombres, muestra IPs/puertos numéricos. 
 
-### 4.  Conexión con el servicio
+ En la salida deberías ver una línea que termine en `:30000`, indicando que hay un servicio escuchando en ese puerto en `localhost`.
+### 4.  Conexión con el servicio y Credenciales
 ```
 nc localhost 30000
 ```
 ![[OverTheWire.bandit 3.webp]]
-	Pega la contraseña y presiona Enter; copia la respuesta que contiene la contraseña de bandit15.
-	
-### 5. Obtención de credenciales.
+	- `nc` es **netcat**, herramienta que permite enviar y recibir datos por TCP/UDP desde la terminal.  
+	- `localhost` apunta a la propia máquina (`127.0.0.1`).  
+	- `30000` es el puerto donde vimos que el servicio está escuchando.  
+  
+Al ejecutar el comando se abrirá una sesión interactiva en ese momento pega la contraseña de `bandit14`, pulsa Enter y el servicio responderá con la contraseña de `bandit15`.
 
   ![[OverTheWire.bandit 2.webp]]
-- Guarda la contraseña de bandit15  
-
-La cadena devuelta por el servicio es tu credencial para el siguiente nivel; consérvala para iniciar sesión como bandit15.​
+	La máquina te devolverá una cadena la cual es tu credencial para el siguiente nivel; consérvala para iniciar sesión como bandit15.​
 
 ---
