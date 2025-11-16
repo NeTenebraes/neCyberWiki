@@ -29,7 +29,7 @@ A esta secuencia de tres pasos se le llama **three‑way handshake** y, cuando t
 ## Netcat
 nc (netcat) es una herramienta de línea de comandos que lee y escribe datos a través de la red usando TCP o UDP, hoy la usaremos para conectar a localhost:30000 y enviar la contraseña de bandit14 mediante TCP para recibir la contraseña del siguiente nivel. 
 ![[OverTheWire.bandit 0120120.webp]]
-etcat actúa como un cliente/servidor TCP/UDP genérico: puedes abrir conexiones a puertos, enviarles datos por stdin y leer la respuesta por stdout. Es llamado el “cuchillo suizo” de redes porque sirve para depurar servicios, probar puertos, transferir archivos simples y hacer pruebas de conectividad.
+netcat actúa como un cliente/servidor TCP/UDP genérico: puedes abrir conexiones a puertos, enviarles datos por stdin y leer la respuesta por stdout. Es llamado el “cuchillo suizo” de redes porque sirve para depurar servicios, probar puertos, transferir archivos simples y hacer pruebas de conectividad.
 
 ### ¿Por qué el puerto 30000?
 
