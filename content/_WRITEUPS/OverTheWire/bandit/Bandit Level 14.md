@@ -6,6 +6,8 @@ tags:
   - bash
   - bandit
   - nc
+  - TCP
+  - ss
 difficulty:
   - ★☆☆☆☆
 publishDate: 2025-11-13

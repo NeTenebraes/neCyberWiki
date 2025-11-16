@@ -13,7 +13,7 @@ Dificultad:
 ---
 ## Introducción
 
-En este nivel de [Over The Wire Bandit](https://overthewire.org/wargames/bandit/bandit14.html), el objetivo no es descubrir una contraseña tradicional, sino utilizar una llave privada SSH que nos permite establecer la conexión segura como el usuario bandit14. Este método de autenticación mediante llaves SSH nos invita a romper la cuarta pared y experimentar un nivel más real utlizando nuestro propio ordenador, avanzado de acceso remoto cifrado
+En este nivel de [Over The Wire Bandit](https://overthewire.org/wargames/bandit/bandit14.html), el objetivo no es descubrir una contraseña tradicional, sino utilizar una llave privada SSH que nos permite establecer la conexión segura como el usuario bandit14. Este método de autenticación mediante llaves SSH nos invita a romper la cuarta pared y experimentar un nivel más real utlizando nuestro propio ordenador, avanzado de acceso remoto cifrado.
 ## Llaves SSH
 
 Las llaves SSH son un método de autenticación basado en criptografía asimétrica, donde se usa una clave pública en el servidor y una clave privada en el cliente para establecer una conexión segura sin necesidad de contraseñas. Esto proporciona una capa adicional de seguridad y facilita accesos automatizados.
