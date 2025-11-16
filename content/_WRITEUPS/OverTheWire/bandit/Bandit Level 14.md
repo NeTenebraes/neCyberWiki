@@ -15,9 +15,9 @@ publishDate: 2025-11-13
 ## Introducción
 En este nivel aprenderás a interactuar con un servicio local mediante conexiones TCP. Debes conectarte al localhost en el puerto 30000 y enviar la contraseña de bandit14 para recibir la contraseña de bandit15 como respuesta. Este ejercicio introduce el uso práctico de netcat en una sesión de terminal y el entendimiento básico de conexiones TCP. 
 ## Conexiones TCP
-**El protocolo TCP es una forma ordenada de enviar datos** entre dos equipos en la red por medio del **three‑way handshake**, pero para no entrar en tecnicismos, puedes imaginarlo como una llamada telefónica: los equipos primero se saludan, luego se comunican entre sí y al final cuelgan la conexión. 
+**El protocolo TCP es una forma ordenada de enviar datos entre dos equipos en la red por medio del three‑way handshake**, pero para no entrar en tecnicismos, puedes imaginarlo como una llamada telefónica: los equipos primero se saludan, luego se comunican entre sí y al final cuelgan la conexión. 
 
-Mientras la conexión está abierta, **TCP se encarga de que todo llegue completo y en el orden correcto**, reenviando lo que se pierda por el camino. Al terminar, la conexión se cierra de forma ordenada para que ninguna de las dos partes se quede esperando datos.
+Mientras la conexión está abierta, **TCP se encarga de que todo llegue completo y en el orden correcto**, incluso reenviando lo que se pierda por el camino. Al terminar, la conexión se cierra de forma ordenada para que ninguna de las dos partes se quede esperando datos.
 ### Three‑way handshake
 Antes de enviar datos por TCP, los dos equipos se mandan tres mensajes rápidos para abrir la conexión, como cuando saludas antes de empezar a hablar. 
 ![[OverTheWire.bandit 415245.webp]]
@@ -35,9 +35,9 @@ El puerto 30000 no tiene un significado especial fuera del juego; es el puerto q
 ## Comandos Clave
 - **`ssh`**: Comando para conectarse de forma segura a un servidor remoto mediante el protocolo Secure Shell (SSH).
     
-    - Parámetros comunes:        
-        - `-i CLAVE` usa una llave privada concreta.            
-        - `-p PUERTO` especifica el puerto remoto (por ejemplo, `-p 2220`).            
+    - Parámetros comunes:
+        - `-i` usa una llave privada concreta.
+        - `-p` especifica el puerto remoto (por ejemplo, `-p 2220`).
         - `usuario@host` define el usuario y el servidor al que te conectas.
 
 - **`cat`**: Muestra contenido del archivo en terminal.
