@@ -25,13 +25,11 @@ Antes de enviar datos por TCP, los dos equipos se mandan tres mensajes rápidos 
 2. El servidor responde: “Sí, estoy aquí y también quiero hablar” (SYN‑ACK).
 3. Tu máquina contesta: “Perfecto, empecemos” (ACK). 
 
-A esta secuencia de tres pasos se le llama **"three‑way handshake"** y, cuando termina, ya ambas máquinas pueden empezar a intercambiar datos por TCP de forma normal.
+A esta secuencia de tres pasos se le llama **three‑way handshake** y, cuando termina, ya ambas máquinas pueden empezar a intercambiar datos por TCP de forma normal.
 ## Netcat
-nc (netcat) es una herramienta de línea de comandos que lee y escribe datos a través de la red usando TCP o UDP, hoy la usaremos para conectar a localhost:30000 y enviar la contraseña de bandit14 mediante TCP para recibir la contraseña del siguiente nivel.
-
-netcat actúa como un cliente/servidor TCP/UDP genérico: puedes abrir conexiones a puertos, enviarles datos por stdin y leer la respuesta por stdout. Es llamado el “cuchillo suizo” de redes porque sirve para depurar servicios, probar puertos, transferir archivos simples y hacer pruebas de conectividad.
+nc (netcat) es una herramienta de línea de comandos que lee y escribe datos a través de la red usando TCP o UDP, hoy la usaremos para conectar a localhost:30000 y enviar la contraseña de bandit14 mediante TCP para recibir la contraseña del siguiente nivel. 
 ![[Pasted image 20251116015945.png]]
-En este nivel, nc se usa como cliente TCP. Abres la conexión, envías la password de bandit14 con un salto de línea y lees la respuesta que contiene la password de bandit15.​
+etcat actúa como un cliente/servidor TCP/UDP genérico: puedes abrir conexiones a puertos, enviarles datos por stdin y leer la respuesta por stdout. Es llamado el “cuchillo suizo” de redes porque sirve para depurar servicios, probar puertos, transferir archivos simples y hacer pruebas de conectividad.
 
 ### ¿Por qué el puerto 30000?
 
@@ -88,10 +86,10 @@ ssh -i bandit14.key -p 2220 bandit14@bandit.labs.overthewire.org
 ```
 ss -ltn
 ```
-![[OverTheWire.bandit 4.webp]]`
-- `-l` → solo sockets en escucha (listening).   
-- `-t` → solo TCP.   
-- `-n` → no resuelve nombres, muestra IPs/puertos numéricos. 
+![[OverTheWire.bandit 4.webp]]
+	- `-l` → solo sockets en escucha (listening).   
+	- `-t` → solo TCP.   
+	- `-n` → no resuelve nombres, muestra IPs/puertos numéricos. 
 
  En la salida deberías ver una línea que termine en `:30000`, indicando que hay un servicio escuchando en ese puerto en `localhost`.
 ### 4.  Conexión con el servicio y Credenciales
@@ -109,3 +107,9 @@ Al ejecutar el comando se abrirá una sesión interactiva en ese momento pega la
 	La máquina te devolverá una cadena la cual es tu credencial para el siguiente nivel; consérvala para iniciar sesión como bandit15.​
 
 ---
+## Lecturas recomendadas
+
+- [Protocolo de control de transmisión (TCP)](https://es.wikipedia.org/wiki/Protocolo_de_control_de_transmisi%C3%B3n).
+- [Qué es el protocolo TCP, cómo funciona y su papel crucial en las redes de hoy](https://www.polimetro.com/que-es-el-protocolo-tcp/).
+- [Netcat](https://es.wikipedia.org/wiki/Netcat).
+- [¿Qué es Netcat y para que sirve?](https://keepcoding.io/blog/que-es-netcat/).
