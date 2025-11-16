@@ -20,7 +20,7 @@ En este nivel aprenderás a interactuar con un servicio local mediante conexione
 Mientras la conexión está abierta, **TCP se encarga de que todo llegue completo y en el orden correcto**, reenviando lo que se pierda por el camino. Al terminar, la conexión se cierra de forma ordenada para que ninguna de las dos partes se quede esperando datos.
 ### Three‑way handshake
 Antes de enviar datos por TCP, los dos equipos se mandan tres mensajes rápidos para abrir la conexión, como cuando saludas antes de empezar a hablar. 
-![[Pasted image 20251116001722.png]]
+![[OverTheWire.bandit 415245.webp]]
 1. Tu máquina envía un mensaje al servidor diciendo: “¿Estás ahí? Quiero hablar” (SYN). 
 2. El servidor responde: “Sí, estoy aquí y también quiero hablar” (SYN‑ACK).
 3. Tu máquina contesta: “Perfecto, empecemos” (ACK). 
@@ -28,7 +28,7 @@ Antes de enviar datos por TCP, los dos equipos se mandan tres mensajes rápidos 
 A esta secuencia de tres pasos se le llama **three‑way handshake** y, cuando termina, ya ambas máquinas pueden empezar a intercambiar datos por TCP de forma normal.
 ## Netcat
 nc (netcat) es una herramienta de línea de comandos que lee y escribe datos a través de la red usando TCP o UDP, hoy la usaremos para conectar a localhost:30000 y enviar la contraseña de bandit14 mediante TCP para recibir la contraseña del siguiente nivel. 
-![[Pasted image 20251116015945.png]]
+![[OverTheWire.bandit 0120120.webp]]
 etcat actúa como un cliente/servidor TCP/UDP genérico: puedes abrir conexiones a puertos, enviarles datos por stdin y leer la respuesta por stdout. Es llamado el “cuchillo suizo” de redes porque sirve para depurar servicios, probar puertos, transferir archivos simples y hacer pruebas de conectividad.
 
 ### ¿Por qué el puerto 30000?
