@@ -30,15 +30,9 @@ A esta secuencia de tres pasos se le llama **three‑way handshake** y, cuando t
 nc (netcat) es una herramienta de línea de comandos que lee y escribe datos a través de la red usando TCP o UDP, hoy la usaremos para conectar a localhost:30000 y enviar la contraseña de bandit14 mediante TCP para recibir la contraseña del siguiente nivel. 
 ![[OverTheWire.bandit 0120120.webp]]
 netcat actúa como un cliente/servidor TCP/UDP genérico: puedes abrir conexiones a puertos, enviarles datos por stdin y leer la respuesta por stdout. Es llamado el “cuchillo suizo” de redes porque sirve para depurar servicios, probar puertos, transferir archivos simples y hacer pruebas de conectividad.
-
 ### ¿Por qué el puerto 30000?
-
-El puerto 30000 no tiene un significado especial fuera del juego; es el puerto que el nivel define para exponer el servicio que valida la contraseña actual y devuelve la siguiente, de modo que la instrucción es conectar exactamente a localhost:30000.
-​  
-El objetivo práctico es que pruebes cómo enviar datos por TCP a un proceso que está escuchando localmente y leer su respuesta, y por eso el documento indica “conéctate a localhost en el puerto 30000 y envía la contraseña de bandit14”.
-
+El puerto 30000 no tiene un significado especial fuera del juego; es el puerto que el nivel define para exponer el servicio que valida la contraseña actual y devuelve la siguiente, de modo que la instrucción es conectar exactamente a localhost:30000. 
 ## Comandos Clave
-
 - **`ssh`**: Comando para conectarse de forma segura a un servidor remoto mediante el protocolo Secure Shell (SSH).
     
     - Parámetros comunes:        
