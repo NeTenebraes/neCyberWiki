@@ -19,7 +19,6 @@ Este write-up explica cómo acceder a un archivo cuyo nombre es un guion (`-`), 
 ### Objetivo
 La contraseña para `bandit2` está almacenada en un archivo llamado `-` en el directorio `home` del usuario `bandit1`.
 
-![[OverTheWire.bandit6.webp]]
 ### Contexto
 Este nivel enseña una lección crítica sobre cómo el shell de Linux interpreta los argumentos. Muchos comandos tratan un guion solitario como una directiva para leer datos desde la entrada estándar en lugar de un archivo. Aprender a forzar la interpretación literal de un nombre de archivo es esencial para evitar comportamientos inesperados. El mal manejo de nombres de archivo que parecen opciones es una fuente de vulnerabilidades. Un atacante podría crear un archivo llamado `-rf` en un directorio. Si un script de administrador mal programado ejecuta `rm *` en ese directorio, el shell podría expandir `*` a `-rf` y otros archivos, provocando que el comando `rm` ejecute una eliminación recursiva forzada. Saber cómo manejar estos nombres de forma segura (usando `./` o `--`) es una práctica de scripting defensivo.
 
@@ -35,7 +34,7 @@ Este nivel enseña una lección crítica sobre cómo el shell de Linux interpret
 ```
 ssh -p 2220 bandit1@bandit.labs.overthewire.org
 ```
-![[OverTheWire.bandit7.webp]]
+![[OTW00.00.webp]]
 
 2.  **Listar los archivos en el directorio `home`.**
 ```

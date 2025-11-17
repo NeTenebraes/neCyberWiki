@@ -13,7 +13,7 @@ difficulty:
 publishDate: 2025-11-07
 ---
 # Introducción
-![[Cover OTW.webp]]
+![[OTW01.cover.webp]]
 [OverTheWire](https://overthewire.org) ofrece wargames para aprender y practicar conceptos del terminal de Linux basados en seguridad, todo gracias a un entorno legal y controlado. El wargame **[Bandit](https://overthewire.org/wargames/bandit/)** está diseñado específicamente para **principiantes absolutos**. Su propósito es enseñar los comandos y conceptos fundamentales de la línea de comandos en sistemas GNU/Linux, todo mientras atacamos una máquina por medio de una conexión SSH.
 
 El juego se estructura en niveles progresivos, iniciando en [Bandit Level 0](https://overthewire.org/wargames/bandit/bandit0.html). Cada nivel consiste en un desafío que, al ser resuelto, proporciona la información necesaria para acceder al siguiente, generalmente en forma de una contraseña para el siguiente usuario.
@@ -25,7 +25,7 @@ El juego se estructura en niveles progresivos, iniciando en [Bandit Level 0](htt
 
 ### ¿Qué es SSH?
 
-![[OTW14.03.webp]]
+![[OTW00.01.webp]]
 SSH (Secure Shell) es un protocolo de red que permite establecer una conexión segura y cifrada entre dos máquinas. A través de esta conexión, se obtiene un **shell** (una terminal o línea de comandos) para ejecutar comandos en el sistema remoto como si se estuviera físicamente frente a él. En español crack, **controlas esa máquina a distancia**.
 #### ¿Por qué el puerto 2220?
 
@@ -79,7 +79,7 @@ ssh -p 2220 bandit0@bandit.labs.overthewire.org
 
 Tras ejecutar el comando, la terminal solicitará la contraseña (`password:`). Escribe `bandit0` y presiona Enter. No verás los caracteres mientras escribes; es un comportamiento normal de seguridad.
 
-![[OTW14.03.webp]]
+![[OTW00.02.webp]]
 ### Método 2: Sintaxis con flag `-l`
 
 Una alternativa funcionalmente idéntica que utiliza el flag `-l` (*login name*) para definir el usuario.
@@ -90,27 +90,27 @@ ssh bandit.labs.overthewire.org -p 2220 -l bandit0
 
 Tras ejecutar cualquiera de los comandos, el sistema solicitará la contraseña. Escribe `bandit0` y presiona Enter. La entrada de la contraseña es invisible por seguridad. Una vez autenticado, habrás completado el nivel.
 
-![[OverTheWire.bandit0.webp]]
+![[OTW00.03.webp]]
 #### Lectura de contenido
 
 1.  **Listar el contenido del directorio `home` para localizar el archivo.**
 ```
 ls
 ```
-![[OverTheWire.bandit2.webp]]
+![[OTW00.04.webp]]
 
 2.  **Confirmar que el archivo es de texto plano (Opcional)**
 ```
 file readme
 ```
-![[OverTheWire.bandit3.webp]]
+![[OTW00.05.webp]]
 	La entra nos da una respuesta "ASCII text" lo que nos da a entender que el mismo contiene texto.
 
 3.  **Leer el contenido del archivo `readme` para obtener la contraseña.**
 ```
 cat readme
 ```
-![[OverTheWire.bandit4.webp]]
+![[OTW00.06.webp]]
 	**Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
 
 ---
