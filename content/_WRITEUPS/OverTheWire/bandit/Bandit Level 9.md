@@ -33,12 +33,12 @@ Este nivel enseña comandos como `sort` y `uniq` que permiten identificar línea
 ```
 ssh bandit9@bandit.labs.overthewire.org -p 2220
 ```
-![[Pasted image 20251104023352.webp]]
+![[OTW09.01.webp]]
 
 2. Ejecutar el siguiente comando para mostrar la línea única en `data.txt`:
 
 ```
 strings data.txt | grep ==
 ```
-![[Pasted image 20251104023430.webp]]
+![[OTW09.02.webp]]
 	**Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
