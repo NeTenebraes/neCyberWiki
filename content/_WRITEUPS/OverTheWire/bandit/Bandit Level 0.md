@@ -13,7 +13,7 @@ difficulty:
 publishDate: 2025-11-07
 ---
 # Introducción
-![[OTW01.cover.webp]]
+![[OTW00.cover.webp]]
 [OverTheWire](https://overthewire.org) ofrece wargames para aprender y practicar conceptos del terminal de Linux basados en seguridad, todo gracias a un entorno legal y controlado. El wargame **[Bandit](https://overthewire.org/wargames/bandit/)** está diseñado específicamente para **principiantes absolutos**. Su propósito es enseñar los comandos y conceptos fundamentales de la línea de comandos en sistemas GNU/Linux, todo mientras atacamos una máquina por medio de una conexión SSH.
 
 El juego se estructura en niveles progresivos, iniciando en [Bandit Level 0](https://overthewire.org/wargames/bandit/bandit0.html). Cada nivel consiste en un desafío que, al ser resuelto, proporciona la información necesaria para acceder al siguiente, generalmente en forma de una contraseña para el siguiente usuario.
