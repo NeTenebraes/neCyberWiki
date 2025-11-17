@@ -34,26 +34,26 @@ Este nivel enseña una lección crítica sobre cómo el shell de Linux interpret
 ```
 ssh -p 2220 bandit1@bandit.labs.overthewire.org
 ```
-![[OTW00.00.webp]]
+![[OTW01.01.webp]]
 
 2.  **Listar los archivos en el directorio `home`.**
 ```
 ls -la
 ```
-![[OverTheWire.bandit8.webp]]
+![[OTW01.02.webp]]
 
 3.  **Intentar leer el archivo de la forma incorrecta (Opcional)**
 ```
 cat -
 ```
-![[OverTheWire.bandit9.webp]]
+![[OTW01.03.webp]]
     Si ejecutas `cat -`, el comando se quedará esperando una entrada del teclado porque interpreta el guion como la lectura de una **entrada estándar**. Tendrás que cancelarlo con `Ctrl+C`.
 
 4.  **Leer el archivo de la forma correcta usando una ruta relativa.**
 ```
 cat ./-
 ```
-![[OverTheWire.bandit10.webp]]
+![[OTW01.04.webp]]
 - Al anteponer `./` le indicas explícitamente al comando `cat` que `-` es un archivo en el directorio actual y no un argumento.
 - **Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
 
