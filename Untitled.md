@@ -13,3 +13,7 @@ Antes de enviar datos por TCP, los dos equipos se mandan tres mensajes rápidos 
 3. Tu máquina contesta: “Perfecto, empecemos” (ACK). 
 
 A esta secuencia de tres pasos se le llama three‑way handshake y, cuando termina, ya pueden empezar a intercambiar datos por TCP de forma normal.
+
+
+
+JJ uxjf
