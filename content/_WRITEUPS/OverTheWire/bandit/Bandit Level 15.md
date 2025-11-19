@@ -26,6 +26,18 @@ El _TLS handshake_ es la “presentación” entre cliente y servidor para poner
 5. **Datos cifrados**: con las claves de sesión listas, ya se envían y reciben los datos de la aplicación (HTTP, etc.) cifrados y autenticados.
 ### SSL vs TLS
 SSL fue la primera versión histórica del protocolo, pero está obsoleta y con fallos, mientras que **TLS es la versión moderna y segura que se usa hoy**. Aun así, mucha documentación y gente sigue diciendo “SSL” o “SSL/TLS” aunque técnicamente estén usando versiones de TLS por debajo.​
+
+## OpenSSL
+
+OpenSSL es una biblioteca y herramienta de software libre diseñada para implementar protocolos de seguridad como SSL y TLS. Proporciona un conjunto de funciones criptográficas que permiten generar claves, crear certificados digitales, cifrar datos y verificar identidades digitales de manera segura. OpenSSL es fundamental para proteger la comunicación en internet, asegurando la privacidad y autenticidad de los datos transmitidos entre clientes y servidores.
+
+### ¿Por qué usamos "OpenSSL s_client"?
+
+El comando `openssl s_client` es una utilidad dentro de OpenSSL que actúa como un cliente genérico para establecer conexiones SSL/TLS con servidores remotos. Se usa para probar, analizar y depurar conexiones seguras, permitiendo a los usuarios verificar certificados, probar protocolos soportados, y obtener detalles técnicos del proceso de handshake y cifrado. 
+
+![[Pasted image 20251119041325.png]]
+Esta herramienta es clave para diagnosticar problemas de seguridad, validar configuraciones y entender cómo un servidor maneja conexiones cifradas.
+
 ## nmap
 nmap es una herramienta que sirve para descubrir **qué puertos y servicios están abiertos en una máquina**, es decir, qué “puertas” de red están escuchando y qué tipo de servicio hay detrás de cada una. En pentesting normalmente se usa **como primer paso de reconocimiento** para saber contra qué servicios (HTTP, SSH, TLS, etc.) vas a "hablar" antes de intentar algo más específico.
 ## Comandos Clave
@@ -42,15 +54,20 @@ nmap es una herramienta que sirve para descubrir **qué puertos y servicios est�
 ---
 ## Solución
 
-Conectarnos
+### 1. Conectarnos como Bandit15
 
 ![[Pasted image 20251118231146.png]]
 
- Verificar puertos 30001
+### 2. Verificar servicios en puerto 30001
 
 ![[Pasted image 20251118231322.png]]
 
-Enviar Handshake 
+### 3. Enviar Handshake al servidor. 
+
+```
+openssl s_client -connect localhost:30001
+```
+
 ![[Pasted image 20251118231440.png]]
 ![[Pasted image 20251118231450.png]]
 	aqui presionamos enter
