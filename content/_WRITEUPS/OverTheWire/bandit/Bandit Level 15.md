@@ -42,21 +42,17 @@ Aquí tienes la información clave de **`nmap`** y **`openssl`** en formato Mark
 ## Comandos Clave
 
 - **`ssh`**: Comando para conectarse de forma segura a un servidor remoto mediante el protocolo Secure Shell (SSH).
-    
     - Parámetros usados:
         - `-p` especifica el puerto remoto (por ejemplo, `-p 2220`).
         - `usuario@host` define el usuario y el servidor al que te conectas.
 
 - **`nmap`**: Herramienta de escaneo de red para descubrir hosts activos, puertos abiertos y servicios. Fundamental en las fases de **reconocimiento y auditoría básica**.
-    
     - Parámetros usados:
         - `-p [puertos]`: Selecciona puertos específicos (ej: `-p 80,443` o `-p 1-1000`).
 
 
-- **`openssl`**: Toolkit de línea de comandos para trabajar con **TLS/SSL y criptografía**: certificados X.509, claves, cifrado y utilidades de prueba. Es crucial para la **auditoría de configuraciones TLS**.
-    
+- **`openssl`**: Toolkit de línea de comandos para trabajar con **TLS/SSL y criptografía**: certificados X.509, claves, cifrado y utilidades de prueba. Es crucial para la **auditoría de configuraciones TLS**
     - Subcomandos/Parámetros usados:
-
         - **`s_client -connect host:443`**: Abre una conexión TLS/SSL, mostrando el _handshake_, el **certificado** y la cadena completa.
         - **`genrsa` / `genpkey`**: Subcomandos para crear **claves privadas**.
 ---
@@ -64,9 +60,16 @@ Aquí tienes la información clave de **`nmap`** y **`openssl`** en formato Mark
 
 ### 1. Conectarnos como Bandit15
 
+```
+ssh -p 2220 bandit15@bandit.labs.overthewire.org
+```
+
 ![[Pasted image 20251118231146.png]]
 
 ### 2. Verificar servicios en puerto 30001
+```
+
+```
 
 ![[Pasted image 20251118231322.png]]
 
