@@ -17,7 +17,7 @@ A diferencia de niveles anteriores, donde bastaba con usar herramientas como `nc
 SSL/TLS es un protocolo de seguridad que sirve para cifrar la comunicación entre dos equipos (por ejemplo, tu navegador y un servidor) para que nadie pueda leer ni modificar lo que viaja por la red. Esto es precisamente lo que hace posible el “candadito” de las páginas webs HTTPS que visitas y **protege cosas como contraseñas, cookies y datos bancarios**. Básicamente, es una “capa” que se coloca encima de la conexión normal para que todo lo que se envía y recibe vaya cifrado y autenticado entre cliente y servidor.
 ### TLS Handshake 
 ![[OTW15.01.webp]]
-El _TLS handshake_ es la “presentación” entre cliente y servidor para ponerse de acuerdo en cómo cifrar la conexión antes de enviar datos reales.
+El TLS handshake es la “presentación” entre cliente y servidor para ponerse de acuerdo en cómo cifrar la conexión antes de enviar datos reales.
 
 1. **Client Hello**: el cliente envía al servidor las versiones TLS que soporta, las suites de cifrado que puede usar y un número aleatorio del cliente.
 2. **Server Hello + certificado**: el servidor elige versión y cifrado de la lista del cliente, envía su propio número aleatorio y adjunta su certificado con la clave pública para identificarse.
@@ -27,7 +27,6 @@ El _TLS handshake_ es la “presentación” entre cliente y servidor para poner
 ### SSL vs TLS
 SSL fue la primera versión histórica del protocolo, pero está obsoleta y con fallos, mientras que **TLS es la versión moderna y segura que se usa hoy**. Aun así, mucha documentación y gente sigue diciendo “SSL” o “SSL/TLS” aunque técnicamente estén usando versiones de TLS por debajo.​
 ## OpenSSL
-
 OpenSSL es una biblioteca y herramienta de software libre diseñada para implementar protocolos de seguridad como SSL y TLS. Proporciona un conjunto de funciones criptográficas que permiten generar claves, crear certificados digitales, cifrar datos y verificar identidades digitales de manera segura. OpenSSL es fundamental para proteger la comunicación en internet, asegurando la privacidad y autenticidad de los datos transmitidos entre clientes y servidores.
 ### ¿Por qué usamos "OpenSSL s_client"?
 
