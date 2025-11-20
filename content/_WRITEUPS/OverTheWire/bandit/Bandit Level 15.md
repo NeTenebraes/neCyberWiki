@@ -41,51 +41,53 @@ Aquí tienes la información clave de **`nmap`** y **`openssl`** en formato Mark
 
 ## Comandos Clave
 
-- **`ssh`**: Comando para conectarse de forma segura a un servidor remoto mediante el protocolo Secure Shell (SSH).
-    - Parámetros usados:
-        - `-p` especifica el puerto remoto (por ejemplo, `-p 2220`).
-        - `usuario@host` define el usuario y el servidor al que te conectas.
+* **`ssh`**: Comando para conectarse de forma segura a un servidor remoto mediante el protocolo Secure Shell (SSH).
+    * Parámetros usados:
+        * `-p [puerto]`: Especifica el puerto remoto (ej: `-p 2220`).
+        * `usuario@host`: Define el usuario y el servidor al que te conectas.
 
-- **`nmap`**: Herramienta de escaneo de red para descubrir hosts activos, puertos abiertos y servicios. Fundamental en las fases de **reconocimiento y auditoría básica**.
-    - Parámetros usados:
-        - `-p [puertos]`: Selecciona puertos específicos (ej: `-p 80,443` o `-p 1-1000`).
+* **`nmap`**: Herramienta de escaneo de red para descubrir hosts activos, puertos abiertos y servicios. Es fundamental en las fases de **reconocimiento y auditoría básica**.
+    * Parámetros usados relevantes:
+        * `-p [puertos]`: Selecciona puertos específicos (ej: `-p 80,443` o `-p 30001`).
+        * `localhost`: Se usa para escanear el propio sistema local.
 
+* **`openssl`**: Toolkit de línea de comandos para trabajar con **TLS/SSL y criptografía**.
+    * Subcomando clave para la tarea:
+        * **`s_client -connect host:puerto`**: Actúa como un cliente TLS/SSL para establecer una conexión segura. Es esencial para **probar el handshake**, ver el certificado y enviar datos cifrados.
 
-- **`openssl`**: Toolkit de línea de comandos para trabajar con **TLS/SSL y criptografía**: certificados X.509, claves, cifrado y utilidades de prueba. Es crucial para la **auditoría de configuraciones TLS**
-    - Subcomandos/Parámetros usados:
-        - **`s_client -connect host:443`**: Abre una conexión TLS/SSL, mostrando el _handshake_, el **certificado** y la cadena completa.
-        - **`genrsa` / `genpkey`**: Subcomandos para crear **claves privadas**.
 ---
 ## Solución
 
 ### 1. Conectarnos como Bandit15
-
 ```
 ssh -p 2220 bandit15@bandit.labs.overthewire.org
 ```
-
 ![[Pasted image 20251118231146.png]]
-
+	Aquí no hay magia: mismo host, mismo puerto 2220, solo cambia el usuario. Ya todo un clásico.
 ### 2. Verificar servicios en puerto 30001
 ```
-
+nmap -p 30001 localhost
 ```
-
 ![[Pasted image 20251118231322.png]]
+	Verificamos que el **puerto 30001** esté abierto y escuchando en `localhost`. 
 
-### 3. Enviar Handshake al servidor. 
-
+Esto es pura mentalidad de pentester: antes de hablarle a algo, asegúrate de que exista y de que esté vivo.
+### 3. Enviar Handshake al servidor y  Credenciales de bandit16. 
 ```
 openssl s_client -connect localhost:30001
 ```
-
 ![[Pasted image 20251118231440.png]]
-![[Pasted image 20251118231450.png]]
-	aqui presionamos enter
-	
-.3 ultimo
+El comando **`openssl s_client`** iniciará la conexión. Automáticamente se realizará el **TLS Handshake**, negociando el cifrado y mostrando el certificado en pantalla. Una vez que el _handshake_ ha finalizado, el canal está **cifrado**. Solo recuerda que `s_client` se comporta como un navegador muy feo pero **muy honesto**, es este paso se hace el TLS Handshake, te muestra el certificado y, cuando termina, todo lo que escribas va **completamente cifrado**.
+
+- Una vez que aparezca la información del certificado, **introduce la contraseña de Bandit 15** (Puedes verla en `/etc/bandit_pass/bandit15`).    
+![[Pasted image 20251118231450.png]]    
+
+- Presiona **Enter** para enviarla, dah.
 ![[Pasted image 20251118231508.png]]
-	recibimos la contraseña
-	
+	Espera la respuesta, el servicio valida la contraseña y te escupirá la contraseña de Bandit 16 por el mismo canal cifrado. Y listo, nivel pasado, crack.
+
 ---
 ## Lecturas recomendadas
+
+-  **[¿Qué es OpenSSL? ¿Cómo funciona OpenSSL?](https://www.ssldragon.com/es/blog/que-es-openssl/)**
+-  **[Handshake TLS/SSL: Cómo Funciona y Por Qué es Vital para la Seguridad Web](https://estudyando.com/handshake-tls-ssl-como-funciona-y-por-que-es-vital-para-la-seguridad-web/)**
