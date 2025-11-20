@@ -26,31 +26,39 @@ El _TLS handshake_ es la “presentación” entre cliente y servidor para poner
 5. **Datos cifrados**: con las claves de sesión listas, ya se envían y reciben los datos de la aplicación (HTTP, etc.) cifrados y autenticados.
 ### SSL vs TLS
 SSL fue la primera versión histórica del protocolo, pero está obsoleta y con fallos, mientras que **TLS es la versión moderna y segura que se usa hoy**. Aun así, mucha documentación y gente sigue diciendo “SSL” o “SSL/TLS” aunque técnicamente estén usando versiones de TLS por debajo.​
-
 ## OpenSSL
 
 OpenSSL es una biblioteca y herramienta de software libre diseñada para implementar protocolos de seguridad como SSL y TLS. Proporciona un conjunto de funciones criptográficas que permiten generar claves, crear certificados digitales, cifrar datos y verificar identidades digitales de manera segura. OpenSSL es fundamental para proteger la comunicación en internet, asegurando la privacidad y autenticidad de los datos transmitidos entre clientes y servidores.
-
 ### ¿Por qué usamos "OpenSSL s_client"?
 
 El comando `openssl s_client` es una utilidad dentro de OpenSSL que actúa como un cliente genérico para establecer conexiones SSL/TLS con servidores remotos. Se usa para probar, analizar y depurar conexiones seguras, permitiendo a los usuarios verificar certificados, probar protocolos soportados, y obtener detalles técnicos del proceso de handshake y cifrado. 
 
 ![[Pasted image 20251119041325.png]]
 Esta herramienta es clave para diagnosticar problemas de seguridad, validar configuraciones y entender cómo un servidor maneja conexiones cifradas.
-
 ## nmap
-nmap es una herramienta que sirve para descubrir **qué puertos y servicios están abiertos en una máquina**, es decir, qué “puertas” de red están escuchando y qué tipo de servicio hay detrás de cada una. En pentesting normalmente se usa **como primer paso de reconocimiento** para saber contra qué servicios (HTTP, SSH, TLS, etc.) vas a "hablar" antes de intentar algo más específico.
+nmap es una herramienta que sirve para descubrir **qué puertos y servicios están abiertos en una máquina**, es decir, qué “puertas” de red están escuchando y qué tipo de servicio hay detrás de cada una. En pentesting normalmente se usa **como primer paso de reconocimiento** para saber contra qué servicios (HTTP, SSH, TLS, etc.) vas a "hablar" antes de intentar algo más específico. Hoy no lo usaremos mucho, pero te aseguro que lo estarás usando más de lo que crees. 
+Aquí tienes la información clave de **`nmap`** y **`openssl`** en formato Markdown, siguiendo la estructura que proporcionaste y consolidando la información de manera concisa:
+
 ## Comandos Clave
+
 - **`ssh`**: Comando para conectarse de forma segura a un servidor remoto mediante el protocolo Secure Shell (SSH).
     
     - Parámetros usados:
         - `-p` especifica el puerto remoto (por ejemplo, `-p 2220`).
         - `usuario@host` define el usuario y el servidor al que te conectas.
 
-- **`nmap`**: 
+- **`nmap`**: Herramienta de escaneo de red para descubrir hosts activos, puertos abiertos y servicios. Fundamental en las fases de **reconocimiento y auditoría básica**.
+    
+    - Parámetros usados:
+        - `-p [puertos]`: Selecciona puertos específicos (ej: `-p 80,443` o `-p 1-1000`).
 
-- **`openssl`**: 
 
+- **`openssl`**: Toolkit de línea de comandos para trabajar con **TLS/SSL y criptografía**: certificados X.509, claves, cifrado y utilidades de prueba. Es crucial para la **auditoría de configuraciones TLS**.
+    
+    - Subcomandos/Parámetros usados:
+
+        - **`s_client -connect host:443`**: Abre una conexión TLS/SSL, mostrando el _handshake_, el **certificado** y la cadena completa.
+        - **`genrsa` / `genpkey`**: Subcomandos para crear **claves privadas**.
 ---
 ## Solución
 
