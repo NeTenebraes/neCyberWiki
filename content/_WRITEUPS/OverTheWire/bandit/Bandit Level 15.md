@@ -37,7 +37,6 @@ El comando `openssl s_client` es una utilidad dentro de OpenSSL que actúa como 
 Esta herramienta es clave para diagnosticar problemas de seguridad, validar configuraciones y entender cómo un servidor maneja conexiones cifradas.
 ## nmap
 nmap es una herramienta que sirve para descubrir **qué puertos y servicios están abiertos en una máquina**, es decir, qué “puertas” de red están escuchando y qué tipo de servicio hay detrás de cada una. En pentesting normalmente se usa **como primer paso de reconocimiento** para saber contra qué servicios (HTTP, SSH, TLS, etc.) vas a "hablar" antes de intentar algo más específico. Hoy no lo usaremos mucho, pero te aseguro que lo estarás usando más de lo que crees. 
-Aquí tienes la información clave de **`nmap`** y **`openssl`** en formato Markdown, siguiendo la estructura que proporcionaste y consolidando la información de manera concisa:
 
 ## Comandos Clave
 
