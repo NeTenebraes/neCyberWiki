@@ -327,63 +327,68 @@ home' AND 'test'='test'--
 ```
 
 ![[Pasted image 20251102171310.png]]
+De esta forma tenemos una forma de identificar entradas en las bases de datos. A pesar de que no veamos exactamente la entrada, tenemos una forma de ir buscando información.
 
-De esta forma tenemos una forma de indentificar entradas en las bases de datos, a pesar de que no veamos exactamente la entrada tenemos una forma de ir buscando información. 
+Supongamos que queremos buscar bases de datos, podemos usar una de las entradas para seleccionar mediante queries nombres de las mismas e ir fuzzeando las misma.
+### 3.5 Descubrimiento de Esquemas de Base de Datos
 
-Supongamos que queremos buscar bases datos, podemos usar una de las entradas para seleccionar por medio de querys nombres de las fases de datos e ir fuzzeando las misma. 
+Como sabemos que es una base de datos trabajando bajo SQL podemos probar solicitudes que apunten a nombres comunes de las mismas, por ejemplo `mysql` o `information_schema`.
 
----
-
-Probar brevemente union select para ver que no hay diferencia
-
----
-# Blinded Based
-
-
-Como sabemos que es una base de datos trabajando bajo SQL podemos probar solicitudes que apunte a nombres comunes de las mismas, por ejemplo **mysql** o **information_schema**. 
+> information_schema es una base de datos especial en MySQL que contiene metadatos sobre TODAS las demás bases de datos, tablas, columnas, etc. Es como el "índice" de la base de datos.
 
 Usamos el payload
 ```
 home' AND (SELECT schema_name FROM information_schema.schemata limit 0,1)='information_schema-- HTTP/1.1
 ```
+**Desglose**:
+- `SELECT schema_name`: Selecciona nombre del esquema
+- `FROM information_schema.schemata`: De la tabla de esquemas
+- `limit 0,1`: Primer resultado
+- `='information_schema'`: ¿Es igual a esto?
 
-DIBUJO  EXPLICANDO PORQUE EL USO DE ESTA PAYLOAD
 
-
-EJEMPLO DE FALSE
-
+**Estado FALSE** (nombre incorrecto):
 ![[Pasted image 20251102174210.png]]
 
-CONFIRMACION DE BASE DE DATOS information_schema
-
+**Estado TRUE** (confirmamos information_schema existe):
 ![[Pasted image 20251102174257.png]]
+✅ Confirmado: existe la BD `information_schema`.
 
+### 3.6 Fuzzing letra por letra
 
-Claro, esto se puede hacer con bases de datos con nombres comunes pero sirve para entender lo que haremos a continuacion:
+El verdadero poder: extraer información **desconocida**. En lugar de buscar nombres completos, **fuzzeamos letra por letra**.
 
-### Problema: ¿Como encontrar nombres de bases de datos?
+**El concepto**: Usamos `substring()` para extraer caracteres uno a uno:
 
-debemos simplificar el problema, basico de computer science. En lugar de encontrar el nombre completo de la base de datos podemos **fuzzear letra por letra** aprovechandonos las condiciones true y false.
-
-el primer campo de la solicitud anterior se basaba en entregarnos el nombre completo de l base datos, vamos a modificarla para que la misma nos de LA PRIMERA LETRA de la PRIMERA BASE DE DATOS e ir modificando la solicitud para encontrar cada una de las letras. Esto lo podemos hacer son substring.
-
-
-```
+```sql
 home' AND (SELECT substring(schema_name,1,1) FROM information_schema.schemata limit 0,1)='i--
 ```
+**Desglose**:
+- `substring(schema_name,1,1)`: Primera letra del nombre
+- `limit 0,1`: Primera BD
+- `='i'`: ¿Es igual a "i"?
 
-Fijate como ahora en el primer campo seleccionamos la primera letra de la primera base de datos, sabiamos que la primera es information_schema, por lo que la primera leta es "i", luego en el segundo campo colocamos = a "i" dando una respuesta TRUE por parte del sistema:
-
-DIBUJO EXPLICANDO LA QUERY
-
+Fíjate como ahora  seleccionamos la **primera letra** de la **primera base de datos**, sabemos que la primera BD es `information_schema`, cuya primera letra es **"i"** → **TRUE**:
 ![[Pasted image 20251102175315.png]]
+Para la segunda letra: `substring(schema_name,2,1)='n'` y así sucesivamente.
+
+**¿Por qué funciona?** La función `substring()` extrae N caracteres desde una posición. Si probamos 'i', es TRUE. Si probamos 'x', es FALSE. **Letra por letra extraemos cualquier información**.
 
 ---
+## 4. Automatización - Script Python
 
-## Automatizacion de Ataque: SQLi Boolean Based Blinded
-Ahora que tenemos una forma de identificar los caracteres de las bases de datos podemos empezar a jugar con solicitudes para extraer la información que nos interesa, esto se puede hacer de multiples maneres. **Yo manejaré un script de Python** para explicar bien las solicitudes y enteder como funcionan las querys. 
+Hacer esto manualmente es **tedioso**. Un script automatiza el proceso:
 
-https://github.com/NeTenebraes/neBooleanBlindSQLi
+**Mi Script**: https://github.com/NeTenebraes/neBooleanBlindSQLi
+
+El script:
+1. Define el parámetro vulnerable
+2. Itera sobre caracteres ASCII
+3. Para cada posición, prueba cada carácter
+4. Si respuesta = TRUE, guarda carácter
+5. Continúa hasta completar la cadena
+
+**Resultado**: Encontramos página oculta: `http://172.16.23.129/imfadministrator/cms.php?pagename=tutorials-incomplete`
 
 --- 
 
