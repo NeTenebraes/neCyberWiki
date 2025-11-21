@@ -18,13 +18,29 @@ references:
 ---
 ![[CTFIMF.Cover.png]]
 # Información General  
->Este documento contiene un writeup detallado de cómo comprometer la máquina IMF en VulnHub. Se abordan las técnicas: SQLi Boolean Blind y Buffer Over Flow. Además, creamos un pequeño script de Python para automatización de tareas.
+>Este documento contiene información detallada de cómo comprometer la máquina IMF en VulnHub. Se abordan pirnciplamente las técnicas: SQLi Boolean Blind y Buffer Over Flow.
 ---
 ## Objetivos
 - Comprometer la máquina virtual [IMF: 1](https://www.vulnhub.com/entry/imf-1,162/).
 - Obtener acceso inicial mediante enumeración web.
 - Escalar privilegios hasta root mediante abuso de servicios vulnerables.
-- Capturar las 5 flags.
+- Capturar las 6 flags.
+## Técnicas Aplicadas
+- **Reconocimiento de Red**: Identificación de objetivos mediante ARP y TCP  
+- **Enumeración de Servicios**: Detección de versiones y aplicaciones  
+- **Análisis Manual de Código**: Identificación de secretos en código fuente  
+- **SQL Injection Boolean-Based**: Automatización de explotación  
+- **Bypass de WAF**: Inserción de payloads en archivos GIF  
+- **Reverse Shell**: Obtención de acceso remoto  
+- **Port Knocking**: Acceso a servicios protegidos  
+- **Buffer Overflow**: Escalada de privilegios  
+### Entorno de Trabajo
+Este writeup fue realizado bajo las siguientes condiciones:
+- **Hipervisor**: VMware Workstation Pro
+- **Sistema Operativo Host**: Arch Linux
+- **Máquina Atacante**: Kali Linux (virtualizada)
+- **Máquina Objetivo**: IMF 1 (VulnHub)
+- **Red**: vmnet1 (Red privada de VMware)
 ## Herramientas y Comandos Usados
 
 | Herramienta | Función principal                             |
@@ -40,8 +56,6 @@ references:
 | netstat     | Revisión de conexiones y puertos activos.     |
 |             |                                               |
 
-> [!TIP] Preparativos Personales:  
-> Esta máquina vulnerable fue ejecutada bajo un entorno virtualizado usando **VMware Workstation** sobre un sistema operativo **Arch Linux**. Todas las herramientas fueron descargadas e instaladas desde los repositorios oficiales o desde la **AUR**.
 ---
 # Solución General
 
@@ -57,7 +71,7 @@ Explicar porque es iomportante la fase de reconocimiento y en que consiste!!!!
 Lo primero que hago es reconocer qué máquina voy a atacar. Para ello, debo identificar la IP de la máquina víctima, esto se hace con ayuda de la herramienta `arp-scan`
 
 Comando utilizado:
-```
+```bash
 arp-scan -I vmnet1 --localnet
 ```
 
@@ -71,7 +85,7 @@ Parámetros:
 
 Identificamos que hay una máquina conectada, por lo que podemos ejecutar el comando ping para verificar conectividad con la máquina:
 
-```
+```bash
 ping 172.16.23.129
 ```
 ![[Pasted image 20251031174154.png]]
@@ -82,14 +96,13 @@ El comando "ping" usa el protocolo ICMP (Internet Control Message Protocol), que
 Al no obtener respuesta con ICMP, probaremos la herramienta [tcping](https://github.com/cloverstd/tcping) para verificar la conexión mediante el protocolo TCP. `tcping` usa TCP para intentar establecer una conexión directa a un puerto específico en la máquina destino (por ejemplo, puerto 80, 443, etc.). Esto permite verificar si un servicio en ese puerto está disponible y funcionando, sin depender de que ICMP esté permitido.
 
 Una vez compilada, ejecutamos:
-```
+```bash
 ./tcping 172.16.23.129
 ```
 ![[Pasted image 20251031175656.png]]
 	Confirmamos conexión con `172.16.23.129` por medio de la herramienta tcping.
 ### 1.2 Escaneo de puerto |  nMap
-
-```
+```bash
 nmap -p- --open -sS 172.16.23.129 -T4 -n -vvv -Pn -oA SYNscan 
 ```
 
@@ -110,10 +123,9 @@ Parámetros:
 Ya que sabemos que tenemos el puerto 80 libre es nuestro momento de utilizar un conjunto de scripts de reconocimiento que tiene nmap que nos permitirá identificar exactamente a que nos estamos enfrentando con información más a detalle
 
 Comando utilizado:
-```
+```bash
 nmap -p80 -sCV 172.16.23.129 -oA PORTscan   
 ```
-
 Parámetros:
 - `nmap`: Herramienta de escaneo de redes.
 - `-p- --open`: Escanea los 65535 puertos y reporta solo los abiertos.
@@ -141,13 +153,13 @@ Introducimos la IP `172.16.23.129` como URL en nuestro navegador web y vemos que
 	Encontramos unos archivos Javascript encriptados en base64. Esto es algo basten curioso de ver en un codigo fuente, por que juntamos todos y nos da la cadena de carácteres "`ZmxhZzJ7YVcxbVlXUnRhVzVwYzNSeVlYUnZjZz09fQ==`"
 
 Se identifica fácil que es una cadena base64 por lo que procedemos a descriptarla con:
-```
+```bash
  echo "ZmxhZzJ7YVcxbVlXUnRhVzVwYzNSeVlYUnZjZz09fQ==" | base64 -d; echo
 ```
 
 ![[Pasted image 20251121015519.png]]
 	Esto nos dará como resultado: `flag2{aW1mYWRtaW5pc3RyYXRvcg==}`. Rechistosos, vamos a desencriptarla nuevamente:
-```
+```bash
 echo "aW1mYWRtaW5pc3RyYXRvcg==" | base64 -d; echo
 ```
 ![[Pasted image 20251121022241.png]]
@@ -163,11 +175,10 @@ echo "aW1mYWRtaW5pc3RyYXRvcg==" | base64 -d; echo
 
 ![[Pasted image 20251121021647.png]]
 	Además, en su codigo fuente encontramos la `flag1{YWxsdGhlZmlsZXM=}`. Vemos que también está en `base64` por lo que procedemos también a desencriptarla:
-```
+```bash
 echo "YWxsdGhlZmlsZXM=" | base64 -d; echo
 ```
 ![[Pasted image 20251121021916.png]]
-
 #### Recuento de Información:
 
 > [!success] Flags: 
@@ -185,46 +196,41 @@ Confirmamos esto ingresando en la URL: http://172.16.23.129/imfadministrator/
 	Parece un panel de inicio de sesión administrativo. Este es el momento perfecto para probar los usuarios que habíamos encontrado anteriormente, confirmando no solo que los usuarios existen, si no que la web también el **vulnerable a enumeración**.
 
 ![[Pasted image 20251101211046.png]]
-	Revisando el código fuente también podemos ver que hay pista en los comentarios de la web. Parece que dejaron toda la sanitización en el traste por lo que ya mismo nos podemos a probar cosas con BurpSuite.
+	Revisando el código fuente también podemos ver que hay pista en los comentarios de la web. Parece que dejaron toda la sanitización en el traste por lo que ya mismo nos podemos a probar cosas con el repeater de BurpSuite.
 ### 2.1 Array Injection Authentication Bypass |  BurpSuite
 
 ![[Pasted image 20251101212005.png]]
 	Con un simple "[]" en la query de login podemos ver que la web nos da acceso al panel administrativo, dándonos como premio la	`flag3{Y29udGludWVUT2Ntcw==}`, por lo que procedemos también a desencriptarla con:
-```
-	❯ echo "Y29udGludWVUT2Ntcw==" | base64 -d; echo
+```bash
+echo "Y29udGludWVUT2Ntcw==" | base64 -d; echo
 ```
 ![[Pasted image 20251121032328.png]]
 
 También que tenemos un enlace que nos lleva a "http://172.16.23.129/imfadministrator/cms.php?pagename=home" por lo que al ingresar podemos ver el contenido del panel administrativo:
 
+Páginas: 
+- Home
+- Upload Report
+- Disavowed list
+
 ![[Pasted image 20251101213827.png]]
 
 ![[Pasted image 20251102000502.png]]
-
-![[Pasted image 20251102000333.png]]
-
 ![[Pasted image 20251102000536.png]]
-
-![[Pasted image 20251102000317.png]]
-
 ![[Pasted image 20251102000554.png]]
-
-Nada interesante en los codigos internos () quiero incluirlos
-
+	Nada interesante en ninguno de los codigos fuentes de la página. 
 
 # SQLi Attack
-
 
 Nos damos cuenta de que la pagina tiene un subdominio `cms.php?pagename=home`. 
 
 ![[Pasted image 20251102000703.png]]
 
-Ese "=" es bastante curioso ya que esta apuntando a recursos por lo que vamos a probar colocando una comilla "`'`". Esto me da un a pantalla WARNING de SQL por lo que tengo la idea de iniciaremos un ataque SQL
+Ese "=" es bastante curioso ya que esta apuntando a recursos por lo que vamos a probar colocando una comilla "`'`". Esto nos da un a pantalla **WARNING** de **SQL** por lo que podemos probar iniciando un ataque de SQLi.
 
 ![[Pasted image 20251102001557.png]]
 
-Interceptamos la solicitud GET con Burp Suite 
-
+Interceptamos la solicitud GET con Burp Suite:
 ```
 GET /imfadministrator/cms.php?pagename=home' or 1=1--
 ```
@@ -455,4 +461,23 @@ flag6{R2gwc3RQcm90MGMwbHM=}
 
 
 ---
+
+
+## Resumen de Flags Capturadas
+
+| Flag       | Contenido          | Ubicación                   | Técnica                 |
+| ---------- | ------------------ | --------------------------- | ----------------------- |
+| **Flag 1** | `allthefiles`      | contact.php - Código Fuente | Análisis manual         |
+| **Flag 2** | `imfadministrator` | index.php - Código Fuente   | Decodificación Base64   |
+| **Flag 3** | `ContinuesTOcms`   | IMF CMS                     | Enumeración de usuarios |
+| **Flag 4** | `uploadr942.php`   | QR code en CMS              | Decodificación QR       |
+| **Flag 5** | `agentservices`    | Shell web                   | SQLi + Web shell        |
+| **Flag 6** | `Gh0stProt0c0ls`   | /root/flag6.txt             | Buffer Overflow         |
+## Referencias
+
+- [OWASP SQL Injection](https://owasp.org/www-community/attacks/SQL_Injection)
+- [Buffer Overflow Exploitation](https://owasp.org/www-community/attacks/Buffer_Overflow)
+- [VulnHub IMF Machine](https://www.vulnhub.com/entry/imf-1,162/)
+- [Nmap Official Documentation](https://nmap.org/book/)
+- [Burp Suite Community Edition](https://portswigger.net/burp/communitydownload)
 
