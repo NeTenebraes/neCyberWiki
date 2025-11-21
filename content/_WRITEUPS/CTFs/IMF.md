@@ -88,7 +88,7 @@ Parámetros:
 - `-I`: Especifica el adaptador de red a escanear
 - `--localnet`: Indica escaneo de toda la red local
 
-![[Pasted image 20251031173658.png]]
+![[CTFIMF.00.png]]
 Este escaneo me identifica la máquina objetivo en "`172.16.23.129`" dentro de mi red `vmnet1`.
 
 Identificamos que hay una máquina, por lo que podemos ejecutar el comando ping para verificar conección con la máquina:
@@ -96,7 +96,7 @@ Identificamos que hay una máquina, por lo que podemos ejecutar el comando ping 
 ```bash
 ping 172.16.23.129
 ```
-![[Pasted image 20251031174154.png]]
+![[CTFIMF.01.png]]
 No hay conexión por medio de ping.
 
 **¿Por qué falla ping?** El comando "ping" usa el protocolo ICMP (Internet Control Message Protocol), que envía paquetes de eco para saber si un dispositivo está accesible en la red. Sin embargo, muchos sistemas o firewalls pueden bloquear estos paquetes ICMP por seguridad, por lo que "ping" puede fallar aunque el dispositivo esté activo.
@@ -107,7 +107,7 @@ Una vez compilada, ejecutamos:
 ```bash
 ./tcping 172.16.23.129
 ```
-![[Pasted image 20251031175656.png]]
+![[CTFIMF.02.png]]
 
 Confirmamos conexión con `172.16.23.129` por medio de la herramienta tcping.
 ### 1.2 Escaneo de puerto |  nMap
@@ -125,7 +125,7 @@ Parámetros:
 - `-Pn`: No realiza ping previo para detectar si el host está activo; asume que está activo y escanea directamente.
 - `-oA SYNscan`: Exporta la salida en tres formatos simultáneamente (normal, XML y grepable) usando el prefijo de archivo "SYNscan".
 
-![[Pasted image 20251031182855.png]]
+![[CTFIMF.03.png]]
 
 ### 1.3 Escaneo de servicios | nmap
 
@@ -141,7 +141,7 @@ Parámetros:
 - `-oA PORTscan`: Exporta la salida en tres formatos simultáneamente.
 
 
-![[Pasted image 20251031194320.png]]
+![[CTFIMF.04.png]]
 
 Resultado: Equipo con puerto 80/tcp abierto, servicio Apache httpd 2.4.18 corriendo en máquina Ubuntu | Aplicación web: IMF
 
@@ -152,10 +152,10 @@ Introducimos la IP `172.16.23.129` como URL en nuestro navegador web y vemos que
 - **Projects** (projects.php)
 - **Contact Us** (contact.php)
 
-![[Pasted image 20251031224714.png]]
+![[CTFIMF.05.png]]
 
 #### Código Fuente | Index.php 
-![[Pasted image 20251031230106.png]]
+![[CTFIMF.06.png]]
 
 Encontramos unos segmentos de JavaScript encriptados en base64. Esto es bastante curioso de ver en un código fuente, porque cuando juntamos todos los segmentos obtenemos la cadena: "`ZmxhZzJ7YVcxbVlXUnRhVzVwYzNSeVlYUnZjZz09fQ==`"
 
@@ -166,30 +166,30 @@ Se identifica fácilmente que es una cadena base64, por lo que procedemos a deco
  echo "ZmxhZzJ7YVcxbVlXUnRhVzVwYzNSeVlYUnZjZz09fQ==" | base64 -d; echo
 ```
 
-![[Pasted image 20251121015519.png]]
+![[CTFIMF.07.png]]
 Resultado: `flag2{aW1mYWRtaW5pc3RyYXRvcg==}`
 
 Esta es otra cadena base64, vamos a decodificarla nuevamente:
 ```bash
 echo "aW1mYWRtaW5pc3RyYXRvcg==" | base64 -d; echo
 ```
-![[Pasted image 20251121022241.png]]
+![[CTFIMF.08.png]]
 Resultado: **imfadministrator** - Esto parece ser una ruta o directorio administrativo.
 #### Código Fuente | projects.php
 
-![[Pasted image 20251031231054.png]]
+![[CTFIMF.09.png]]
 Aquí no hay mucho que ver, parece una página con solo información relacionada a los proyectos de la aplicación web. No contiene datos sensibles.
 #### Código Fuente | contact.php
 
-![[Pasted image 20251031231116.png]]
+![[CTFIMF.10.png]]
 Esta página es mucho más interesante que las otras dos. En el formulario vemos claramente tres posibles usuarios por lo que los guardamos, seguramente sirven para más tarde.
 
-![[Pasted image 20251121021647.png]]
+![[CTFIMF.11.png]]
 Además, en su código fuente encontramos la `flag1{YWxsdGhlZmlsZXM=}`. Vemos que también está en `base64` por lo que procedemos a decodificarla:
 ```bash
 echo "YWxsdGhlZmlsZXM=" | base64 -d; echo
 ```
-![[Pasted image 20251121021916.png]]
+![[CTFIMF.12.png]]
 Resultado: **allthefiles** - Pista que nos sugiere revisar todos los archivos.
 #### Recuento de Información:
 
@@ -210,14 +210,14 @@ Podemos intuir que las flags son pistas para seguir con el reto. En este caso:
 - "`flag2{imfadministrator}`" nos indica lo que parece ser un directorio administrativo
 
 Confirmamos esto ingresando en la URL: `http://172.16.23.129/imfadministrator/`
-![[Pasted image 20251101211134.png]]
+![[CTFIMF.13.png]]
 Parece un panel de inicio de sesión administrativo. Este es el momento perfecto para probar los usuarios que habíamos encontrado anteriormente, confirmando no solo que los usuarios existen, sino que **la web también es vulnerable a enumeración de usuarios**.
 
-![[Pasted image 20251101211046.png]]
+![[CTFIMF.14.png]]
 Revisando el código fuente también podemos ver pistas en los comentarios de la web. Parece que dejaron toda la sanitización en el traste por lo que ya podemos a probar cosas con el Repeater de BurpSuite.
 ### 2.1 Array Injection Authentication Bypass |  BurpSuite
 
-![[Pasted image 20251101212005.png]]
+![[CTFIMF.15.png]]
 Con un simple `[]` (corchetes vacíos) en el parámetro de login podemos ver que la web nos da acceso al panel administrativo. Esto ocurre porque:
 
 > En PHP, cuando usas `[]` en un formulario GET o POST, conviertes un parámetro de string en un array. El backend espera un string y lo compara directamente, pero recibe un array. Dependiendo de cómo se escribe el código, esta comparación fallida puede resultar en un bypass de autenticación. Es un ejemplo clásico de cómo las suposiciones sobre el tipo de datos pueden llevar a vulnerabilidades.
@@ -228,7 +228,7 @@ Decodificamos:
 ```bash
 echo "Y29udGludWVUT2Ntcw==" | base64 -d; echo
 ```
-![[Pasted image 20251121032328.png]]
+![[CTFIMF.16.png]]
 Resultado: **continueTOcms** - Nueva pista hacia el CMS.
 ### 2.2 Panel Administrativo CMS
 También tenemos un enlace que nos lleva a `http://172.16.23.129/imfadministrator/cms.php?pagename=home` por lo que al ingresar podemos ver el contenido del panel administrativo:
@@ -238,10 +238,10 @@ También tenemos un enlace que nos lleva a `http://172.16.23.129/imfadministrato
 - Upload Report
 - Disavowed list
 
-![[Pasted image 20251101213827.png]]
-![[Pasted image 20251102000502.png]]
-![[Pasted image 20251102000536.png]]
-![[Pasted image 20251102000554.png]]
+![[CTFIMF.17.png]]
+![[CTFIMF.18.png]]
+![[CTFIMF.19.png]]
+![[CTFIMF.20.png]]
 No hay nada interesante en los códigos fuentes de estas páginas a simple vista. Sin embargo, hay algo crucial que pasamos por alto...
 
 ## 3. Preparativos para el Ataque - SQL Injection Boolean Blind
@@ -250,9 +250,9 @@ No hay nada interesante en los códigos fuentes de estas páginas a simple vista
 
 Nos damos cuenta de que la página tiene un parámetro interesante: `cms.php?pagename=home`. 
 
-![[Pasted image 20251102000703.png]]
+![[CTFIMF.21.png]]
 Ese `=` es bastante curioso ya que está apuntando a recursos, por lo que vamos a probar colocando una comilla `'` (comilla simple). Esto nos da una pantalla **WARNING** de **SQL**, confirmando que hay una inyección SQL:
-![[Pasted image 20251102001557.png]]
+![[CTFIMF.22.png]]
 ### 3.2 Concepto: SQL Injection Boolean Blind
 
 > SQLi es una vulnerabilidad donde un atacante inyecta código SQL malicioso en los campos de entrada de una aplicación. Si la entrada no está sanitizada, el código ejecuta consultas SQL no autorizadas.
@@ -284,7 +284,7 @@ GET /imfadministrator/cms.php?pagename=home' or 1=1--
 
 El payload de la imagen está URL-encoded al enviar las solicitudes, puedes hacerlo fácilmente con Burp Suite al presionar `Ctrl + U`.
 
-![[Pasted image 20251102005955.png]]
+![[CTFIMF.23.png]]
 
 Notamos que la solicitud en sí no cambia mucho visualmente, pero al leer detenidamente podemos apreciar que hay un error que dice:
 
@@ -308,7 +308,7 @@ hora probamos dos payloads específicos para confirmar el comportamiento boolean
 ```
 home' AND '1'='1'--
 ```
-![[Pasted image 20251102010548.png]]
+![[CTFIMF.24.png]]
 
 **Payload FALSE (debe mostrar un error o comportamiento diferente):**
 ```
@@ -326,7 +326,7 @@ Por ejemplo, podemos empezar a cambiar las solicitudes por palabras:
 home' AND 'test'='test'--
 ```
 
-![[Pasted image 20251102171310.png]]
+![[CTFIMF.25.png]]
 De esta forma tenemos una forma de identificar entradas en las bases de datos. A pesar de que no veamos exactamente la entrada, tenemos una forma de ir buscando información.
 
 Supongamos que queremos buscar bases de datos, podemos usar una de las entradas para seleccionar mediante queries nombres de las mismas e ir fuzzeando las misma.
@@ -348,7 +348,7 @@ home' AND (SELECT schema_name FROM information_schema.schemata limit 0,1)='infor
 
 
 **Estado FALSE** (nombre incorrecto):
-![[Pasted image 20251102174210.png]]
+![[CTFIMF.26.png]]
 
 **Estado TRUE** (confirmamos information_schema existe):
 ![[Pasted image 20251102174257.png]]
@@ -369,7 +369,7 @@ home' AND (SELECT substring(schema_name,1,1) FROM information_schema.schemata li
 - `='i'`: ¿Es igual a "i"?
 
 Fíjate como ahora  seleccionamos la **primera letra** de la **primera base de datos**, sabemos que la primera BD es `information_schema`, cuya primera letra es **"i"** → **TRUE**:
-![[Pasted image 20251102175315.png]]
+![[CTFIMF.27.png]]
 Para la segunda letra: `substring(schema_name,2,1)='n'` y así sucesivamente.
 
 **¿Por qué funciona?** La función `substring()` extrae N caracteres desde una posición. Si probamos 'i', es TRUE. Si probamos 'x', es FALSE. **Letra por letra extraemos cualquier información**.
@@ -390,35 +390,40 @@ El script:
 
 **Resultado**: Encontramos página oculta: `http://172.16.23.129/imfadministrator/cms.php?pagename=tutorials-incomplete`
 
+Si quieres ver exactamente como funciona este script y estos conceptos, te recomiendo que visite el [repositorio](https://github.com/NeTenebraes/neBooleanBlindSQLi).
+
 --- 
+**Resultado**: Encontramos página oculta: `http://172.16.23.129/imfadministrator/cms.php?pagename=tutorials-incomplete`
 
-Gracias al  del Script encontramos esta pagina web http://172.16.23.129/imfadministrator/cms.php?pagename=tutorials-incomplete
+![[CTFIMF.28.png]]
+Hay un QR. Lo escaneamos con herramienta web segura:
 
-![[Pasted image 20251106032723.png]]
-
+**QR Decodificado**: `flag4{dXBsb2Fkcjk0Mi5waHA=}`
 
 ![[Pasted image 20251106033449.png]]
+```bash
+echo "dXBsb2Fkcjk0Mi5waHA=" | base64 -d; echo
+```
 
+**Resultado**: **uploadr942.php** ← Una página oculta de carga de archivos.
 
+## 5. Bypass WAF y Reverse Shell
 
-Vemos que tiene un QR vamos a escanearlo de forma segura con alguna herramienta web
-flag4{dXBsb2Fkcjk0Mi5waHA=}
+### 5.1 Acceso al Uploader
 
-uploadr942.php como URL de imfadministrator
+Navegamos a `http://172.16.23.129/imfadministrator/uploadr942.php`:
+![[CTFIMF.29.png]]
 
-![[Pasted image 20251106033350.png]]
+Se pueden subir imágenes. Necesitamos **bypassear el WAF** (Web Application Firewall).
 
+**¿Qué es un WAF?** Un Web Application Firewall filtra y monitoriza tráfico HTTP/HTTPS. Bloquea solicitudes maliciosas basándose en reglas como:
+- Extensiones de archivo (.php prohibido)
+- MIME types
+- Contenido del archivo
 
-https://stackoverflow.com/questions/23714383/what-are-all-the-possible-values-for-http-content-type-header
+**¿Cómo bypasseamos?** Usamos **magic numbers** o **file signatures**.
 
-se pueden subir imagenes
-
-los gif se pueden abrir 
-
-insertamos este payload para eludir el WAF
-magic numbers
-
-![[Pasted image 20251115023959.png]]
+![[CTFIMF.30.png]]
 
 
 CREAR UNA FUNCION CON LOGICA
