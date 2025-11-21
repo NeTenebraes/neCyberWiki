@@ -18,7 +18,7 @@ references:
 ---
 ![[CTFIMF.Cover.png]]
 # Información General  
->Este documento contiene información detallada de cómo comprometer la máquina IMF en VulnHub. Se abordan pirnciplamente las técnicas: SQLi Boolean Blind y Buffer Over Flow.
+>Este documento contiene información detallada de cómo comprometer la máquina IMF en VulnHub. Se abordan principalmente las técnicas: **SQLi Boolean Blind** y **Buffer Overflow**.
 ---
 ## Objetivos
 - Comprometer la máquina virtual [IMF: 1](https://www.vulnhub.com/entry/imf-1,162/).
@@ -49,26 +49,34 @@ Este writeup fue realizado bajo las siguientes condiciones:
 | nmap        | Escaneo y enumeración de puertos y servicios. |
 | Burp Suite  | Análisis y pruebas de tráfico web.            |
 | curl        | Transferencia de datos y pruebas HTTP.        |
-| TCPing      |                                               |
+| TCPing      | Verifica conectividad TCP sin ICMP.           |
 | netcat      | Utilidad multipropósito de red.               |
 | ssh         | Acceso remoto seguro por consola.             |
 | htop        | Monitorización avanzada de procesos.          |
 | netstat     | Revisión de conexiones y puertos activos.     |
-|             |                                               |
+| ltrace      | Rastreo de llamadas de biblioteca.            |
+| gdb         | Depurador para análisis de binarios.          |
 
 ---
 # Solución General
 
 > [!Abstract] Resumen Técnico  
-> 
+> Este writeup guía paso a paso cómo explotar una máquina Linux vulnerable mediante inyección SQL Boolean-Based y Buffer Overflow. El objetivo es enseñar cómo funcionan estas vulnerabilidades desde una perspectiva práctica y educativa.
 
 ## 1. Reconocimiento:  
 
-Explicar porque es iomportante la fase de reconocimiento y en que consiste!!!!
+La fase de **reconocimiento** es el cimiento de cualquier pentest exitoso. Durante esta etapa:
 
+- **Identificamos el alcance**: Qué máquinas y servicios tenemos como objetivo
+- **Mapeamos la infraestructura**: Entendemos cómo se conectan los sistemas
+- **Detectamos servicios**: Encontramos qué aplicaciones están corriendo y en qué versiones
+
+Sin reconocimiento adecuado, **disparamos a la oscuridad**. Con él, nos movemos con precisión quirúrgica.
 ### 1.1 Fase Inicial | arp-scan y tcping
 
-Lo primero que hago es reconocer qué máquina voy a atacar. Para ello, debo identificar la IP de la máquina víctima, esto se hace con ayuda de la herramienta `arp-scan`
+Lo primero que hago es reconocer qué máquina voy a atacar. Para ello, debo identificar la IP de la máquina víctima, esto se hace con ayuda de la herramienta `arp-scan`.
+
+**¿Qué es ARP?** Address Resolution Protocol (ARP) es un protocolo que mapea direcciones IP a direcciones MAC en una red local. Cuando una máquina quiere comunicarse con otra en la misma red, primero necesita saber su dirección MAC. ARP hace exactamente eso.
 
 Comando utilizado:
 ```bash
@@ -81,17 +89,17 @@ Parámetros:
 - `--localnet`: Indica escaneo de toda la red local
 
 ![[Pasted image 20251031173658.png]]
-	Este escaneo me identifica la máquina objetivo en "`172.16.23.129`" dentro de mi red `vmnet1`.
+Este escaneo me identifica la máquina objetivo en "`172.16.23.129`" dentro de mi red `vmnet1`.
 
-Identificamos que hay una máquina conectada, por lo que podemos ejecutar el comando ping para verificar conectividad con la máquina:
+Identificamos que hay una máquina, por lo que podemos ejecutar el comando ping para verificar conección con la máquina:
 
 ```bash
 ping 172.16.23.129
 ```
 ![[Pasted image 20251031174154.png]]
-	No hay conexión por medio de ping.
+No hay conexión por medio de ping.
 
-El comando "ping" usa el protocolo ICMP (Internet Control Message Protocol), que envía paquetes de eco para saber si un dispositivo está accesible en la red. Sin embargo, muchos sistemas o routers pueden bloquear estos paquetes ICMP por seguridad, por lo que "ping" puede fallar aunque el dispositivo esté activo. 
+**¿Por qué falla ping?** El comando "ping" usa el protocolo ICMP (Internet Control Message Protocol), que envía paquetes de eco para saber si un dispositivo está accesible en la red. Sin embargo, muchos sistemas o firewalls pueden bloquear estos paquetes ICMP por seguridad, por lo que "ping" puede fallar aunque el dispositivo esté activo.
 
 Al no obtener respuesta con ICMP, probaremos la herramienta [tcping](https://github.com/cloverstd/tcping) para verificar la conexión mediante el protocolo TCP. `tcping` usa TCP para intentar establecer una conexión directa a un puerto específico en la máquina destino (por ejemplo, puerto 80, 443, etc.). Esto permite verificar si un servicio en ese puerto está disponible y funcionando, sin depender de que ICMP esté permitido.
 
@@ -100,7 +108,8 @@ Una vez compilada, ejecutamos:
 ./tcping 172.16.23.129
 ```
 ![[Pasted image 20251031175656.png]]
-	Confirmamos conexión con `172.16.23.129` por medio de la herramienta tcping.
+
+Confirmamos conexión con `172.16.23.129` por medio de la herramienta tcping.
 ### 1.2 Escaneo de puerto |  nMap
 ```bash
 nmap -p- --open -sS 172.16.23.129 -T4 -n -vvv -Pn -oA SYNscan 
@@ -114,157 +123,207 @@ Parámetros:
 - `-n`: No resuelve nombres DNS para las IPs, acelera el escaneo al evitar consultas DNS.
 - `-vvv`: Muestra salida muy detallada (nivel de verbosidad triple).
 - `-Pn`: No realiza ping previo para detectar si el host está activo; asume que está activo y escanea directamente.
-- `-oA SYNscan`: Exporta la salida en tres formatos simultáneamente (normal, XML y grepable) usando el prefijo de archivo "nmap".
+- `-oA SYNscan`: Exporta la salida en tres formatos simultáneamente (normal, XML y grepable) usando el prefijo de archivo "SYNscan".
 
 ![[Pasted image 20251031182855.png]]
 
 ### 1.3 Escaneo de servicios | nmap
 
-Ya que sabemos que tenemos el puerto 80 libre es nuestro momento de utilizar un conjunto de scripts de reconocimiento que tiene nmap que nos permitirá identificar exactamente a que nos estamos enfrentando con información más a detalle
+Ya que sabemos que tenemos el puerto 80 abierto, es el momento de utilizar un conjunto de scripts de reconocimiento que tiene nmap que nos permitirá identificar exactamente a qué nos estamos enfrentando con información más detallada.
 
 Comando utilizado:
 ```bash
 nmap -p80 -sCV 172.16.23.129 -oA PORTscan   
 ```
 Parámetros:
-- `nmap`: Herramienta de escaneo de redes.
-- `-p- --open`: Escanea los 65535 puertos y reporta solo los abiertos.
-- `-sVC`: Detecta servicios y ejecuta scripts básicos de reconocimiento
-- `-T4`: Plantilla de velocidad agresiva
-- `-vvv`: Salida verbose en tiempo real, útil para ver información en tiempo real.
-- `-n`: Deshabilita resolución DNS para acelerar el escaneo
-- `-Pn`: Omite host discovery y fuerza el reconocimiento de puertos
-- `-oA PORTscan`: Exporta la salida en tres formatos simultáneamente (normal, XML y grepable) usando el prefijo de archivo "nmap".
+- `-p80`: Escanea específicamente el puerto 80.
+- `-sCV`: Detecta servicios (`-sV`) y ejecuta scripts de reconocimiento básicos (`-sC`).
+- `-oA PORTscan`: Exporta la salida en tres formatos simultáneamente.
+
 
 ![[Pasted image 20251031194320.png]]
-	Equipo con puerto 80/tcp abierto, servicio Apache httpd  2.4.18 corriendo en maquina  Ubuntu | Aplicación web: IMF
+
+Resultado: Equipo con puerto 80/tcp abierto, servicio Apache httpd 2.4.18 corriendo en máquina Ubuntu | Aplicación web: IMF
 
 ### 1.4 Reconocimiento Web | Puerto 80
 
-Introducimos la IP `172.16.23.129` como URL en nuestro navegador web y vemos que la misma cuenta con 3 "subdominios": 
-- Home (index.php).
-- Projects (projects.php). 
-- Contact Us (contact.php).
+Introducimos la IP `172.16.23.129` como URL en nuestro navegador web y vemos que la misma cuenta con 3 "secciones":
+- **Home** (index.php)
+- **Projects** (projects.php)
+- **Contact Us** (contact.php)
 
 ![[Pasted image 20251031224714.png]]
 
 #### Código Fuente | Index.php 
 ![[Pasted image 20251031230106.png]]
-	Encontramos unos archivos Javascript encriptados en base64. Esto es algo basten curioso de ver en un codigo fuente, por que juntamos todos y nos da la cadena de carácteres "`ZmxhZzJ7YVcxbVlXUnRhVzVwYzNSeVlYUnZjZz09fQ==`"
 
-Se identifica fácil que es una cadena base64 por lo que procedemos a descriptarla con:
+Encontramos unos segmentos de JavaScript encriptados en base64. Esto es bastante curioso de ver en un código fuente, porque cuando juntamos todos los segmentos obtenemos la cadena: "`ZmxhZzJ7YVcxbVlXUnRhVzVwYzNSeVlYUnZjZz09fQ==`"
+
+> Base64 es un esquema de codificación que convierte datos binarios en texto ASCII. Se usa comúnmente para transmitir datos que no pueden ser enviados directamente (como credenciales o datos binarios) a través de protocolos que solo aceptan texto.
+
+Se identifica fácilmente que es una cadena base64, por lo que procedemos a decodificarla:
 ```bash
  echo "ZmxhZzJ7YVcxbVlXUnRhVzVwYzNSeVlYUnZjZz09fQ==" | base64 -d; echo
 ```
 
 ![[Pasted image 20251121015519.png]]
-	Esto nos dará como resultado: `flag2{aW1mYWRtaW5pc3RyYXRvcg==}`. Rechistosos, vamos a desencriptarla nuevamente:
+Resultado: `flag2{aW1mYWRtaW5pc3RyYXRvcg==}`
+
+Esta es otra cadena base64, vamos a decodificarla nuevamente:
 ```bash
 echo "aW1mYWRtaW5pc3RyYXRvcg==" | base64 -d; echo
 ```
 ![[Pasted image 20251121022241.png]]
-	Nos nos da como respuesta la palabra "imfadministrator"
+Resultado: **imfadministrator** - Esto parece ser una ruta o directorio administrativo.
 #### Código Fuente | projects.php
 
 ![[Pasted image 20251031231054.png]]
-	Acá no hay mucho que ver, parece una página con solo información relacionada a los proyectos de la aplicación web.
+Aquí no hay mucho que ver, parece una página con solo información relacionada a los proyectos de la aplicación web. No contiene datos sensibles.
 #### Código Fuente | contact.php
 
 ![[Pasted image 20251031231116.png]]
-	Está página es mucho más interesante que las otras 2, por toda la cara vemos que hay tres posibles usuarios por lo que los guardemos, seguro sirven para más tarde.
+Esta página es mucho más interesante que las otras dos. En el formulario vemos claramente tres posibles usuarios por lo que los guardamos, seguramente sirven para más tarde.
 
 ![[Pasted image 20251121021647.png]]
-	Además, en su codigo fuente encontramos la `flag1{YWxsdGhlZmlsZXM=}`. Vemos que también está en `base64` por lo que procedemos también a desencriptarla:
+Además, en su código fuente encontramos la `flag1{YWxsdGhlZmlsZXM=}`. Vemos que también está en `base64` por lo que procedemos a decodificarla:
 ```bash
 echo "YWxsdGhlZmlsZXM=" | base64 -d; echo
 ```
 ![[Pasted image 20251121021916.png]]
+Resultado: **allthefiles** - Pista que nos sugiere revisar todos los archivos.
 #### Recuento de Información:
 
-> [!success] Flags: 
-> "flag1{allthefiles}" y "flag2{imfadministrator}"
+> [!success] Flags Capturadas: 
+> - `flag1{allthefiles}`
+> - `flag2{imfadministrator}`
 
-> [!success] Usuarios: 
-> "Roger S. Michaels:  rmichaels@imf.local", "Alexander B. Keith:  akeith@imf.local", "Elizabeth R. Stone: estone@imf.local".
+> [!success] Usuarios Identificados: 
+> - Roger S. Michaels: rmichaels@imf.local
+> - Alexander B. Keith: akeith@imf.local
+> - Elizabeth R. Stone: estone@imf.local
 ---
-## 2. Explotación: 
 
-Podemos intuir que las flags son pistas para seguir con el reto, en este caso vemos que "`flag1{allthefiles}`" nos invita a revisar todos los archivos del aplicativo y "`flag2{imfadministrator}`" nos indica lo que parece ser un nombre de "ruta". 
+## 2. Explotación
 
-Confirmamos esto ingresando en la URL: http://172.16.23.129/imfadministrator/
+Podemos intuir que las flags son pistas para seguir con el reto. En este caso:
+- "`flag1{allthefiles}`" nos invita a revisar todos los archivos del aplicativo
+- "`flag2{imfadministrator}`" nos indica lo que parece ser un directorio administrativo
+
+Confirmamos esto ingresando en la URL: `http://172.16.23.129/imfadministrator/`
 ![[Pasted image 20251101211134.png]]
-	Parece un panel de inicio de sesión administrativo. Este es el momento perfecto para probar los usuarios que habíamos encontrado anteriormente, confirmando no solo que los usuarios existen, si no que la web también el **vulnerable a enumeración**.
+Parece un panel de inicio de sesión administrativo. Este es el momento perfecto para probar los usuarios que habíamos encontrado anteriormente, confirmando no solo que los usuarios existen, sino que **la web también es vulnerable a enumeración de usuarios**.
 
 ![[Pasted image 20251101211046.png]]
-	Revisando el código fuente también podemos ver que hay pista en los comentarios de la web. Parece que dejaron toda la sanitización en el traste por lo que ya mismo nos podemos a probar cosas con el repeater de BurpSuite.
+Revisando el código fuente también podemos ver pistas en los comentarios de la web. Parece que dejaron toda la sanitización en el traste por lo que ya podemos a probar cosas con el Repeater de BurpSuite.
 ### 2.1 Array Injection Authentication Bypass |  BurpSuite
 
 ![[Pasted image 20251101212005.png]]
-	Con un simple "[]" en la query de login podemos ver que la web nos da acceso al panel administrativo, dándonos como premio la	`flag3{Y29udGludWVUT2Ntcw==}`, por lo que procedemos también a desencriptarla con:
+Con un simple `[]` (corchetes vacíos) en el parámetro de login podemos ver que la web nos da acceso al panel administrativo. Esto ocurre porque:
+
+> En PHP, cuando usas `[]` en un formulario GET o POST, conviertes un parámetro de string en un array. El backend espera un string y lo compara directamente, pero recibe un array. Dependiendo de cómo se escribe el código, esta comparación fallida puede resultar en un bypass de autenticación. Es un ejemplo clásico de cómo las suposiciones sobre el tipo de datos pueden llevar a vulnerabilidades.
+
+Al presionar con el payload `[]` el sistema nos concede acceso y nos entrega la **flag3**: `flag3{Y29udGludWVUT2Ntcw==}`
+
+Decodificamos:
 ```bash
 echo "Y29udGludWVUT2Ntcw==" | base64 -d; echo
 ```
 ![[Pasted image 20251121032328.png]]
+Resultado: **continueTOcms** - Nueva pista hacia el CMS.
+### 2.2 Panel Administrativo CMS
+También tenemos un enlace que nos lleva a `http://172.16.23.129/imfadministrator/cms.php?pagename=home` por lo que al ingresar podemos ver el contenido del panel administrativo:
 
-También que tenemos un enlace que nos lleva a "http://172.16.23.129/imfadministrator/cms.php?pagename=home" por lo que al ingresar podemos ver el contenido del panel administrativo:
-
-Páginas: 
+**Secciones disponibles:**
 - Home
 - Upload Report
 - Disavowed list
 
 ![[Pasted image 20251101213827.png]]
-
 ![[Pasted image 20251102000502.png]]
 ![[Pasted image 20251102000536.png]]
 ![[Pasted image 20251102000554.png]]
-	Nada interesante en ninguno de los codigos fuentes de la página. 
+No hay nada interesante en los códigos fuentes de estas páginas a simple vista. Sin embargo, hay algo crucial que pasamos por alto...
 
-# SQLi Attack
+## 3. Preparativos para el Ataque - SQL Injection Boolean Blind
 
-Nos damos cuenta de que la pagina tiene un subdominio `cms.php?pagename=home`. 
+### 3.1 Identificación de la Vulnerabilidad
+
+Nos damos cuenta de que la página tiene un parámetro interesante: `cms.php?pagename=home`. 
 
 ![[Pasted image 20251102000703.png]]
-
-Ese "=" es bastante curioso ya que esta apuntando a recursos por lo que vamos a probar colocando una comilla "`'`". Esto nos da un a pantalla **WARNING** de **SQL** por lo que podemos probar iniciando un ataque de SQLi.
-
+Ese `=` es bastante curioso ya que está apuntando a recursos, por lo que vamos a probar colocando una comilla `'` (comilla simple). Esto nos da una pantalla **WARNING** de **SQL**, confirmando que hay una inyección SQL:
 ![[Pasted image 20251102001557.png]]
+### 3.2 Concepto: SQL Injection Boolean Blind
+
+> SQLi es una vulnerabilidad donde un atacante inyecta código SQL malicioso en los campos de entrada de una aplicación. Si la entrada no está sanitizada, el código ejecuta consultas SQL no autorizadas.
+- **Boolean**: La respuesta es sí o no (true/false)
+- **Blind**: No vemos directamente los resultados de la base de datos
+
+En un **SQL Injection Boolean Blind**, no podemos ver los datos de la base de datos como lo haríamos en un Error-Based SQLi. En su lugar, nos basamos en diferencias de comportamiento:
+- Si nuestra condición es **TRUE**, la página muestra cierto contenido/comportamiento
+- Si nuestra condición es **FALSE**, muestra otro contenido/comportamiento
+
+**¿Cómo funciona?** Comparamos dos estados:
+```
+-- Estado TRUE
+pagename=home' AND '1'='1'--
+La página carga normalmente
+
+-- Estado FALSE  
+pagename=home' AND '1'='0'--
+La página muestra un error o contenido diferente
+```
+
+Con esto, podemos "preguntar" a la base de datos letra por letra, extrayendo **información sin necesidad ver nunca los datos directamente**.
+### 3.3 Pruebas Manuales de Boolean SQLi
 
 Interceptamos la solicitud GET con Burp Suite:
 ```
 GET /imfadministrator/cms.php?pagename=home' or 1=1--
 ```
 
-El comando está URL encodeado al enviar las solicitudes, estos los puedes hacer facilmente con Burp Suite al presionar Control + U.
+El payload de la imagen está URL-encoded al enviar las solicitudes, puedes hacerlo fácilmente con Burp Suite al presionar `Ctrl + U`.
 
 ![[Pasted image 20251102005955.png]]
 
-Veo que la solicitud en sí no cambia mucho pero al leer detenidamente podemos apreciar que hay error que dice:
+Notamos que la solicitud en sí no cambia mucho visualmente, pero al leer detenidamente podemos apreciar que hay un error que dice:
 
 ```
 mysqli_fetch_row() expects parameter 1 to be mysqli_result, boolean given in 
 ```
 
-Con esto podemos identificar que hay una base de dtoas trabajando con SQL, ademas vemos ese **bolean given in** es un claro indicio a que hay un error relacionado a parámetros booleanos, teniendo esto en cuenta vamos a probar los payload: dando el servidor respuestas distintas y confirmando **boolean sqli** 
+Este error es un **claro indicio** de que hay un **error relacionado a parámetros booleanos**, confirmando una vulnerabilidad Boolean SQLi.
 
 ```
-home' AND '1'='1'--  
-home' AND '1'='0'--
+mysqli_fetch_row() expects parameter 1 to be mysqli_result, boolean given in 
 ```
 
-ESTADO TRUE
+#### Confirmación de Boolean SQLi
+
+Con esto podemos identificar que hay una base de datos trabajando con SQL, ademas vemos ese **bolean given in** es un claro indicio a que hay un error relacionado a parámetros booleanos, teniendo esto en cuenta vamos a probar los payload: dando el servidor respuestas distintas y confirmando **boolean sqli** 
+
+hora probamos dos payloads específicos para confirmar el comportamiento booleano:
+
+**Payload TRUE (debe cargar la página normalmente):**
+```
+home' AND '1'='1'--
+```
 ![[Pasted image 20251102010548.png]]
 
-ESTADO FALSE:
-
+**Payload FALSE (debe mostrar un error o comportamiento diferente):**
+```
+home' AND '1'='0'--
+```
 ![[Pasted image 20251102010623.png]]
 
-Con esto en cuenta podemos empezar a probar payloads mas complejos
+Con esto en cuenta podemos ver claramente dos respuestas distintas, confirmando la vulnerabilidad **Boolean Blind SQLi**.
 
-Por ejemplo puedo empezar a cambiar las solicitud por palabras.
+### 3.4 Extracción Manual de Información
+
+Por ejemplo, podemos empezar a cambiar las solicitudes por palabras:
 
 ```
-home' AND 'test'='test--
+home' AND 'test'='test'--
 ```
 
 ![[Pasted image 20251102171310.png]]
@@ -273,9 +332,8 @@ De esta forma tenemos una forma de indentificar entradas en las bases de datos, 
 
 Supongamos que queremos buscar bases datos, podemos usar una de las entradas para seleccionar por medio de querys nombres de las fases de datos e ir fuzzeando las misma. 
 
-
-
 ---
+
 Probar brevemente union select para ver que no hay diferencia
 
 ---
@@ -325,40 +383,11 @@ DIBUJO EXPLICANDO LA QUERY
 ## Automatizacion de Ataque: SQLi Boolean Based Blinded
 Ahora que tenemos una forma de identificar los caracteres de las bases de datos podemos empezar a jugar con solicitudes para extraer la información que nos interesa, esto se puede hacer de multiples maneres. **Yo manejaré un script de Python** para explicar bien las solicitudes y enteder como funcionan las querys. 
 
-
-
-
----
-
-Script de Python
-
-Estoy jugando con unos parametos del script par aque maneje una cuenta interna de cuantas paginas hay, por ejemplo:
-
-
-La idea es que el script primero cuente cuantas tablas hay dentro de la base de dato seleccionanda;
-```
-sqli = url + f"'+AND+(SELECT+count(table_name,)+FROM+information_schema.tables+WHERE+table_schema='admin)='1-- "
-```
-	cambiar "admin" por variable seleccionable.
-
-Luego de eso, debe ejecutar este codigo:
-```
-sqli = url + f"'+AND+(SELECT+substring(table_name,{position_character},1)+FROM+information_schema.tables+WHERE+table_schema='admin'+limit+{dbs},1)%3d'{character}-- "
-```
-
-Esto va a servir para ver las tablas de la base de datos, me di cuenta que ya hay una que dice pages
-
-Por ultimo sería enumerar las columnas, esto lo hago asi:
-```
-sqli = url + f"'+AND+(SELECT+substring(column_name,{position_character},1)+FROM+information_schema.columns+WHERE+table_schema='admin'+and+table_name='pages'+imit+{dbs},1)%3d'{character}-- "
-```
-	Lo mismo, solo que el AND table_name debe apuntar a una variable dependiendo del resultado anterior. 
-
-Antes de todo seria bueno fuzzear cada cosa usando COUNT
+https://github.com/NeTenebraes/neBooleanBlindSQLi
 
 --- 
 
-Luego del Script encontré esta pagina web http://172.16.23.129/imfadministrator/cms.php?pagename=tutorials-incomplete
+Gracias al  del Script encontramos esta pagina web http://172.16.23.129/imfadministrator/cms.php?pagename=tutorials-incomplete
 
 ![[Pasted image 20251106032723.png]]
 
