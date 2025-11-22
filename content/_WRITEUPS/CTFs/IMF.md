@@ -126,9 +126,7 @@ Parámetros:
 - `-oA SYNscan`: Exporta la salida en tres formatos simultáneamente (normal, XML y grepable) usando el prefijo de archivo "SYNscan".
 
 ![[CTFIMF.03.png]]
-
 ### 1.3 Escaneo de servicios | nmap
-
 Ya que sabemos que tenemos el puerto 80 abierto, es el momento de utilizar un conjunto de scripts de reconocimiento que tiene nmap que nos permitirá identificar exactamente a qué nos estamos enfrentando con información más detallada.
 
 Comando utilizado:
@@ -142,9 +140,7 @@ Parámetros:
 
 
 ![[CTFIMF.04.png]]
-
 Resultado: Equipo con puerto 80/tcp abierto, servicio Apache httpd 2.4.18 corriendo en máquina Ubuntu | Aplicación web: IMF
-
 ### 1.4 Reconocimiento Web | Puerto 80
 
 Introducimos la IP `172.16.23.129` como URL en nuestro navegador web y vemos que la misma cuenta con 3 "secciones":
@@ -153,8 +149,7 @@ Introducimos la IP `172.16.23.129` como URL en nuestro navegador web y vemos que
 - **Contact Us** (contact.php)
 
 ![[CTFIMF.05.png]]
-
-#### Código Fuente | Index.php 
+0......................................0#### Código Fuente | Index.php 
 ![[CTFIMF.06.png]]
 
 Encontramos unos segmentos de JavaScript encriptados en base64. Esto es bastante curioso de ver en un código fuente, porque cuando juntamos todos los segmentos obtenemos la cadena: "`ZmxhZzJ7YVcxbVlXUnRhVzVwYzNSeVlYUnZjZz09fQ==`"
@@ -189,9 +184,9 @@ Además, en su código fuente encontramos la `flag1{YWxsdGhlZmlsZXM=}`. Vemos qu
 ```bash
 echo "YWxsdGhlZmlsZXM=" | base64 -d; echo
 ```
-![[CTFIMF.12.png]]
+![.........................................................................[CTFIMF.12.png]]
 Resultado: **allthefiles** - Pista que nos sugiere revisar todos los archivos.
-#### Recuento de Información:
+####000000000000 Recuento de Información:
 
 > [!success] Flags Capturadas: 
 > - `flag1{allthefiles}`
