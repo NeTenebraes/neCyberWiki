@@ -31,7 +31,6 @@ OpenSSL es una biblioteca y herramienta de software libre diseñada para impleme
 ### ¿Por qué usamos "OpenSSL s_client"?
 
 El comando `openssl s_client` es una utilidad dentro de OpenSSL que actúa como un cliente genérico para establecer conexiones SSL/TLS con servidores remotos. Se usa para probar, analizar y depurar conexiones seguras, permitiendo a los usuarios verificar certificados, probar protocolos soportados, y obtener detalles técnicos del proceso de handshake y cifrado. 
-
 ![[OTW15.02.webp]]
 Esta herramienta es clave para diagnosticar problemas de seguridad, validar configuraciones y entender cómo un servidor maneja conexiones cifradas.
 ## nmap
