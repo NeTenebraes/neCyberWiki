@@ -19,7 +19,7 @@ publishDate: 2025-11-07
 ### Qué es ROT13 y por qué es útil
 ROT13 es una variante simple del cifrado César donde cada letra se reemplaza por la letra que está 13 posiciones adelante en el alfabeto. Como el alfabeto tiene 26 letras, aplicar ROT13 dos veces devuelve el texto original, lo que facilita su uso para ocultar información ligera. Entender ROT13 y cómo manipular texto con comandos **es interesante para la administración de sistemas y pentesting básico**.
 
-![[OTW11.01.webp]]
+![[Bandit_Level_11-01.webp]]
 
 ### Conceptos y comandos Linux clave
 
@@ -45,13 +45,13 @@ Esto garantiza que cada letra original (desde `'A-Z'` y `'a-z'`) se rote un equi
     - De la `n` a la `z` es la segunda mitad de las minúsculas.        
     - De la `a` a la `m` es la primera mitad.
 
-![[OTW11.02.webp]]
+![[Bandit_Level_11-02.webp]]
 
 Así, cada letra en el conjunto original `'A-Za-z'`, corresponde exactamente con la letra 13 posiciones rotada. En resumen, `'N-ZA-Mn-za-m'` es la forma de escribir el alfabeto rotado 13 posiciones (ROT13) en un formato continuo que `tr` puede usar para traducir cada letra original a su equivalente cifrado correcto.
 
 Así usando `tr 'A-Za-z' 'N-ZA-Mn-za-m'` traduces cada letra alfabética a su versión ROT13 en una sola pasada. Si no te quieres complicar mucho la cabeza recuerda que hay herramientas que hacen esto de forma automática, solo necesitas una búsqueda rapida: 
 
-![[OTW11.03.webp]]
+![[Bandit_Level_11-03.webp]]
 Hay un montón en internet he incluso puede programar una para prácticar el lenguaje que gustes ya que, **suelen ser muy sencillas de hacer**. 
 
 Aquí te dejo un par de herramientas que encontré:
@@ -66,14 +66,14 @@ Aquí te dejo un par de herramientas que encontré:
 ```
 ssh bandit11@bandit.labs.overthewire.org -p 2220
 ```
-![[OTW11.04.webp]]
+![[Bandit_Level_11-04.webp]]
 
 2. Verifica el contenido del archivo:
 ```
 ls
 cat data.txt
 ```
-![[OTW11.05.webp]]
+![[Bandit_Level_11-05.webp]]
 	Verificamos la existencia y el contenido del archivo. Aquí verás texto cifrado que no es legible.
 
 3. Decodifica el archivo con ROT13 usando `tr` con la tubería `|` para pasar la salida de un comando como entrada de otro:
@@ -81,7 +81,7 @@ cat data.txt
 ```
 cat data.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m'
 ```
-![[OverTheWire.bandit 7.webp]]
+![[Bandit_Level_11-06.webp]]
 	Esto traduce las letras cifradas del archivo, rotándolas 13 posiciones, y muestra la contraseña original en texto claro. **Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
 ### Por qué usar tuberías "|"
 

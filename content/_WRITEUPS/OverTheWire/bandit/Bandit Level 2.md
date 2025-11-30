@@ -35,19 +35,19 @@ El shell de Linux usa el espacio como delimitador por defecto para separar coman
 ```
 ssh -p 2220 bandit2@bandit.labs.overthewire.org
 ```
-![[OTW02.01.webp]]
+![[Bandit_Level_2-01.webp]]
 
 2.  **Listar los archivos del home para ver el nombre exacto:**
 ```
 ls -la
 ```
-![[OTW02.02.webp]]
+![[Bandit_Level_2-02.webp]]
 
 3.  **Leer el archivo usando comillas, escape de caracteres o autocompletado:**
 ```
 cat ./--spaces in this filename--
 ```
-![[OTW02.03.webp]]
+![[Bandit_Level_2-03.webp]]
 	**Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
 
 ---

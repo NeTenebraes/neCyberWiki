@@ -42,21 +42,21 @@ Este nivel fomenta la habilidad de búsqueda avanzada en Linux usando `find`, co
 ```
 ssh bandit6@bandit.labs.overthewire.org -p 2220
 ```
-![[OTW06.01.webp]]
+![[Bandit_Level_6-01.webp]]
 
 2. **Buscar el archivo con las propiedades específicas**  
 
 ```
 find / -user bandit7 -group bandit6 -size 33c 2>/dev/null
 ```
-![[OTW06.02.webp]]
+![[Bandit_Level_6-02.webp]]
 	Este comando busca en todo el sistema el archivo con propietario "`bandit7`", grupo "`bandit6`" y tamaño 33 bytes, ignorando mensajes de error por permisos. La herramienta nos da como resultado: `/var/lib/dpkg/info/bandit7.password`.
 
 3. **Leer el contenido del archivo encontrado**  
 ```
 cat /var/lib/dpkg/info/bandit7.password
 ```
-![[OTW06.03.webp]]
+![[Bandit_Level_6-03.webp]]
 	Se muestra la contraseña necesaria para avanzar al siguiente nivel. **Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
 
 ---

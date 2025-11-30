@@ -31,10 +31,10 @@ Base64 es un esquema de codificación que convierte datos binarios en texto ASCI
 ```
 ssh bandit10@bandit.labs.overthewire.org -p 2220
 ```
-![[OTW10.01.webp]]
+![[Bandit_Level_10-01.webp]]
 
 2. Decodificar el archivo `data.txt` para mostrar la contraseña:
 ```
 base64 -d data.txt
 ```
-![[OTW10.02.webp]]
+![[Bandit_Level_10-02.webp]]

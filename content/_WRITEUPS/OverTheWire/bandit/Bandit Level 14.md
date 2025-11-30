@@ -20,7 +20,7 @@ En este nivel aprenderás a interactuar con un servicio local mediante conexione
 Mientras la conexión está abierta, **TCP se encarga de que todo llegue completo y en el orden correcto**, incluso reenviando lo que se pierda por el camino. Al terminar, la conexión se cierra de forma ordenada para que ninguna de las dos partes se quede esperando datos.
 ### Three‑way handshake
 Antes de enviar datos por TCP, los dos equipos se mandan tres mensajes rápidos para abrir la conexión, como cuando saludas antes de empezar a hablar. 
-![[OTW14.01.webp]]
+![[Bandit_Level_14-01.webp]]
 1. Tu máquina envía un mensaje al servidor diciendo: “¿Estás ahí? Quiero hablar” (SYN). 
 2. El servidor responde: “Sí, estoy aquí y también quiero hablar” (SYN‑ACK).
 3. Tu máquina contesta: “Perfecto, empecemos” (ACK). 
@@ -28,7 +28,7 @@ Antes de enviar datos por TCP, los dos equipos se mandan tres mensajes rápidos 
 A esta secuencia de tres pasos se le llama **three‑way handshake** y, cuando termina, ya ambas máquinas pueden empezar a intercambiar datos por TCP de forma normal.
 ## Netcat
 nc (netcat) es una herramienta de línea de comandos que lee y escribe datos a través de la red usando TCP o UDP, hoy la usaremos para conectar a localhost:30000 y enviar la contraseña de bandit14 mediante TCP para recibir la contraseña del siguiente nivel. 
-![[OTW14.02.webp]]
+![[Bandit_Level_14-02.webp]]
 netcat actúa como un cliente/servidor TCP/UDP genérico: puedes abrir conexiones a puertos, enviarles datos por stdin y leer la respuesta por stdout. Es llamado el “cuchillo suizo” de redes porque sirve para depurar servicios, probar puertos, transferir archivos simples y hacer pruebas de conectividad.
 ### ¿Por qué el puerto 30000?
 El puerto 30000 no tiene un significado especial fuera del juego; es el puerto que el nivel define para exponer el servicio que valida la contraseña actual y devuelve la siguiente, de modo que la instrucción es conectar exactamente a localhost:30000. 
@@ -66,20 +66,20 @@ El puerto 30000 no tiene un significado especial fuera del juego; es el puerto q
 ssh -i bandit14.key -p 2220 bandit14@bandit.labs.overthewire.org
 ```
 
-![[OTW14.03.webp]]
+![[Bandit_Level_14-03.webp]]
 	El clásico, nos conectamos directamente a la máquina como el usuario `badit14`.
 
 ### 2. Verificación de contraseña (bandit14)
 ```
  cat /etc/bandit_pass/bandit14
 ```
-![[OTW14.04.webp]]
+![[Bandit_Level_14-04.webp]]
 	Recuerda que en [[Bandit Level 13]] nos confirmaron que la contraseña de cada usuario está en `/etc/bandit_pass/`, y solo ese usuario puede leerla, ahí es obtenemos la **contraseña actual** que luego enviaremos al servicio del puerto 30000.
 ### 3. Verificación del servicio.
 ```
 ss -ltn
 ```
-![[OTW14.05.webp]]
+![[Bandit_Level_14-05.webp]]
 	- `-l` → solo sockets en escucha (listening).   
 	- `-t` → solo TCP.   
 	- `-n` → no resuelve nombres, muestra IPs/puertos numéricos. 
@@ -89,13 +89,13 @@ ss -ltn
 ```
 nc localhost 30000
 ```
-![[OTW14.06.webp]]
+![[Bandit_Level_14-06.webp]]
 	- `nc` es **netcat**, herramienta que permite enviar y recibir datos por TCP/UDP desde la terminal.  
 	- `localhost` apunta a la propia máquina (`127.0.0.1`).  
 	- `30000` es el puerto donde vimos que el servicio está escuchando.  
   
 Al ejecutar el comando se abrirá una sesión interactiva en ese momento pega la contraseña de `bandit14`, pulsa Enter y el servicio responderá con la contraseña de `bandit15`.
-  ![[OTW14.07.webp]]
+  ![[Bandit_Level_14-07.webp]]
 	La máquina te devolverá una cadena la cual es tu credencial para el siguiente nivel; consérvala para iniciar sesión como bandit15.​
 	
 ---

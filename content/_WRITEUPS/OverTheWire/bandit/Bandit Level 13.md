@@ -32,7 +32,7 @@ Los permisos en Linux controlan **quién puede leer, escribir o ejecutar archivo
 
 Para mantener la integridad y privacidad de la clave privada, usamos el comando `chmod` para establecer permisos restrictivos, por ejemplo `chmod 600`, que permite solo al propietario leer y escribir, bloqueando acceso a otros usuarios.
 
-![[OTW13.01.webp]]
+![[Bandit_Level_13-01.webp]]
 
 - `chmod 600 sshkey.private` restringe acceso solo a ti, **el dueño**.    
 - Otros permisos comunes incluyen `644` para archivos de solo lectura pública, o agregar ejecución con `+x`.
@@ -76,7 +76,7 @@ Este nivel es realmente sencillo: solo necesitas conectarte al servidor remoto u
 ssh -p 2220 bandit13@bandit.labs.overthewire.org
 ```
 
-![[OTW13.02.webp]]
+![[Bandit_Level_13-02.webp]]
 Aparecerá el logo clásico de OverTheWire y la máquina te pedirá la contraseña de `bandit13`, obtenida en [[Bandit Level 12]].
 
 ### 2. Verificación de llave SSH.
@@ -86,7 +86,7 @@ cat sshkey.private
 exit
 ```
 
-![[OTW13.03.webp]]
+![[Bandit_Level_13-03.webp]]
 
 Al ejecutar estos comandos veremos el contenido de un archivo llamado `sshkey.private`, que almacena la clave RSA privada necesaria para acceder como el usuario `bandit14` en el siguiente nivel. Puedes copiar todo el contenido de la clave y guardarla en tu máquina local (en cualquier archivo nuevo, por ejemplo, `bandit14.key`). Recuerda que esta información es altamente sensible: es fundamental **no compartirla nunca y protegerla** en tu entorno local asegurando los permisos correctos (`chmod 600 bandit14.key`) para evitar accesos indebidos.​
 ### 3. Creación de llave SSH.
@@ -98,11 +98,11 @@ bat bandit14.key
 
 Primero, en tu PC local, creamos un archivo para guardar la clave privada usando el comando que quieras (yo uso `touch`, pero puedes llamarlo como te dé la gana):
 
-![[OTW13.04.webp]]
+![[Bandit_Level_13-04.webp]]
 Luego, pegamos el contenido copiado de `sshkey.private` dentro del archivo recién creado. Personalmente, prefiero usar `nvim`, pero aquí aplica cualquier editor de texto con el que te sientas cómodo: `vim`, `nano`, `micro`, hasta un editor gráfico si lo prefieres. El punto es que edites el archivo en tu entorno local y pegues toda la clave, cien por ciento.
 
 No olvides guardar y cerrar el archivo (en `nvim` sería `:wq`). Al final, tu sistema tendrá el archivo privado listo para autenticación SSH.
-![[OTW13.05.webp]]
+![[Bandit_Level_13-05.webp]]
 Por último, puedes verificar que la clave esté bien copiada revisando el contenido del archivo con cualquier comando que prefieras. Si eres tradicional, puedes usar `cat bandit14.key`. En mi caso, suelo preferir `bat`, una versión más moderna y colorida (pero al final es lo mismo, solo cuestión de gustos).
 
 **Notas rápidas:**
@@ -114,7 +114,7 @@ Por último, puedes verificar que la clave esté bien copiada revisando el conte
 chmod 600 bandit14.key
 ls -l
 ```
-![[OTW13.06.webp]]
+![[Bandit_Level_13-06.webp]]
 Con esto, el archivo `bandit14.key` queda accesible **solo para el usuario propietario**: puede leerlo y modificarlo, pero nadie más puede tocarlo. Si intentas conectarte sin este paso, SSH te lanzará un error y no te dejará entrar, así que este **cambio es obligatorio**.
 
 Puedes verificar que el cambio fue exitoso usando `ls -l`, donde el archivo debe mostrar permisos `-rw-------`.
@@ -128,7 +128,7 @@ ssh -i bandit14.key -p 2220 bandit14@bandit.labs.overthewire.org
 
 Hora de la verdad, crack. Con la llave privada y los permisos en regla, tu comando debería verse así:
 
-![[OTW13.07.webp]]
+![[Bandit_Level_13-07.webp]]
 
 Si todo está bien, deberías ver el logo clásico de OverTheWire y ya estarás dentro como bandit14. Recuerda: **en este nivel la llave SSH es tu pase de entrada, así que procura guardarla y manejarla con cuidado** (piensa en esto como tu pase VIP, ¡no lo pierdas!).
 

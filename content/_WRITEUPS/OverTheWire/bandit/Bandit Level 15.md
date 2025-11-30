@@ -16,7 +16,7 @@ A diferencia de niveles anteriores, donde bastaba con usar herramientas como `nc
 ## Protocolo SSL/TLS
 SSL/TLS es un protocolo de seguridad que sirve para cifrar la comunicación entre dos equipos (por ejemplo, tu navegador y un servidor) para que nadie pueda leer ni modificar lo que viaja por la red. Esto es precisamente lo que hace posible el “candadito” de las páginas webs HTTPS que visitas y **protege cosas como contraseñas, cookies y datos bancarios**. Básicamente, es una “capa” que se coloca encima de la conexión normal para que todo lo que se envía y recibe vaya cifrado y autenticado entre cliente y servidor.
 ### TLS Handshake 
-![[OTW15.01.webp]]
+![[Bandit_Level_15-01.webp]]
 El TLS handshake es la “presentación” entre cliente y servidor para ponerse de acuerdo en cómo cifrar la conexión antes de enviar datos reales.
 
 1. **Client Hello**: el cliente envía al servidor las versiones TLS que soporta, las suites de cifrado que puede usar y un número aleatorio del cliente.
@@ -31,7 +31,7 @@ OpenSSL es una biblioteca y herramienta de software libre diseñada para impleme
 ### ¿Por qué usamos "OpenSSL s_client"?
 
 El comando `openssl s_client` es una utilidad dentro de OpenSSL que actúa como un cliente genérico para establecer conexiones SSL/TLS con servidores remotos. Se usa para probar, analizar y depurar conexiones seguras, permitiendo a los usuarios verificar certificados, probar protocolos soportados, y obtener detalles técnicos del proceso de handshake y cifrado. 
-![[OTW15.02.webp]]
+![[Bandit_Level_15-02.webp]]
 Esta herramienta es clave para diagnosticar problemas de seguridad, validar configuraciones y entender cómo un servidor maneja conexiones cifradas.
 ## nmap
 nmap es una herramienta que sirve para descubrir **qué puertos y servicios están abiertos en una máquina**, es decir, qué “puertas” de red están escuchando y qué tipo de servicio hay detrás de cada una. En pentesting normalmente se usa **como primer paso de reconocimiento** para saber contra qué servicios (HTTP, SSH, TLS, etc.) vas a "hablar" antes de intentar algo más específico. Hoy no lo usaremos mucho, pero te aseguro que lo estarás usando más de lo que crees.
@@ -57,13 +57,13 @@ nmap es una herramienta que sirve para descubrir **qué puertos y servicios est�
 ```
 ssh -p 2220 bandit15@bandit.labs.overthewire.org
 ```
-![[OTW15.03.webp]]
+![[Bandit_Level_15-03.webp]]
 	Aquí no hay magia: mismo host, mismo puerto 2220, solo cambia el usuario. Ya todo un clásico.
 ### 2. Verificar servicios en puerto 30001
 ```
 nmap -p 30001 localhost
 ```
-![[OTW15.04.webp]]
+![[Bandit_Level_15-04.webp]]
 	Verificamos que el **puerto 30001** esté abierto y escuchando en `localhost`. 
 
 Esto es pura mentalidad de pentester: antes de hablarle a algo, asegúrate de que exista y de que esté vivo.
@@ -71,14 +71,14 @@ Esto es pura mentalidad de pentester: antes de hablarle a algo, asegúrate de qu
 ```
 openssl s_client -connect localhost:30001
 ```
-![[OTW15.05.webp]]
+![[Bandit_Level_15-05.webp]]
 El comando **`openssl s_client`** iniciará la conexión. Automáticamente se realizará el **TLS Handshake**, negociando el cifrado y mostrando el certificado en pantalla. Una vez que el _handshake_ ha finalizado, el canal está **cifrado**. Solo recuerda que `s_client` se comporta como un navegador muy feo pero **muy honesto**, es este paso se hace el TLS Handshake, te muestra el certificado y, cuando termina, todo lo que escribas va **completamente cifrado**.
 
 - Una vez que aparezca la información del certificado, **introduce la contraseña de Bandit 15** (Puedes verla en `/etc/bandit_pass/bandit15`).    
-![[OTW15.06.webp]]    
+![[Bandit_Level_15-06.webp]]    
 
 - Presiona **Enter** para enviarla, dah.
-![[OTW15.07.webp]]
+![[Bandit_Level_15-07.webp]]
 	Espera la respuesta, el servicio valida la contraseña y te escupirá la contraseña de Bandit 16 por el mismo canal cifrado. Y listo, nivel pasado, crack.
 
 ---
