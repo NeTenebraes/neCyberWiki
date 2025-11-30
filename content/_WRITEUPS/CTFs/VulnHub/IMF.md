@@ -1,6 +1,6 @@
 ---
-title: IMF
-date: 2025-10-31
+title: "VulnHub: IMF"
+publishDate: 2025-10-31
 tags:
   - writeup
   - vulnhub
@@ -8,11 +8,6 @@ tags:
   - escalada-privilegios
   - web-exploitation
   - BoF
-related:
-  - "[[SQLi-Manual]]"
-  - "[[Git-Reconnaissance]]"
-  - "[[Linux-Privesc]]"
-  - "[[SSH-Techniques]]"
 references:
   - https://www.vulnhub.com/entry/imf-1,162/
 ---

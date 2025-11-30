@@ -1,5 +1,5 @@
 ---
-title: darkhole_2
+title: "VulnHub: darkhole_2"
 publishDate: 2025-10-09
 tags:
   - writeup
