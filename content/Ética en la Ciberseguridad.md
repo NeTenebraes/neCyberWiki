@@ -7,10 +7,10 @@ tags:
   - legal
 publishDate: 2025-11-01
 ---
-> [!QUOTE]  El conocimiento es poder
-> Recuerda... "***un gran poder, conlleva una gran responsabilidad***”.
-
+## ¡Un Aviso Importante!
 ![[Disclaimer.webp]]
+> "***Domina la Técnica, Respeta la  ley***”.
+
 El objetivo es fortalecer y proteger, no causar daño ni aprovecharte de debilidades fuera del marco legal permitido. Realiza pruebas en laboratorios controlados o con permiso formal y documentado; si no existe, no ejecutes **NADA**. Define mínimos éticos, legales y operativos antes de aplicar técnicas ofensivas/defensivas, recuerda siempre proteger todo activo y sistemas por encima de cualquier experimento técnico. **Se aplica a todo el contenido de esta Web y a su contenido. Esto debe leerse y entenderse antes de ejecutar cualquier snippet, PoC, Script o automatización**.
 ### Principios básicos
 - Confidencialidad: Acceso solo para quien corresponde. 
