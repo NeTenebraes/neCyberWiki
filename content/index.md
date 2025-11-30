@@ -34,12 +34,12 @@ El contenido abarcará desde los fundamentos hasta temas avanzados:
 
 Sencillo, **aprender haciendo me funcionó**: construí mis propias herramientas y documenté cada atajo, bug y mejora del proceso. 
 
-**La neCyberWIKI es mi cuaderno abierto**: **notas que apliqué tal cual**, pensadas para pentesting, scripting, privacidad y pura practica, nada de promesas vacías. S**igo afinando mis habilidades a diario para objetivos concretos** y, sobre todo, porque **todo esto me apasiona**. Aquí comparto lo que realmente me funciona para avanzar.
+**La neCyberWIKI es mi cuaderno abierto**: **notas que apliqué tal cual**, pensadas para pentesting, scripting, privacidad y pura practica, nada de promesas vacías. **Sigo afinando mis habilidades a diario para objetivos concretos** y, sobre todo, porque **todo esto me apasiona**. Aquí comparto lo que realmente me funciona para avanzar.
 
 Esta guía nació de la necesidad de dejar un **camino claro para quien quiera aprender ciberseguridad de manera práctica, divertida y accesible**. Además, también sirve para recordarme a mi mismo que **no hay excusas**.
 
 ---
-## DESARROLLO: Sigue mi Progreso en Threads 🚀
+## DESARROLLO: Sigue mi Progreso en Threads
 
 **Este proyecto es un viaje en constante evolución**. Para hacerlo más transparente documento mi día a día, los descubrimientos, los retos y las pequeñas victorias directamente en Threads.
 
@@ -47,16 +47,7 @@ Es una bitácora en tiempo real donde comparto notas rápidas, recursos que encu
 
 🔗 **¡Sigueme en Threads y no te pierdas ninguna actualización!** [**@netenebrae**](https://www.threads.com/@netenebrae)
 
-![[Threads]()](https://i.postimg.cc/XJf9f4H7/Screenshot-2025-10-26-21-16-04.png)
+![[Threads.webp]]
 
 ---
-## ⚡ ¡Puedes aportar a la neCyberWiki!
 
-Este proyecto está abierto a la comunidad. Si algo de aquí te sirvió, puedes devolver el favor:
-* 🛠️ **Mejora el Contenido:** Si puedes explicar un tema mejor o detectar lagunas, ¡Haz un pull request!
-* 🔗 **Comparte Recursos:** ¿Conoces un blog, video o curso gratuito útil? ¡Haz un pull request!
-* 🧩 **Reporta Bugs:** Enlaces rotos, info vieja o errores. Todo feedback mejora la base de datos.
-* 🚀 **Difunde el Proyecto:** Siéntete libre de compartir la neCyberWIKI a quien creas que le pueda servir.
-
-Para contribuir:
-- Abre un **[Issue](https://github.com/NeTenebraes/neCyberWiki/issues)** si quieres proponer algo o crea un **[Pull Request](https://github.com/NeTenebraes/neCyberWiki/pulls)** y modifica directamente el contenido.
