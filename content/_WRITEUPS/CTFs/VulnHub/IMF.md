@@ -978,6 +978,6 @@ echo "R2gwc3RQcm90MGMwbHM=" | base64 -d; echo
 - [VulnHub Community](https://www.vulnhub.com/)
 
 ---
-**Última Actualización**: Noviembre 29, 2025  
+**Última Actualización**: Noviembre 30, 2025  
 **Autor**: NeTenebrae  
 **GitHub**: [github.com/NeTenebraes](https://github.com/NeTenebraes)  
