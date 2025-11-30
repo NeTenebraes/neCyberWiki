@@ -13,8 +13,13 @@ references:
   - https://www.vulnhub.com/entry/darkhole-2,740/
 ---
 ![[cover.png]] 
->[!INFO] Información General
->Aquí encontrarás un Writeup de como hackear la máquina "darkhole_2" de VulnHub. A lo largo de la cual aprenderás a como funcionan diversos ataques de inyección SQL, en que consiste la enumeración básica de subdominios y nos aprovecharemos de un servicios expuesto bajo el puerto 9999 para realizar una escalada de privilegios.
+# Información General  
+>Este documento contiene información detallada de cómo comprometer la máquina DarkHole 2 en VulnHub. Se abordan principalmente las técnicas: **Git Information Disclosure**, **SQL Injection** y **Command Injection**.
+
+**DarkHole: 2** es una máquina de dificultad "Fácil" alojada en [VulnHub](https://www.vulnhub.com/), diseñada para poner a prueba habilidades de auditoría web avanzada y escalada de privilegios en entornos Linux. El objetivo es capturar dos flags (user y root) simulando una intrusión real.
+
+Este writeup documenta el proceso de auditoría completo. El vector de ataque inicial se basa en una fuga de información a través de un repositorio **.git** expuesto, lo que permite obtener credenciales para acceder al panel web. Posteriormente, se abusa de una vulnerabilidad de **Inyección SQL (SQLi)** para volcar la base de datos y obtener acceso SSH. Finalmente, la escalada de privilegios se logra manipulando un servicio interno que corre en el puerto 9999, explotando una vulnerabilidad de inyección de comandos para alcanzar acceso como root.
+
 ---
 ## Objetivo
 
@@ -22,6 +27,12 @@ references:
 - Obtener acceso inicial mediante enumeración web.
 - Escalar privilegios hasta root mediante abuso de servicios locales.
 - Capturar las flags user.txt y root.txt
+
+> [!DANGER] Disclaimer Ético
+> Este material ha sido creado exclusivamente con fines educativos y de investigación. **El uso indebido de esta información para atacar objetivos sin autorización explícita es ilegal y contraviene los principios del hacking ético**.
+> 
+> **Antes de continuar:** Lee mi nota "**[[Ética en la Ciberseguridad]]**" para más información. 
+
 ## Herramientas y Comandos Recomendados
 
 | Herramienta | Función principal                             |

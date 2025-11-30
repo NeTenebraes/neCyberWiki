@@ -19,14 +19,22 @@ references:
 ![[IMF-01.webp]]
 # Información General  
 >Este documento contiene información detallada de cómo comprometer la máquina IMF en VulnHub. Se abordan principalmente las técnicas: **SQLi Boolean Blind** y **Buffer Overflow**.
+
+**IMF: 1** es una máquina ***Boot2Root*** de dificultad moderada alojada en [VulnHub](https://www.vulnhub.com/), diseñada para **simular** el entorno de una agencia de inteligencia ficticia ("Impossible Mission Force"). A diferencia de los CTF tradicionales, el reto destaca por integrar múltiples flags progresivas, donde cada una revela la pista necesaria para la siguiente etapa.
+
+ Este writeup documenta el proceso de auditoría completo, desde el reconocimiento inicial hasta la explotación de binarios en bajo nivel. El vector de ataque comienza con la enumeración web para descubrir puntos de entrada ocultos, evoluciona a través de una inyección SQL ciega basada en booleanos (Boolean-Based SQLi) para la exfiltración de credenciales, y culmina en el análisis de un servicio personalizado vulnerable a **Buffer Overflow**, permitiendo la ejecución remota de código y la escalada final de privilegios.
+
 ---
-## Inicio
-![[IMF-02.webp]]
 ## Objetivos
 - Comprometer la máquina virtual [IMF: 1](https://www.vulnhub.com/entry/imf-1,162/).
 - Obtener acceso inicial mediante enumeración web.
 - Escalar privilegios hasta root mediante abuso de servicios vulnerables.
 - Capturar las 6 flags.
+
+> [!DANGER] Disclaimer Ético
+> Este material ha sido creado exclusivamente con fines educativos y de investigación. **El uso indebido de esta información para atacar objetivos sin autorización explícita es ilegal y contraviene los principios del hacking ético**.
+> 
+> **Antes de continuar:** Lee mi nota "**[[Ética en la Ciberseguridad]]**" para más información. 
 ## Técnicas Aplicadas
 - **Reconocimiento de Red**: Identificación de objetivos mediante ARP y TCP  
 - **Enumeración de Servicios**: Detección de versiones y aplicaciones  
