@@ -48,6 +48,3 @@ Es una bitácora en tiempo real donde comparto notas rápidas, recursos que encu
 🔗 **¡Sigueme en Threads y no te pierdas ninguna actualización!** [**@netenebrae**](https://www.threads.com/@netenebrae)
 
 ![[Threads.webp]]
-
----
-
