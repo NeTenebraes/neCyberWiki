@@ -1,5 +1,5 @@
 ---
-title: "VulnHub: IMF"
+title: IMF
 date: 2025-10-31
 tags:
   - writeup
