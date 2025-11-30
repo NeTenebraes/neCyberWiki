@@ -1,10 +1,17 @@
 ---
-level: "Bandit 3 → Bandit 4"
-target: "Encontrar contraseña en archivo oculto con ls y find."
-tags: [linux, bash, ctf, bandit, hidden-files, ls, find]
-difficulty: "★☆☆☆☆"
-date: 2025-10-26
----
+title: "OTW Bandit: 3"
+cover:
+description:
+tags:
+  - linux
+  - bash
+  - ctf
+  - bandit
+  - quoting
+  - escaping
+  - spaces-in-filename
+difficulty: ★☆☆☆☆
+publishDate: 2025-10-26
 ---
 ### Resumen
 Este write-up detalla dos métodos para encontrar una contraseña almacenada en un archivo oculto (dotfile). El primer método utiliza `ls -a` para la enumeración manual, mientras que el segundo, más didáctico, emplea el comando `find` para localizar la ruta del archivo y `cat` para leerlo.
@@ -13,10 +20,7 @@ Este write-up detalla dos métodos para encontrar una contraseña almacenada en 
 La contraseña para el siguiente nivel, Bandit 4, está guardada en un archivo oculto que se encuentra dentro del directorio `inhere`.
 
 ### Contexto
-Este nivel refuerza la comprensión sobre los archivos ocultos en sistemas Unix. Demuestra tanto el método de inspección manual como un enfoque de búsqueda automatizada, una habilidad crucial para escenarios donde los archivos no están en ubicaciones obvias.
-
-### Aplicación en Ciberseguridad
-El comando `find` es una herramienta indispensable en pentesting y análisis forense. Permite a los profesionales de la seguridad localizar rápidamente archivos de configuración, logs, credenciales o artefactos de malware en sistemas de archivos complejos, basándose en atributos como nombre, permisos, tamaño o fecha.
+Este nivel refuerza la comprensión sobre los archivos ocultos en sistemas Unix. Demuestra tanto el método de inspección manual como un enfoque de búsqueda automatizada, una habilidad crucial para escenarios donde los archivos no están en ubicaciones obvias. El comando `find` es una herramienta indispensable en pentesting y análisis forense. Permite a los profesionales de la seguridad localizar rápidamente archivos de configuración, logs, credenciales o artefactos de malware en sistemas de archivos complejos, basándose en atributos como nombre, permisos, tamaño o fecha.
 
 ### Comandos y Conceptos Relevantes
 *   **`ls -a`**: Lista todo el contenido de un directorio, incluyendo los archivos y directorios ocultos.
@@ -32,33 +36,32 @@ El comando `find` es una herramienta indispensable en pentesting y análisis for
 ```
 ssh bandit3@bandit.labs.overthewire.org -p 2220
 ```
-![OverTheWire.bandit](_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit18.png)
+![[OTW03.01.webp]]
     Se utiliza la contraseña del nivel anterior para iniciar la sesión SSH.
 
 2. **Confirmamos la existencia de los directorios**
-![OverTheWire.bandit](_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit17.png)
+![[OTW03.02.webp]]
 
 3. **Explorar el directorio `inhere`**
 ```
 cd inhere
 ```
-![OverTheWire.bandit](_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit16.png)
+![[OTW03.03.webp]]
     Se accede al directorio especificado en el objetivo.
 
 4.  **Listar todos los archivos para encontrar el oculto**
 ```
 ls -a
 ```
-![OverTheWire.bandit](_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit15.png)
+![[OTW03.04.webp]]
     El uso de `ls -a` revela el archivo `.hidden` que no es visible con un `ls` simple.
 
 5.  **Leer el contenido del archivo `...Hiding-From-You`**
 ```
 cat ...Hiding-From-You
 ```
-![OverTheWire.bandit](_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit14.png)
-- Se utiliza `cat` para mostrar la contraseña.
-- **Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
+![[OTW03.05.webp]]
+- Se utiliza `cat` para mostrar la contraseña. **Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
 ### Método Alternativo (Solución con `find`)
 
 Este método simplificado separa la búsqueda de la lectura, lo cual es útil para entender el proceso en dos pasos.
@@ -67,7 +70,7 @@ Este método simplificado separa la búsqueda de la lectura, lo cual es útil pa
 ```
 find . 
 ```
-![OverTheWire.bandit](_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit13.png)
+![[OTW03.06.webp]]
 - Desde el directorio actual, se buscan todos los archivo (`.`)
 - La salida de este comando será la ruta relativa de todos los archivos en la carpeta actual: `./inhere/...Hiding-From-You`
 
@@ -75,7 +78,7 @@ find .
 ```
 cat ./inhere/...Hiding-From-You
 ```
-![OverTheWire.bandit](_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit19.png)
+![[OTW03.07.webp]]
 - Una vez localizada la ruta, se usa `cat` para leer el archivo.
 - **Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
 ---

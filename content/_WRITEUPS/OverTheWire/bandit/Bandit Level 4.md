@@ -1,6 +1,7 @@
 ---
-level: Bandit 4 → Bandit 5
-target: Identificar y leer un único archivo de texto legible por humanos en un directorio.
+title: "OTW Bandit: 4"
+cover:
+description:
 tags:
   - linux
   - bash
@@ -11,8 +12,7 @@ tags:
   - find
 difficulty:
   - ★☆☆☆☆
-date: 2025-10-26
----
+publishDate: 2025-10-26
 ---
 ### Resumen
 Este write-up detalla el proceso para identificar un archivo de texto plano (legible por humanos) entre múltiples archivos binarios en un directorio. La solución principal se basa en el uso del comando `file` para analizar el contenido de cada archivo. Se incluye un método alternativo que combina `find` y `file` para automatizar la búsqueda.
@@ -21,10 +21,7 @@ Este write-up detalla el proceso para identificar un archivo de texto plano (leg
 La contraseña para el siguiente nivel, Bandit 5, está almacenada en el único archivo legible por humanos que se encuentra dentro del directorio `inhere`.
 
 ### Contexto
-En sistemas Linux, no todos los archivos son texto plano. Muchos son binarios (ejecutables, imágenes, datos compilados). Este nivel enseña una habilidad fundamental: cómo determinar el tipo de un archivo antes de intentar leerlo. Esto previene la corrupción de la terminal y es un paso esencial en el análisis de sistemas de archivos desconocidos.
-
-### Aplicación en Ciberseguridad
-En análisis forense y respuesta a incidentes, es crucial distinguir entre archivos de registro (texto), ejecutables maliciosos (binarios) y otros tipos de datos. Un analista debe usar herramientas como `file` para clasificar rápidamente cientos de archivos y priorizar cuáles investigar. `cat`-ear un archivo binario no solo es inútil, sino que puede ocultar información o desestabilizar la sesión de análisis.
+En sistemas Linux, no todos los archivos son texto plano. Muchos son binarios (ejecutables, imágenes, datos compilados). Este nivel enseña una habilidad fundamental: cómo determinar el tipo de un archivo antes de intentar leerlo. Esto previene la corrupción de la terminal y es un paso esencial en el análisis de sistemas de archivos desconocidos. En análisis forense y respuesta a incidentes, es crucial distinguir entre archivos de registro (texto), ejecutables maliciosos (binarios) y otros tipos de datos. Un analista debe usar herramientas como `file` para clasificar rápidamente cientos de archivos y priorizar cuáles investigar. `cat`-ear un archivo binario no solo es inútil, sino que puede ocultar información o desestabilizar la sesión de análisis.
 
 ### Comandos y Conceptos Relevantes
 * **`file`**: Determina el tipo de un archivo examinando su tipo de contenido (**Magic Numbers**).
@@ -42,7 +39,7 @@ En análisis forense y respuesta a incidentes, es crucial distinguir entre archi
 ```
 ssh bandit4@bandit.labs.overthewire.org -p 2220
  ```
-![OverTheWire.bandit](_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit24.png)
+![[OTW04.01.webp]]
     Se utiliza la contraseña del nivel anterior para la sesión SSH.
 
 2.  **Confirma la existencia y navega hacia al directorio `inhere`**
@@ -50,14 +47,14 @@ ssh bandit4@bandit.labs.overthewire.org -p 2220
 ls 
 cd inhere
 ```
-![OverTheWire.bandit](_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit23.png)
+![[OTW04.02.webp]]
 
 3.  **Analizar todos los archivos con el comando `file`**
 ```
 ls
 file ./*
 ```
-![OverTheWire.bandit](_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit22.png)
+![[OTW04.03.webp]]
    Al ejecutar `ls`, se ven varios archivos con nombres como `-file00`, `-file01`, etc. Para saber cuál es de texto, se usa `file ./*`.  La salida mostrará el tipo de cada archivo. La mayoría serán de tipo `data` (binarios), pero uno será identificado como `ASCII text`.
 
 
@@ -66,8 +63,8 @@ file ./*
 ```
 cat ./-file07
 ```
-![OverTheWire.bandit](_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit21.png)
-	**Nota**: El nombre del archivo comienza con un guion, por lo que es necesario usar la ruta relativa `./` para que `cat` no lo interprete como una opción.
+![[OTW04.04.webp]]
+	**Nota**: El nombre del archivo comienza con un guion, por lo que es necesario usar la ruta relativa `./` para que `cat` no lo interprete como una opción. **Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
 
 ### Métodos Alternativos (`grep`)
 
@@ -77,14 +74,14 @@ Este método es más avanzado y eficiente, ya que automatiza la identificación 
 ```
 find . -type f -exec file {} +
 ```
-![OverTheWire.bandit](_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit20.png)
+![[OTW04.05.webp]]
     El resultado es similar al de `file ./*`, pero `find` es más potente ya que puede **buscar en subdirectorios y ejecutar find al unisono.**
 
 2.  **Filtrar el resultado para encontrar solo archivos de texto**: Se puede mejorar el comando anterior usando una **tubería** (`|`) para enviar el resultado a `grep` y filtrar solo la línea que contiene "ASCII text".
  ```
  find . -type f -exec file {} + | grep "ASCII text"
  ```
-![OverTheWire.bandit](_WRITEUPS/OverTheWire/bandit/assets/OverTheWire.bandit25.png)
+![[OTW04.06.webp]]
     La salida de este comando mostrará únicamente la línea correspondiente al archivo de texto, haciendo su identificación inmediata. A partir de ahí, solo queda usar `cat` sobre ese nombre de archivo.
 
 ---

@@ -1,90 +1,31 @@
-# Citizen Code of Conduct
+# Código de Conducta de la neCyberWiki
 
-## 1. Purpose
+En la neCyberWiki estamos comprometidos con un entorno respetuoso, legal y ético en todas nuestras actividades relacionadas con la ciberseguridad. Nuestro propósito es fomentar el aprendizaje, la colaboración y la práctica responsable, siempre respetando el marco legal vigente. Consulta "[[Ética en la Ciberseguridad]]" para más información.
 
-A primary goal of the Quartz community is to be inclusive to the largest number of contributors, with the most varied and diverse backgrounds possible. As such, we are committed to providing a friendly, safe and welcoming environment for all, regardless of gender, sexual orientation, ability, ethnicity, socioeconomic status, and religion (or lack thereof).
+## Principios Éticos y Legales
 
-This code of conduct outlines our expectations for all those who participate in our community, as well as the consequences for unacceptable behavior.
+- La ética y la legalidad son pilares fundamentales: todas las acciones deben realizarse dentro de los límites legales aplicables y respetando los derechos de terceros.
+- La neCyberWiki promueve la protección, no la explotación: el objetivo es fortalecer la seguridad, no causar daño ni aprovechar debilidades fuera del marco legal permitido.
+- Solo se deben realizar pruebas en entornos controlados, con permiso formal y documentado; en caso contrario, no ejecutar ninguna acción que pueda comprometer sistemas o datos.
+- Define y respeta los mínimos éticos, legales y operativos antes de aplicar técnicas ofensivas o defensivas. La protección de activos y sistemas debe estar siempre por encima de cualquier experimento técnico.
+- La confidencialidad, integridad y disponibilidad son valores irrenunciables; debe garantizarse el acceso autorizado, la integridad de los datos y la operatividad de los servicios cuando sean necesarios.
 
-We invite all those who participate in the Quartz community to help us create safe and positive experiences for everyone.
+## Reglas para la Participación
 
-## 2. Open [Source/Culture/Tech] Citizenship
+- La participación debe ser respetuosa, inclusiva y segura para todos los miembros, sin discriminación por género, raza, orientación sexual, discapacidad o cualquier otra condición.
+- Se debe informar y documentar claramente el alcance y los permisos de cualquier actividad relacionada con ciberseguridad.
+- Queda prohibida cualquier actividad que viole leyes, políticas institucionales o que cause daño a personas, organizaciones o infraestructuras.
+- Evita el uso de datos reales cuando no sea estrictamente necesario y siempre con consentimiento expreso.
+- Conserva evidencia y registros de las pruebas realizadas para garantizar transparencia y responsabilidad.
+- En caso de hallar vulnerabilidades en activos autorizados, repórtalas por los canales oficiales correspondientes y sigue buenas prácticas de divulgación responsable.
 
-A supplemental goal of this Code of Conduct is to increase open [source/culture/tech] citizenship by encouraging participants to recognize and strengthen the relationships between our actions and their effects on our community.
+## Reportes y Consecuencias
 
-Communities mirror the societies in which they exist and positive action is essential to counteract the many forms of inequality and abuses of power that exist in society.
+- Cualquier comportamiento que viole este código debe ser reportado a los administradores de la neCyberWiki a través del correo: netenebrae@duck.com.    
+- Los reportes serán tratados con confidencialidad y seriedad, y se evaluarán para tomar las medidas correspondientes.    
+- Las consecuencias por incumplimiento pueden incluir advertencias, suspensión o exclusión de la comunidad, y en casos graves, acciones legales conforme a la legislación vigente.
+## Responsabilidad Legal y Seguridad
 
-If you see someone who is making an extra effort to ensure our community is welcoming, friendly, and encourages all participants to contribute to the fullest extent, we want to know.
-
-## 3. Expected Behavior
-
-The following behaviors are expected and requested of all community members:
-
-- Participate in an authentic and active way. In doing so, you contribute to the health and longevity of this community.
-- Exercise consideration and respect in your speech and actions.
-- Attempt collaboration before conflict.
-- Refrain from demeaning, discriminatory, or harassing behavior and speech.
-- Be mindful of your surroundings and of your fellow participants. Alert community leaders if you notice a dangerous situation, someone in distress, or violations of this Code of Conduct, even if they seem inconsequential.
-- Remember that community event venues may be shared with members of the public; please be respectful to all patrons of these locations.
-
-## 4. Unacceptable Behavior
-
-The following behaviors are considered harassment and are unacceptable within our community:
-
-- Violence, threats of violence or violent language directed against another person.
-- Sexist, racist, homophobic, transphobic, ableist or otherwise discriminatory jokes and language.
-- Posting or displaying sexually explicit or violent material.
-- Posting or threatening to post other people's personally identifying information ("doxing").
-- Personal insults, particularly those related to gender, sexual orientation, race, religion, or disability.
-- Inappropriate photography or recording.
-- Inappropriate physical contact. You should have someone's consent before touching them.
-- Unwelcome sexual attention. This includes, sexualized comments or jokes; inappropriate touching, groping, and unwelcomed sexual advances.
-- Deliberate intimidation, stalking or following (online or in person).
-- Advocating for, or encouraging, any of the above behavior.
-- Sustained disruption of community events, including talks and presentations.
-
-## 5. Weapons Policy
-
-No weapons will be allowed at Quartz community events, community spaces, or in other spaces covered by the scope of this Code of Conduct. Weapons include but are not limited to guns, explosives (including fireworks), and large knives such as those used for hunting or display, as well as any other item used for the purpose of causing injury or harm to others. Anyone seen in possession of one of these items will be asked to leave immediately, and will only be allowed to return without the weapon. Community members are further expected to comply with all state and local laws on this matter.
-
-## 6. Consequences of Unacceptable Behavior
-
-Unacceptable behavior from any community member, including sponsors and those with decision-making authority, will not be tolerated.
-
-Anyone asked to stop unacceptable behavior is expected to comply immediately.
-
-If a community member engages in unacceptable behavior, the community organizers may take any action they deem appropriate, up to and including a temporary ban or permanent expulsion from the community without warning (and without refund in the case of a paid event).
-
-## 7. Reporting Guidelines
-
-If you are subject to or witness unacceptable behavior, or have any other concerns, please notify a community organizer as soon as possible. j.zhao2k19@gmail.com.
-
-Additionally, community organizers are available to help community members engage with local law enforcement or to otherwise help those experiencing unacceptable behavior feel safe. In the context of in-person events, organizers will also provide escorts as desired by the person experiencing distress.
-
-## 8. Addressing Grievances
-
-If you feel you have been falsely or unfairly accused of violating this Code of Conduct, you should notify @jackyzha0 with a concise description of your grievance. Your grievance will be handled in accordance with our existing governing policies.
-
-## 9. Scope
-
-We expect all community participants (contributors, paid or otherwise; sponsors; and other guests) to abide by this Code of Conduct in all community venues--online and in-person--as well as in all one-on-one communications pertaining to community business.
-
-This code of conduct and its related procedures also applies to unacceptable behavior occurring outside the scope of community activities when such behavior has the potential to adversely affect the safety and well-being of community members.
-
-## 10. Contact info
-
-j.zhao2k19@gmail.com
-
-## 11. License and attribution
-
-The Citizen Code of Conduct is distributed by [Stumptown Syndicate](http://stumptownsyndicate.org) under a [Creative Commons Attribution-ShareAlike license](http://creativecommons.org/licenses/by-sa/3.0/).
-
-Portions of text derived from the [Django Code of Conduct](https://www.djangoproject.com/conduct/) and the [Geek Feminism Anti-Harassment Policy](http://geekfeminism.wikia.com/wiki/Conference_anti-harassment/Policy).
-
-_Revision 2.3. Posted 6 March 2017._
-
-_Revision 2.2. Posted 4 February 2016._
-
-_Revision 2.1. Posted 23 June 2014._
-
-_Revision 2.0, adopted by the [Stumptown Syndicate](http://stumptownsyndicate.org) board on 10 January 2013. Posted 17 March 2013._
+- Cada participante es responsable de cumplir con las leyes locales e internacionales aplicables en materia de ciberseguridad.
+- Está prohibido realizar pruebas o acciones no autorizadas en sistemas productivos o sin explícito consentimiento.
+- Se recomienda crear y/o utilizar entornos aislados para pruebas, con respaldos y planes de recuperación ante posibles daños.
