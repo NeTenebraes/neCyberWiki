@@ -20,6 +20,7 @@ references:
 # Información General  
 >Este documento contiene información detallada de cómo comprometer la máquina IMF en VulnHub. Se abordan principalmente las técnicas: **SQLi Boolean Blind** y **Buffer Overflow**.
 ---
+## Inicio
 ![[IMF-02.webp]]
 ## Objetivos
 - Comprometer la máquina virtual [IMF: 1](https://www.vulnhub.com/entry/imf-1,162/).
