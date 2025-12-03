@@ -43,7 +43,6 @@ references:
 Este writeup fue realizado bajo las siguientes condiciones:
 - **Hipervisor**: VMware Workstation Pro
 - **Sistema Operativo Host**: Arch Linux
-- **Máquina Atacante**: Kali Linux (virtualizada)
 - **Máquina Objetivo**: IMF 1 (VulnHub)
 - **Red**: vmnet1 (Red privada de VMware)
 ## Herramientas y Comandos Usados
@@ -94,9 +93,9 @@ Parámetros:
 - `--localnet`: Indica escaneo de toda la red local
 
 ![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-02.webp]]
-Este escaneo me identifica la máquina objetivo en "`172.16.23.129`" dentro de mi red `vmnet1`.
+Este escaneo me identifica la máquina objetivo en "`172.16.23.129`" dentro de la red `vmnet1`.
 
-Identificamos que hay una máquina, por lo que podemos ejecutar el comando ping para verificar conección con la máquina:
+Identificamos que hay una máquina, por lo que podemos ejecutar el comando ping para verificar conexión con la máquina:
 
 ```bash
 ping 172.16.23.129
@@ -590,7 +589,9 @@ find / -name "*agent*" 2>/dev/null
 Encontramos que existe `/usr/local/bin/agent`. Al ejecutarlo vemos que espera un ID:
 ![[IMF-45.webp]]
 
-Dentro del mismo directorio encontramos un archivo llamado `access_codes` que contiene: `SYN 7482,8279,9467`
+Dentro del mismo directorio encontramos un archivo llamado `access_codes` que contiene: `SYN 7482,8279,9467`. Esto es una clara referencia al Port Knocking que comentamos anteriormente. 
+
+
 ![[IMF-46.webp]]
 ### 6.3 Análisis del Binario con ltrace
 
@@ -616,8 +617,6 @@ Ejecutamos el binario del agent:
 ```
 ![[IMF-48.webp]]
 El binario nos presentará opciones. Seleccionamos opción 3 para explotar el buffer overflow.
-
-
 ### 6.5 Traer el equipo a la maquina
 
 Necesitamos trabajar con el binario en nuestra máquina atacante para analizarlo mejor. Podemos apoyarnos de le herramienta netcat para esto:
