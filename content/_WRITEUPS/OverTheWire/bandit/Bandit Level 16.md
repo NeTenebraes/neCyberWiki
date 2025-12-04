@@ -1,37 +1,34 @@
 ---
-title: "OTW Bandit: 15"
-description:
+title: "OTW Bandit: 16"
+description: El objetivo de este nivel es encontrar con nmap el puerto en el rango de 31000 a 32000 en localhost que escucha un servicio SSL/TLS, luego conectarse via openssl para obtener la siguiente contraseña.
 tags:
   - linux
   - bash
   - bandit
-difficulty:
-  - ★☆☆☆☆
-publishDate: 2025-11-18
+  - nmap
+  - puertos
+  - openssl
+  - s_client
+Dificultad:
+  - ★★☆☆☆
+publishDate: 2025-12-04
 ---
-## Introducción
+## Introducción y Desafío
 
+El desafío en este nivel consiste en encontrar un servicio cifrado (SSL/TLS) que escucha en un puerto dentro del amplio rango **31000 a 32000** en `localhost`. El objetivo es conectarnos al puerto correcto y enviarle la contraseña de Bandit16 para que nos devuelva la contraseña del siguiente nivel. **¡A buscar esa aguja en el pajar!**
 
-## Protocolo SSL/TLS
+##  Conceptos Clave
 
-### TLS Handshake 
-![[Bandit_Level_15-01.webp]]
+### nmap | Escaneo de Puerto:
 
-1. **Client Hello**: el cliente envía al servidor las versiones TLS que soporta, las suites de cifrado que puede usar y un número aleatorio del cliente.
-2. **Server Hello + certificado**: el servidor elige versión y cifrado de la lista del cliente, envía su propio número aleatorio y adjunta su certificado con la clave pública para identificarse.
-3. **Intercambio de claves (Pre‑Master Secret)**: usando la clave pública del servidor y un algoritmo de intercambio (RSA, Diffie‑Hellman, etc.), cliente y servidor generan de forma segura un secreto compartido.
-4. **ChangeCipherSpec + Finished**: ambos derivan a partir de ese secreto las claves de sesión simétricas, avisan de que a partir de ahora cifrarán todo y se envían mensajes “Finished” para confirmar que todo salió bien.
-5. **Datos cifrados**: con las claves de sesión listas, ya se envían y reciben los datos de la aplicación (HTTP, etc.) cifrados y autenticados.
-### SSL vs TLS
+Detectar qué "puertas" están abiertas dentro del rango especificado. Esto es pura mentalidad de reconocimiento. 
 
-## OpenSSL
+Explicar nmap bie
 
-### ¿Por qué usamos "OpenSSL s_client"?
+## OpenSSL y conexión -quiet
 
-
-![[Bandit_Level_15-02.webp]]
-
-## nmap
+- **Conexiones Cifradas (`openssl s_client`)**: Herramienta crucial para interactuar con servicios que usan SSL/TLS, actuando como un cliente real.    
+- **Parámetro `-quiet`**: Solución específica para manejar el comportamiento problemático del servicio después del _handshake_.    
 
 ## Comandos Clave
 * **`ssh`**: Comando para conectarse de forma segura a un servidor remoto mediante el protocolo Secure Shell (SSH).
@@ -39,48 +36,126 @@ publishDate: 2025-11-18
         * `-p [puerto]`: Especifica el puerto remoto (ej: `-p 2220`).
         * `usuario@host`: Define el usuario y el servidor al que te conectas.
 
-* **`nmap`**: Herramienta de escaneo de red para descubrir hosts activos, puertos abiertos y servicios. Es fundamental en las fases de **reconocimiento y auditoría básica**.
-    * Parámetros usados relevantes:
-        * `-p [puertos]`: Selecciona puertos específicos (ej: `-p 80,443` o `-p 30001`).
+* **`nmap`**: Fundamental en las fases de **reconocimiento y auditoría básica**.
+    * Parámetros usados:
+        * `-p [puertos]`: Selecciona puertos específicos (ej: `-p 80,443` o `-p 30001-32000`).
         * `localhost`: Se usa para escanear el propio sistema local.
 
 * **`openssl`**: Toolkit de línea de comandos para trabajar con **TLS/SSL y criptografía**.
     * Subcomando clave para la tarea:
         * **`s_client -connect host:puerto`**: Actúa como un cliente TLS/SSL para establecer una conexión segura. Es esencial para **probar el handshake**, ver el certificado y enviar datos cifrados.
-
+        * -quiet
 ---
-## Solución
 
-### 1. Conectarnos como Bandit16
-```
-ssh -p 2220 bandit15@bandit.labs.overthewire.org
-```
-![[Bandit_Level_15-03.webp]]
-	Aquí no hay magia: mismo host, mismo puerto 2220, solo cambia el usuario. Ya todo un clásico.
-### 2. Verificar servicios en puerto 30001
-```
-nmap -p 30001 localhost
-```
-![[Bandit_Level_15-04.webp]]
-	Verificamos que el **puerto 30001** esté abierto y escuchando en `localhost`. 
+##  Solución Paso a Paso
 
-Esto es pura mentalidad de pentester: antes de hablarle a algo, asegúrate de que exista y de que esté vivo.
-### 3. Enviar Handshake al servidor y  Credenciales de bandit16. 
-```
-openssl s_client -connect localhost:30001
-```
-![[Bandit_Level_15-05.webp]]
-El comando **`openssl s_client`** iniciará la conexión. Automáticamente se realizará el **TLS Handshake**, negociando el cifrado y mostrando el certificado en pantalla. Una vez que el _handshake_ ha finalizado, el canal está **cifrado**. Solo recuerda que `s_client` se comporta como un navegador muy feo pero **muy honesto**, es este paso se hace el TLS Handshake, te muestra el certificado y, cuando termina, todo lo que escribas va **completamente cifrado**.
+### 1. Conexión Inicial por SSH
 
-- Una vez que aparezca la información del certificado, **introduce la contraseña de Bandit 15** (Puedes verla en `/etc/bandit_pass/bandit15`).    
-![[Bandit_Level_15-06.webp]]    
+Nos conectamos al servidor como el usuario `bandit16`.
 
-- Presiona **Enter** para enviarla, dah.
-![[Bandit_Level_15-07.webp]]
-	Espera la respuesta, el servicio valida la contraseña y te escupirá la contraseña de Bandit 16 por el mismo canal cifrado. Y listo, nivel pasado, crack.
+```bash
+ssh -p 2220 bandit16@bandit.labs.overthewire.org  
+```
+
+<!-- Imagen de la conexión SSH con OverTheWire -->
+![[Bandit_Level_16-01.webp]]
+
+### 2. Escaneo del Rango de Puertos
+
+Dado que los puerto con los que nos vamos a conectar son desconocido, usamos `nmap` para escanear rápidamente y listar los servicios activos en los puertos en rangos del 31000 al 32000.
+
+```bash
+nmap -p 31000-32000 localhost
+```
+
+<!-- Imagen del resultado de nmap -->
+![[Bandit_Level_16-02.webp]]
+
+**Puertos Abiertos Encontrados:** Cinco puertos fueron identificados como `open`. ¡Ya redujimos el problema de 1000 a 5!
+```bash
+PORT      STATE SERVICE
+31046/tcp open  unknown
+31518/tcp open  unknown
+31691/tcp open  unknown
+31790/tcp open  unknown
+31960/tcp open  unknown
+```
+### 3. Identificación del Puerto SSL/TLS
+
+Ahora toca diferenciar: **¿cuál de estos cinco usa SSL/TLS?** Un puerto _open_ no significa nada hasta que sabes qué servicio hay detrás. Usamos `openssl s_client` para intentar la conexión SSL con cada uno.
+
+```bash
+openssl s_client localhost:31046
+# Repetir con todos los puertos para encontrar la conexión cifrada.
+```
+
+- **Puertos NO SSL/TLS (31046, 31691, 31960):** La conexión fallará, se cerrará inmediatamente o no mostrará la secuencia de _handshake_ y certificado.
+ <!-- Imagen de la respuesta sin SSL -->
+![[Bandit_Level_16-04.webp]]- **Puertos SÍ SSL/TLS (31518 y 31790):** Estos puertos establecen una sesión SSL y muestran el certificado en pantalla. ¡Ya tenemos dos candidatos!
+
+ <!-- Imagen de la respuesta con SSL -->    
+![[Bandit_Level_16-05.webp]]
+
+> **Nota:** Si tienes un script de Bash para automatizar esta verificación, ¡métele! Es mucho más eficiente que ir probando uno por uno.
+
+### 4. Corrección del Error "KEYUPDATE"
+
+Al intentar ingresar la contraseña en los puertos SSL, el servicio nos trolea respondiendo con mensajes como `KEYUPDATE` o `RENEGOTIATING`, impidiendo la interacción normal.
+
+Este es un _bug_ o comportamiento intencional que OverTheWire nos pide resolver leyendo el manual. ¡Clásico!
+
+> _Helpful note: Getting “DONE”, “RENEGOTIATING” or “KEYUPDATE”? Read the “CONNECTED COMMANDS” section in the manpage._
+
+<!-- Imagen de la nota de OverTheWire -->
+![[Bandit_Level_16-06.webp]]
+
+Al revisar el manual de `openssl s_client` (`man openssl s_client`), el flag **`-quiet`** es la clave:
+
+```bash
+man openssl s_client 
+```
+
+<!-- Imagen del manual de openssl s_client -->
+![[Bandit_Level_16-07.webp]] El manual dice: `-quiet inhibit printing of sessions and certificate information. This implicitly turns on -ign_eof as well.`
+
+**En español y sin rodeos:** Usar `-quiet` no solo limpia la pantalla de la información del certificado, sino que también activa `-ign_eof`, permitiéndote **escribir y enviar datos** inmediatamente después de que se establece la conexión SSL. ¡Justo lo que necesitamos!
+
+<!-- IResultado de la búsqueda en Google-->
+![[Bandit_Level_16-08.webp]]
+Incluso una simple busqueda en google nos puede dar esta información si el manual nos está dando problemas. Gracias a [este usuario de Reddit](https://www.reddit.com/r/HowToHack/comments/1g2sivg/comment/lzxq8hc/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button) por compartir la solución. 
+### 5. Envío de la Contraseña
+
+Teniendo el parámetro `-quiet` en mano, probamos los dos puertos candidatos (31518 y 31790).
+
+**Intento en el puerto 31518:**
+
+```bash
+openssl s_client -quiet localhost:31518
+# Ingresar la contraseña de Bandit16 aquí
+```
+
+No hubo respuesta correcta. **¡Fallo de servicio!**
+
+<!-- Imagen del intento en 31518 -->
+![[Bandit_Level_16-09.webp]]
+
+**Intento en el puerto 31790 (Éxito):**
+
+```bash
+openssl s_client -quiet localhost:31790
+# Ingresar la contraseña de Bandit16 aquí
+```
+
+¡Boom! Al enviar la contraseña de Bandit16, el servicio responde con la llave privada SSH, que es la contraseña de Bandit17. 
+
+<!-- Imagen del éxito en 31790 -->
+![[Bandit_Level_16-10.webp]]
+Solo vmaos a copiar las informacion para luegor hacer las configuraciones necesarios 
+
+**Nivel pasado, crack.**
 
 ---
 ## Lecturas recomendadas
 
 -  **[¿Qué es OpenSSL? ¿Cómo funciona OpenSSL?](https://www.ssldragon.com/es/blog/que-es-openssl/)**
--  **[Handshake TLS/SSL: Cómo Funciona y Por Qué es Vital para la Seguridad Web](https://estudyando.com/handshake-tls-ssl-como-funciona-y-por-que-es-vital-para-la-seguridad-web/)**
+- 
