@@ -109,14 +109,14 @@ Este es un _bug_ o comportamiento intencional que OverTheWire nos pide resolver 
 <!-- Imagen de la nota de OverTheWire -->
 ![[Bandit_Level_16-06.webp]]
 
-Al revisar el manual de `openssl s_client` (`man openssl s_client`), el flag **`-quiet`** es la clave:
+Al revisar el manual de `openssl s_client` nos indican que el flag "**`-quiet`**" es la clave:
 
 ```bash
 man openssl s_client 
 ```
 
 <!-- Imagen del manual de openssl s_client -->
-![[Bandit_Level_16-07.webp]] El manual dice: `-quiet inhibit printing of sessions and certificate information. This implicitly turns on -ign_eof as well.`
+![[Bandit_Level_16-07.webp]] El manual dice: `-quiet: inhibit printing of sessions and certificate information. This implicitly turns on -ign_eof as well.`
 
 **En español y sin rodeos:** Usar `-quiet` no solo limpia la pantalla de la información del certificado, sino que también activa `-ign_eof`, permitiéndote **escribir y enviar datos** inmediatamente después de que se establece la conexión SSL. ¡Justo lo que necesitamos!
 
