@@ -1,4 +1,4 @@
-![](content/_assets/og-image.png)
+![](https://netenebraes.github.io/neCyberWiki/_assets/Banner.webp)
 > ### Visita la [Página Web](https://netenebraes.github.io/neCyberWiki/).
 
 La neCyberWiki es un proyecto tipo "Biblioteca Colaborativa" orientada a la ciberseguridad, el hacking ético, la informática y la privacidad digital. Su propósito es **centralizar conocimientos técnicos y prácticos, presentados de forma clara, libre y accesible**. 
