@@ -75,7 +75,7 @@ nmap -p 31000-32000 localhost
 <!-- Imagen del resultado de nmap -->
 ![[BanditLevel16-03.webp]]
 
-**Puertos Abiertos Encontrados:** Cinco puertos fueron identificados como `open`. ¡Ya redujimos el problema de 1000 a 5!
+**Puertos Abiertos Encontrados:** Cinco puertos fueron identificados como `open`. ¡Ya redujimos el problema de 1000 opciones a **solo 5**!
 ```bash
 PORT      STATE SERVICE
 31046/tcp open  unknown
@@ -159,4 +159,3 @@ Expande la sección con recursos clave para profundizar en nmap, openssl y conce
 - **[¿Qué es OpenSSL? ¿Cómo funciona OpenSSL?](https://www.ssldragon.com/es/blog/que-es-openssl/)**: Explicación completa del toolkit OpenSSL, su rol en TLS/SSL y casos de uso en pentesting.        
 - **[Nmap Network Scanning Guide](https://nmap.org/book/man.html)**: Manual oficial con flags avanzados como `-sV`, `-sC` y escaneo de rangos para reconnaissance.
 - **[OpenSSL sclient manpage](https://www.openssl.org/docs/man1.1.1/man1/s_client.html)**: Detalles técnicos de `-quiet`, `-igneof` y comandos CONNECTED para debugging TLS.
-​ 
