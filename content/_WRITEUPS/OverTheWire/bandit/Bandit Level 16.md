@@ -16,17 +16,18 @@ publishDate: 2025-12-04
 ## Introducción y Desafío
 
 El desafío en este nivel consiste en encontrar un servicio cifrado (SSL/TLS) que escucha en un puerto dentro del amplio rango **31000 a 32000** en `localhost`. El objetivo es conectarnos al puerto correcto y enviarle la contraseña de Bandit16 para que nos devuelva la contraseña del siguiente nivel. 
-## nmap | Escaneo de Puertos
+### nmap | Escaneo de Puertos
 ![[BanditLevel16-01.webp]]
 Nmap es una herramienta versátil y poderosa para escanear redes, descubrir hosts activos, puertos abiertos y servicios en ejecución. Se usa ampliamente en seguridad informática y pentesting para reconocimiento y auditoría de redes. Nmap envía paquetes a diferentes puertos de un objetivo para detectar cuáles están abiertos, filtrados o cerrados, incluso puede identificar el tipo de servicio y versión que escucha en esos puertos.
 
 La flag `-p` permite especificar un rango o lista de puertos a escanear, por ejemplo, `-p 31000-32000` para analizar solo puertos dentro de ese rango en el host local (`localhost`). Esto es útil para enfocar el escaneo en puertos altos o poco comunes, típicos de servicios efímeros o personalizados, evitando un análisis completo para ganar velocidad y controles finos.
-## OpenSSL y parámetro -quiet
+> [Post de Threads](https://www.threads.com/@netenebrae/post/DR7hVXMgNdW?xmt=AQF0ft6xpnp-OYT2wXVHGuju50onh04eRDU2p4m_5iYUZw)
+### OpenSSL y parámetro -quiet
 Las opciones **`-quiet`** e **`-ign_eof`** son cruciales para superar los desafíos específicos de este nivel:
 
 - **`openssl s_client -connect localhost:31790`**:    
-    - Inicia una conexión de cliente SSL/TLS al puerto `31790` del host local. Este puerto es el que se identifica como el servicio SSL/TLS correcto que contiene la clave (otros puertos como `31518` podrían ser SSL/TLS pero simplemente rebotan la entrada).
-    - Si un servicio no utiliza SSL/TLS, la conexión fallará inmediatamente.
+	 - Inicia una conexión de cliente SSL/TLS al puerto `31790` del host local. Este puerto es el que se identifica como el servicio SSL/TLS correcto que contiene la clave (otros puertos como `31518` podrían ser SSL/TLS pero simplemente rebotan la entrada).
+	- Si un servicio no utiliza SSL/TLS, la conexión fallará inmediatamente.
 
 - **`-quiet`**: Suprime la salida de diagnóstico detallada, incluyendo la información del **certificado** del servidor y la cadena de certificados. Esto es útil porque reduce el ruido y, en algunas versiones, ayuda a evitar que la salida de comandos internos como `KEYUPDATE` bloquee la entrada del usuario.
 
@@ -48,7 +49,7 @@ Las opciones **`-quiet`** e **`-ign_eof`** son cruciales para superar los desaf�
 * **`openssl`**: Toolkit de línea de comandos para trabajar con **TLS/SSL y criptografía**.
     * Subcomando clave para la tarea:
         * **`s_client -connect host:puerto`**: Actúa como un cliente TLS/SSL para establecer una conexión segura. Es esencial para **probar el handshake**, ver el certificado y enviar datos cifrados.
-        * -quiet
+        * **`-quiet`**: Suprime la salida de diagnóstico detallada
 ---
 
 ##  Solución Paso a Paso
