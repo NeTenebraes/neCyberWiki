@@ -1,0 +1,74 @@
+---
+title: "OTW Bandit: 17"
+description:
+tags:
+  - linux
+  - bash
+  - bandit
+Dificultad:
+  - ★★☆☆☆
+publishDate: 2025-12-05
+---
+## Introducción y Desafío
+
+There are 2 files in the homedirectory: **passwords.old and passwords.new**. The password for the next level is in **passwords.new** and is the only line that has been changed between **passwords.old and passwords.new**
+
+**NOTE: if you have solved this level and see ‘Byebye!’ when trying to log into bandit18, this is related to the next level, bandit19**
+
+https://overthewire.org/wargames/bandit/bandit18.html
+##  Conceptos Clave
+
+diff y como funciona
+
+## Comandos Clave
+* **`ssh`**: Comando para conectarse de forma segura a un servidor remoto mediante el protocolo Secure Shell (SSH).
+    * Parámetros usados:
+        * `-p [puerto]`: Especifica el puerto remoto (ej: `-p 2220`).
+        * `usuario@host`: Define el usuario y el servidor al que te conectas.
+touch
+nano
+chmod
+diff
+
+---
+
+##  Solución Paso a Paso
+
+### 1. Creación y configuración llave SSH bandit17
+
+Nos conectamos al servidor como el usuario `bandit17` usando la llave encontrada en [[Bandit Level 16]].
+
+```bash
+touch bandit17.key
+nano bandit17.key
+chmod 600 bandit17.key 
+```
+![[Pasted image 20251206131227.png]]
+El contenido de la llave SSH encontrada en [[Bandit Level 16]] debemos colocarlo en un nuevo documento
+
+
+<!-- Imagen de la conexión SSH con OverTheWire -->
+![[Pasted image 20251206131134.png]]
+
+
+<!-- Imagen de la conexión SSH con OverTheWire -->
+
+
+Confirmación contraseña actual nivel Općional
+![[Pasted image 20251206131457.png]]
+
+
+Verificacion y consulta de firerencias
+
+![[Pasted image 20251206131554.png]]
+
+
+![[untitled.gif]]
+
+
+
+---
+## Lecturas recomendadas
+
+-  Comando diff
+- Metalidad del hacker
