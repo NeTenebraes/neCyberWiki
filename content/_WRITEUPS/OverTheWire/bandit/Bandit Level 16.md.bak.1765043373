@@ -15,13 +15,17 @@ publishDate: 2025-12-04
 ---
 ## Introducción y Desafío
 
-El desafío en este nivel consiste en encontrar un servicio cifrado (SSL/TLS) que escucha en un puerto dentro del amplio rango **31000 a 32000** en `localhost`. El objetivo es conectarnos al puerto correcto y enviarle la contraseña de Bandit16 para que nos devuelva la contraseña del siguiente nivel. 
-## nmap | Escaneo de Puertos
-![[BanditLevel16-01.webp]]
-Nmap es una herramienta versátil y poderosa para escanear redes, descubrir hosts activos, puertos abiertos y servicios en ejecución. Se usa ampliamente en seguridad informática y pentesting para reconocimiento y auditoría de redes. Nmap envía paquetes a diferentes puertos de un objetivo para detectar cuáles están abiertos, filtrados o cerrados, incluso puede identificar el tipo de servicio y versión que escucha en esos puertos.
+El desafío en este nivel consiste en encontrar un servicio cifrado (SSL/TLS) que escucha en un puerto dentro del amplio rango **31000 a 32000** en `localhost`. El objetivo es conectarnos al puerto correcto y enviarle la contraseña de Bandit16 para que nos devuelva la contraseña del siguiente nivel. **¡A buscar esa aguja en el pajar!**
 
-La flag `-p` permite especificar un rango o lista de puertos a escanear, por ejemplo, `-p 31000-32000` para analizar solo puertos dentro de ese rango en el host local (`localhost`). Esto es útil para enfocar el escaneo en puertos altos o poco comunes, típicos de servicios efímeros o personalizados, evitando un análisis completo para ganar velocidad y controles finos.
+## nmap | Escaneo de Puertos:
+![[Instagram nmap.png]]
+
+Nmap es una herramienta versátil y poderosa para escanear redes, descubrir hosts activos, puertos abiertos y servicios en ejecución. Se usa ampliamente en seguridad informática y pentesting para reconocimiento y auditoría de redes. Nmap envía paquetes a diferentes puertos de un objetivo para detectar cuáles están abiertos, filtrados o cerrados, y puede identificar el tipo de servicio y versión que escucha en esos puertos.
+
+El flag `-p` permite especificar un rango o lista de puertos a escanear, por ejemplo, `-p 31000-32000` para analizar solo puertos dentro de ese rango en el host local (`localhost`). Esto es útil para enfocar el escaneo en puertos altos o poco comunes, típicos de servicios efímeros o personalizados, evitando un análisis completo para ganar velocidad y controles finos.
+
 ## OpenSSL y parámetro -quiet
+
 Las opciones **`-quiet`** e **`-ign_eof`** son cruciales para superar los desafíos específicos de este nivel:
 
 - **`openssl s_client -connect localhost:31790`**:    
@@ -62,7 +66,8 @@ ssh -p 2220 bandit16@bandit.labs.overthewire.org
 ```
 
 <!-- Imagen de la conexión SSH con OverTheWire -->
-![[BanditLevel16-02.webp]]
+![[Bandit_Level_16-01.webp]]
+
 ### 2. Escaneo del Rango de Puertos
 
 Dado que los puerto con los que nos vamos a conectar son desconocido, usamos `nmap` para escanear rápidamente y listar los servicios activos en los puertos en rangos del 31000 al 32000.
@@ -72,7 +77,7 @@ nmap -p 31000-32000 localhost
 ```
 
 <!-- Imagen del resultado de nmap -->
-![[BanditLevel16-03.webp]]
+![[Bandit_Level_16-02.webp]]
 
 **Puertos Abiertos Encontrados:** Cinco puertos fueron identificados como `open`. ¡Ya redujimos el problema de 1000 a 5!
 ```bash
@@ -94,11 +99,13 @@ openssl s_client localhost:31046
 
 - **Puertos NO SSL/TLS (31046, 31691, 31960):** La conexión fallará, se cerrará inmediatamente o no mostrará la secuencia de _handshake_ y certificado.
  <!-- Imagen de la respuesta sin SSL -->
-![[BanditLevel16-04.webp]]- **Puertos SÍ SSL/TLS (31518 y 31790):** Estos puertos establecen una sesión SSL y muestran el certificado en pantalla. ¡Ya tenemos dos candidatos!
+![[Bandit_Level_16-04.webp]]- **Puertos SÍ SSL/TLS (31518 y 31790):** Estos puertos establecen una sesión SSL y muestran el certificado en pantalla. ¡Ya tenemos dos candidatos!
 
  <!-- Imagen de la respuesta con SSL -->    
-![[BanditLevel16-05.webp]]
+![[Bandit_Level_16-05.webp]]
+
 > **Nota:** Si tienes un script de Bash para automatizar esta verificación, ¡métele! Es mucho más eficiente que ir probando uno por uno.
+
 ### 4. Corrección del Error "KEYUPDATE"
 
 Al intentar ingresar la contraseña en los puertos SSL, el servicio nos trolea respondiendo con mensajes como `KEYUPDATE` o `RENEGOTIATING`, impidiendo la interacción normal.
@@ -108,7 +115,8 @@ Este es un _bug_ o comportamiento intencional que OverTheWire nos pide resolver 
 > _Helpful note: Getting “DONE”, “RENEGOTIATING” or “KEYUPDATE”? Read the “CONNECTED COMMANDS” section in the manpage._
 
 <!-- Imagen de la nota de OverTheWire -->
-![[BanditLevel16-06.webp]]
+![[Bandit_Level_16-06.webp]]
+
 Al revisar el manual de `openssl s_client` (`man openssl s_client`), el flag **`-quiet`** es la clave:
 
 ```bash
@@ -116,46 +124,43 @@ man openssl s_client
 ```
 
 <!-- Imagen del manual de openssl s_client -->
-![[BanditLevel16-07.webp]] El manual dice: `-quiet inhibit printing of sessions and certificate information. This implicitly turns on -ign_eof as well.`
+![[Bandit_Level_16-07.webp]] El manual dice: `-quiet inhibit printing of sessions and certificate information. This implicitly turns on -ign_eof as well.`
 
 **En español y sin rodeos:** Usar `-quiet` no solo limpia la pantalla de la información del certificado, sino que también activa `-ign_eof`, permitiéndote **escribir y enviar datos** inmediatamente después de que se establece la conexión SSL. ¡Justo lo que necesitamos!
 
 <!-- IResultado de la búsqueda en Google-->
-![[BanditLevel16-08.webp]]
+![[Bandit_Level_16-08.webp]]
 Incluso una simple busqueda en google nos puede dar esta información si el manual nos está dando problemas. Gracias a [este usuario de Reddit](https://www.reddit.com/r/HowToHack/comments/1g2sivg/comment/lzxq8hc/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button) por compartir la solución. 
 ### 5. Envío de la Contraseña
 
 Teniendo el parámetro `-quiet` en mano, probamos los dos puertos candidatos (31518 y 31790).
 
-**Intento en el puerto 31518:**
+**Intento en el puerto 31518:*
 ```bash
 openssl s_client -connect localhost:31518 -quiet
 # Ingresar la contraseña de Bandit16 aquí
 ```
-Solo nos devuelve la respuesta. **¡Fallo de servicio!**
+No hubo respuesta correcta. **¡Fallo de servicio!**
 
 <!-- Imagen del intento en 31518 -->
-![[BanditLevel16-09.webp]]
+![[Bandit_Level_16-09.webp]]
 
 **Intento en el puerto 31790 (Éxito):**
 ```bash
 openssl s_client -quiet localhost:31790
 # Ingresar la contraseña de Bandit16 aquí
 ```
+
 ¡Boom! Al enviar la contraseña de Bandit16, el servicio responde con la llave privada SSH, que es la contraseña de Bandit17. 
 
 <!-- Imagen del éxito en 31790 -->
-![[BanditLevel16-10.webp]]
+![[Bandit_Level_16-10.webp]]
 Solo vamos a copiar las información para luego hacer las configuraciones de permisos necesarios.
 
 **Nivel pasado, crack.**
 
 ---
-## Lecturas Recomendadas
+## Lecturas recomendadas
 
-Expande la sección con recursos clave para profundizar en nmap, openssl y conceptos SSL/TLS.
-
-- **[¿Qué es OpenSSL? ¿Cómo funciona OpenSSL?](https://www.ssldragon.com/es/blog/que-es-openssl/)**: Explicación completa del toolkit OpenSSL, su rol en TLS/SSL y casos de uso en pentesting.        
-- **[Nmap Network Scanning Guide](https://nmap.org/book/man.html)**: Manual oficial con flags avanzados como `-sV`, `-sC` y escaneo de rangos para reconnaissance.
-- **[OpenSSL sclient manpage](https://www.openssl.org/docs/man1.1.1/man1/s_client.html)**: Detalles técnicos de `-quiet`, `-igneof` y comandos CONNECTED para debugging TLS.
-​ 
+-  **[¿Qué es OpenSSL? ¿Cómo funciona OpenSSL?](https://www.ssldragon.com/es/blog/que-es-openssl/)**
+- 
