@@ -109,7 +109,7 @@ Además, tar conserva la estructura original de carpetas y permisos, lo que es f
 ```
 ssh -p 2220 bandit12@bandit.labs.overthewire.org
 ```
-![[OTW12.01.webp]]
+![[Bandit_Level_12-01.webp]]
 
 ### 2. Creamos directorio de trabajo
 ```
@@ -119,7 +119,7 @@ cp data.txt /tmp/netenebrae
 cd /tmp/netenebrae
 ```
 
-![[OTW12.02.webp]]
+![[Bandit_Level_12-02.webp]]
 
 El comando `mkdir` (make directory) se utiliza para crear nuevos directorios o carpetas en el sistema de archivos. Puede crear desde un solo directorio hasta estructuras jerárquicas completas, y también permite asignar permisos específicos o crear varios directorios a la vez. Su sintaxis básica es `mkdir nombre/ubicacion_del_directorio`.
 
@@ -132,7 +132,7 @@ file data
 mv data data2.bin
 ```
 
-![[OTW12.03.webp]]
+![[Bandit_Level_12-03.webp]]
 
 Usamos el comando `xxd -r` para convertir el hexdump guardado en `data.txt` de nuevo a su forma binaria, y lo guardamos en un nuevo archivo llamado `data`. Luego ejecutamos `file` para identificar el tipo de archivo, que nos indica que es un archivo `gzip` previamente llamado `data2.bin`. Finalmente, usamos `mv` para renombrar `data` a `data2.bin`. Este paso es necesario porque, si no renombramos el archivo, la herramienta de descompresión no nos permite extraerlo correctamente. Renombrar garantiza que el archivo tenga la extensión esperada y facilita su manejo en los siguientes pasos.
 ### 4. Extracción con gzip
@@ -140,14 +140,13 @@ Usamos el comando `xxd -r` para convertir el hexdump guardado en `data.txt` de n
 gzip -d -S .bin data2.bin
 file data2
 ```
-![[OTW12.04.webp]]
-	
+![[Bandit_Level_12-04.webp]]
+
 
 Procedemos a extraer el archivo `data2.bin` utilizando el comando `gzip -d -S .bin`, la opción `-S .bin` especifica que el archivo tiene la extensión `.bin` en lugar de la estándar `.gz` y genera un nuevo archivo llamado `data2`. A continuación, identificamos el contenido del archivo resultante con `file`, y esta vez nos indica que el archivo está en formato `bzip2`.
 
 ### 5. Extracción con bzip2
-![[OTW12.05.webp]]
-	
+![[Bandit_Level_12-05.webp]]
 Usamos la herramienta de descompresión `bzip2` con el archivo `data2`. Al descomprimir, `bzip2` genera un archivo llamado `data2.out`. Esto se debe a que cuando `bzip2` descomprime un archivo que no tiene la extensión estándar `.bz2`, añade `.out` al nombre del archivo de salida para diferenciarlo y evitar sobrescribir archivos existentes.
 
 Después, verificamos con `file` y vemos que el archivo resultante es un archivo `gzip` que antes se llamaba `data4.bin`. Por último, renombramos el archivo.
@@ -157,11 +156,11 @@ Después, verificamos con `file` y vemos que el archivo resultante es un archivo
 gzip -d -S .bin data4.bin
 file data4
 ```
-   ![[OTW12.06.webp]]
+   ![[Bandit_Level_12-06.webp]]
 
 Descomprimimos el archivo utilizando `gzip` con las opciones `-d -S .bin`, ya que, como sabemos, la extensión  del archivo no es la habitual "`.gz`". Esto genera un nuevo archivo llamado `data4`. Para comprobar su nuevo formato, ejecutamos el comando `file` y observamos que ahora se trata de un archivo `tar`.
 
-![[OTW12.07.webp]]
+![[Bandit_Level_12-07.webp]]
 Utilizamos la herramienta `tar` para extraer el archivo `data4`, lo que nos genera el archivo `data5.bin`. Al analizar `data5.bin` con el comando `file`, notamos que también es un archivo tar. Por eso, repetimos el proceso y usamos nuevamente `tar` sobre `data5.bin`, obteniendo así el archivo `data6.bin`. Para asegurarnos del siguiente paso, volvemos a emplear `file` y vemos que ahora se trata de un archivo en formato `bzip2`.
 
 Esta metodología es sencilla pero poderosa:
@@ -184,11 +183,11 @@ cat data8.bin
 ```
 
 
-![[OTW12.08.webp]]
+![[Bandit_Level_12-08.webp]]
 Siguiendo la misma metodología, utilizamos la herramienta adecuada para extraer el contenido de `data6.bin.out`, que nuevamente resulta ser un archivo tar. Usamos `tar` para extraerlo, lo que nos da el archivo `data8.bin`. Al analizarlo con `file`, comprobamos que ahora es un archivo gzip que anteriormente se llamaba `data9.bin`.
 
-![[OTW12.09.webp]]
-![[OTW12.10.webp]]
+![[Bandit_Level_12-09.webp]]
+![[Bandit_Level_12-10.webp]]
 
 
 Repetimos el proceso: extraemos el archivo, verificamos el formato, y en **este caso final vemos que el contenido ya es un archivo de texto**. Usando `cat` revisamos su contenido… ¡y finalmente encontramos la contraseña! 
