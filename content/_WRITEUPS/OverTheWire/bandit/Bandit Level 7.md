@@ -38,14 +38,14 @@ Este nivel enseña el uso de comandos como `grep` y herramientas para procesar t
 ssh bandit7@bandit.labs.overthewire.org -p 2220
 ls
 ```
-![[Bandit_Level_7-01.webp]]
+![[content/_WRITEUPS/OverTheWire/bandit/assets/Bandit_Level_7-01.webp]]
 	   Luego de digitada la contraseña procedemos a confirmar la existencia del archivo `data.txt`.
    
 3. Buscar la palabra \"millionth\" dentro del archivo `data.txt`:  
 ```
 grep millionth data.txt
 ```
-![[Bandit_Level_7-02.webp]]
+![[content/_WRITEUPS/OverTheWire/bandit/assets/Bandit_Level_7-02.webp]]
 	Nos apoyamos del comando `grep` para buscar la palabra "millionth" dentro del archivo `data.txt`, esto nos muestra la línea donde aparece la palabra, que contiene también la contraseña. **Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
 
 --- 

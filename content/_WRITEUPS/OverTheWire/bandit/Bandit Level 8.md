@@ -37,13 +37,13 @@ Este reto fortalece habilidades de manipulación y filtrado avanzado de texto us
 ```
 ssh bandit8@bandit.labs.overthewire.org -p 2220
 ```
-![[Bandit_Level_8-01.webp]]
+![[content/_WRITEUPS/OverTheWire/bandit/assets/Bandit_Level_8-01.webp]]
 
 2. Procesar el archivo para encontrar líneas únicas:  
 ```
 sort data.txt | uniq -u
 ```
-![[Bandit_Level_8-02.webp]]
+![[content/_WRITEUPS/OverTheWire/bandit/assets/Bandit_Level_8-02.webp]]
 	El resultado es la línea que aparece una sola vez, que es la contraseña buscada. **Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
 
 ---

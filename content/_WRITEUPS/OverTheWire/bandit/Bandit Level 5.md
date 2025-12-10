@@ -58,7 +58,7 @@ ls -R
 ```
 find . -type f -size 1033c
 ```
-![[Bandit_Level_5-03.webp]]
+![[content/_WRITEUPS/OverTheWire/bandit/assets/Bandit_Level_5-03.webp]]
 	*   `find .`: Busca en el directorio actual y sus subdirectorios.
     *   `-type f`: Limita la búsqueda solo a archivos.
     *   `-size 1033c`: Especifica el tamaño exacto en bytes `(c)`.
@@ -69,7 +69,7 @@ Este comando devolverá la ruta al único archivo que cumple las condiciones cla
 ```
 cat ./inhere/maybehere07/.file2
 ```
-![[Bandit_Level_5-04.webp]]
+![[content/_WRITEUPS/OverTheWire/bandit/assets/Bandit_Level_5-04.webp]]
     Una vez que `find` devuelve la ruta, se usa `cat` para leer el archivo y obtener la contraseña. **Contraseña Censurada** por [Reglas de OverTheWire.](https://overthewire.org/rules/)
 
 ---
