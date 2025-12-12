@@ -20,6 +20,11 @@ Este nivel prueba tu capacidad para detectar cambios sutiles en archivos mediant
 El comando `diff` compara archivos línea por línea y resalta diferencias específicas, ideal para detectar cambios en listas grandes como contraseñas o configuraciones.
 
 La **mentalidad de hacker** aquí radica en el pensamiento lateral: Ante dos archivos similares, no vas a revisar manualmente miles de líneas, sino que usas la herramienta precisa (`diff`) para revelar la única modificación en segundos.​![[2.png]]
+
+> [!DANGER] Disclaimer Ético
+> Este material ha sido creado exclusivamente con fines educativos y de investigación. **El uso indebido de esta información para atacar objetivos sin autorización explícita es ilegal y contraviene los principios del hacking ético**.
+> 
+> **Antes de continuar:** Lee mi nota "**[[Ética en la Ciberseguridad]]**" para más información. 
 ###  Sintaxis General del Comando `diff`
 
 La sintaxis básica es la siguiente:
