@@ -20,7 +20,9 @@ El comando `diff` compara archivos línea por línea y resalta diferencias espec
 
 La **mentalidad de hacker** aquí radica en el pensamiento lateral: ante dos archivos similares, no vas a revisar manualmente miles de líneas, sino que usas la herramienta precisa (`diff`) para revelar la única modificación en segundos.​
 
-## 🛠️ Sintaxis General del Comando `diff`
+
+
+###  Sintaxis General del Comando `diff`
 
 La sintaxis básica es la siguiente:
 ```Bash
@@ -32,13 +34,13 @@ O, si quieres comparar directorios:
 diff [OPCIONES] DIRECTORIO1 DIRECTORIO2
 ```
 
----
-### 📄 Argumentos Principales
 
+#### Argumentos Principales:
 - **`ARCHIVO1`**: El primer archivo que se va a comparar (a menudo considerado el original o la versión anterior).    
 - **`ARCHIVO2`**: El segundo archivo que se va a comparar (a menudo considerado la versión modificada).    
 - **`DIRECTORIO1`**: El primer directorio a comparar.
 - **`DIRECTORIO2`**: El segundo directorio a comparar.
+
 **Casos de uso comunes**: validar actualizaciones de software (comparar configs antes/después), debugging de scripts, auditorías de seguridad en logs, o desafíos CTF donde un solo byte cambiado es la clave. ​
 
 ## Comandos Clave
