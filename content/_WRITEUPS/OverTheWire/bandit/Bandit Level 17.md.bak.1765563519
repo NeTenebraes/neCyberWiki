@@ -64,46 +64,41 @@ touch bandit17.key
 nano bandit17.key
 chmod 600 bandit17.key 
 ```
-<!-- Imagen de la conexión SSH con OverTheWire -->
 ![[BanditLevel17-01.webp]]
-El contenido de la llave SSH obtenida en [[Bandit Level 16]] debe copiarse en un archivo nuevo. Asegúrate de que la llave quede **idéntica** en un fichero, por ejemplo `bandit17.key` o `llaveotw` (el nombre es libre), porque cualquier cambio en el texto o en el formato hará que el servidor la rechace.
-### 2. Confirmamos la contraseña de nivel actual
+El contenido de la llave SSH encontrada en [[Bandit Level 16]] debemos colocarlo en un nuevo documento
+
+Confirmamos contraseña actual nivel Općional
 ```
 cat /etc/bandit_pass/bandit17
 ```
-<!-- Imagen de la contraseña del nivel actual de Over The Wire-->
+<!-- Imagen de la conexión SSH con OverTheWire -->
 ![[BanditLevel17-02.webp]]
 
-Usamos `ls` para verificar el contenido en el directorio `home` de `bandit17`. Encontramos dos listas: `passwords.old` y `passwords.new`.​ Vamos a relevar el contenido para verificar la magnitud de lo que nos estamos enfrentando. 
+Confirmamos contenido de las listas passwords.new passwords.old Verificacion y consulta de firerencias
+
+<!-- Imagen de la conexión SSH con OverTheWire -->
 ```
 ls -l
 cat passwords.new passwords.old 
 ```
-<!-- Listado de archivos con contraseñas -->
 ![[BanditLevel17-03.webp]]
 
-### 3. Comparativa de Archivos
+
 ```
 diff passwords.old passwords.new
 ```
-<!-- Aplicamos comparativa con el comando diff -->
 ![[BanditLevel17-04.webp]]
-La contraseña está en la segunda linea, gracias a diff EXPLICAR PORQUE
 
-
-### 4. Prueba de conexión
-<!-- Probamos la conexión con bandit18 -->
+Explicando solicion final, cierre de bandit 18
+ssh -p
 ![[BanditLevel17-GIF.gif]]
-AQUI NOS CONECTAMOS Y NOS SACAN de bandit18
+
 
 
 ![[BanditLevel17-05.webp]]
-mensaje byebye overthewire bandit 18
-
 Pagina de Over The wire diciendo que esto es normal
 
 ![[Pasted image 20251212114048.png]]
-Pensamiento lateral, vemos que diablos está pasadno y facilmente vemos en la pagina que es un compartamiento normla, explciar ocomo se une esto con lo que queria dar a enter el equipo de over hte wire aca 
 
 ---
 ## Lecturas recomendadas
