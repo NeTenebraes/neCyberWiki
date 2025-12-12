@@ -1,10 +1,11 @@
 ---
 title: "OTW Bandit: 17"
-description:
+description: Este nivel pone a prueba tu capacidad para detectar cambios mínimos en archivos usando herramientas de comparación. Debes acceder como bandit17 y emplear el comando diff para localizar la única diferencia entre dos listas de contraseñas
 tags:
   - linux
   - bash
   - bandit
+  - diff
 Dificultad:
   - ★☆☆☆☆
 publishDate: 2025-12-05
