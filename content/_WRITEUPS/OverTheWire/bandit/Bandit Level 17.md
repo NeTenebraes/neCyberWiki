@@ -6,19 +6,19 @@ tags:
   - bash
   - bandit
 Dificultad:
-  - ★★☆☆☆
+  - ★☆☆☆☆
 publishDate: 2025-12-05
 ---
 ## Introducción y Desafío
-
-Este nivel prueba tu capacidad para detectar cambios sutiles en archivos mediante herramientas de comparación. Con la llave SSH privada obtenida en el nivel 16, accede como `bandit17` y usa `diff` para identificar la única diferencia entre dos listas de contraseñas, `passwords.new` y `passwords.old`. 
+![[Cover OTW2.png]]
+Este nivel prueba tu capacidad para detectar cambios sutiles en archivos mediante herramientas de comparación. Con la llave SSH privada obtenida en[[Bandit Level 16]], accede como `bandit17` y usa el comando `diff` para identificar **la única** diferencia entre dos listas de contraseñas, "`passwords.new`" y "`passwords.old`". 
 
 **El enfoque clave es la precisión**: Un solo cambio revela la solución sin necesidad de revisar manualmente miles de líneas.
 ##  Conceptos Clave
 
 El comando `diff` compara archivos línea por línea y resalta diferencias específicas, ideal para detectar cambios en listas grandes como contraseñas o configuraciones.
 
-La **mentalidad de hacker** aquí radica en el pensamiento lateral: ante dos archivos similares, no vas a revisar manualmente miles de líneas, sino que usas la herramienta precisa (`diff`) para revelar la única modificación en segundos.​
+La **mentalidad de hacker** aquí radica en el pensamiento lateral: Ante dos archivos similares, no vas a revisar manualmente miles de líneas, sino que usas la herramienta precisa (`diff`) para revelar la única modificación en segundos.​
 
 ![[2.png]]
 ###  Sintaxis General del Comando `diff`
@@ -32,16 +32,15 @@ O, si quieres comparar directorios:
 ```Bash
 diff [OPCIONES] DIRECTORIO1 DIRECTORIO2
 ```
-
 #### Argumentos Principales:
-- **`ARCHIVO1`**: El primer archivo que se va a comparar (a menudo considerado el original o la versión anterior).    
-- **`ARCHIVO2`**: El segundo archivo que se va a comparar (a menudo considerado la versión modificada).    
+- **`ARCHIVO1`**: El primer archivo que se va a comparar (a menudo considerado el "original").    
+- **`ARCHIVO2`**: El segundo archivo que se va a comparar (la versión "modificada").    
 - **`DIRECTORIO1`**: El primer directorio a comparar.
 - **`DIRECTORIO2`**: El segundo directorio a comparar.
 
-**Casos de uso comunes**: validar actualizaciones de software (comparar configs antes/después), debugging de scripts, auditorías de seguridad en logs, o desafíos CTF donde un solo byte cambiado es la clave. ​
+**Casos de uso comunes**: Validar actualizaciones de software (comparar configs antes/después), debugging de scripts, auditorías de seguridad en logs, o desafíos CTF donde un solo byte cambiado **es la clave**. ​
 
-## Comandos Clave
+## Comandos Clave para este nivel.
 * **`ssh`**: Comando para conectarse de forma segura a un servidor remoto mediante el protocolo Secure Shell (SSH).
     * Parámetros usados:
         * `-p [puerto]`: Especifica el puerto remoto (ej: `-p 2220`).
@@ -62,6 +61,16 @@ Nos conectamos al servidor como el usuario `bandit17` usando la llave encontrada
 touch bandit17.key
 nano bandit17.key
 chmod 600 bandit17.key 
+```
+<!-- Imagen de la edición del archivo con la llave SSH-->
+![[Pasted image 20251212142101.png]]
+Yo aquí estroy usando nano, pero realmente puedes usar cualquier editor de texto que guestes. Recuerda que es primordial que todo los caracteres esten intactos, asi como modificar los permisos necesarios.
+
+Explicaicon de permisos chmod 600 
+
+### 2. Conexión a bandit17.
+```
+ssh -p 2220 bandit17@bandit.labs.overthewire.org
 ```
 <!-- Imagen de la conexión SSH con OverTheWire -->
 ![[BanditLevel17-01.webp]]
