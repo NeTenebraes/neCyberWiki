@@ -12,7 +12,7 @@ publishDate: 2025-12-05
 ---
 ## Introducción y Desafío
 ![[Cover OTW2.png]]
-Este nivel prueba tu capacidad para detectar cambios sutiles en archivos mediante herramientas de comparación. Con la llave SSH privada obtenida en[[Bandit Level 16]], accede como `bandit17` y usa el comando `diff` para identificar **la única** diferencia entre dos listas de contraseñas, "`passwords.new`" y "`passwords.old`". 
+Este nivel prueba tu capacidad para detectar cambios sutiles en archivos mediante herramientas de comparación. Con la llave SSH privada obtenida en [[Bandit Level 16]], accede como `bandit17` y usa el comando `diff` para identificar **la única** diferencia entre dos listas de contraseñas, `passwords.new` y `passwords.old`. 
 
 **El enfoque clave es la precisión**: Un solo cambio revela la solución sin necesidad de revisar manualmente miles de líneas.
 ##  Conceptos Clave
