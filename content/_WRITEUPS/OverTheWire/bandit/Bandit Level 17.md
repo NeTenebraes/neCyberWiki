@@ -57,8 +57,7 @@ diff [OPCIONES] DIRECTORIO1 DIRECTORIO2
 
 ### 1. Creación y configuración llave SSH bandit17
 
-Nos conectamos al servidor como el usuario `bandit17` usando la llave encontrada en [[Bandit Level 16]].
-
+Nos conectamos al servidor como el usuario `bandit17` usando la llave encontrada en [[Bandit Level 16]]. Primero creamos el archivo que almacenará la llave privada y se ajustan sus permisos:
 ```bash
 touch bandit17.key
 nano bandit17.key
@@ -66,7 +65,8 @@ chmod 600 bandit17.key
 ```
 <!-- Imagen de la conexión SSH con OverTheWire -->
 ![[BanditLevel17-01.webp]]
-El contenido de la llave SSH obtenida en [[Bandit Level 16]] debe copiarse en un archivo nuevo. Asegúrate de que la llave quede **idéntica** en un fichero, por ejemplo `bandit17.key` o `llaveotw` (el nombre es libre), porque cualquier cambio en el texto o en el formato hará que el servidor la rechace.
+
+Asegúrate de que la llave quede **idéntica** en un fichero, por ejemplo `bandit17.key` o `llaveotw` (el nombre es libre), porque cualquier cambio en el texto o en el formato hará que el servidor la rechace.
 ### 2. Confirmamos la contraseña de nivel actual
 ```
 cat /etc/bandit_pass/bandit17
@@ -74,7 +74,8 @@ cat /etc/bandit_pass/bandit17
 <!-- Imagen de la contraseña del nivel actual de Over The Wire-->
 ![[BanditLevel17-02.webp]]
 
-Usamos `ls` para verificar el contenido en el directorio `home` de `bandit17`. Encontramos dos listas: `passwords.old` y `passwords.new`.​ Vamos a relevar el contenido para verificar la magnitud de lo que nos estamos enfrentando. 
+Una vez dentro, es posible comprobar la contraseña actual del nivel.
+### 3. Verificamos el contenido de los archivos
 ```
 ls -l
 cat passwords.new passwords.old 
@@ -82,28 +83,27 @@ cat passwords.new passwords.old
 <!-- Listado de archivos con contraseñas -->
 ![[BanditLevel17-03.webp]]
 
-### 3. Comparativa de Archivos
+Usamos `ls` para verificar el contenido en el directorio `home` de `bandit17`. Encontramos dos listas: `passwords.old` y `passwords.new`.​ Vamos a relevar el contenido con cat para verificar la magnitud de lo que nos estamos enfrentando. 
+
+### 4. Comparativa de Archivos
 ```
 diff passwords.old passwords.new
 ```
 <!-- Aplicamos comparativa con el comando diff -->
 ![[BanditLevel17-04.webp]]
-La contraseña está en la segunda linea, gracias a diff EXPLICAR PORQUE
-
-
-### 4. Prueba de conexión
-<!-- Probamos la conexión con bandit18 -->
+La salida de `diff` indica el número de línea donde hay una diferencia y muestra qué había en `passwords.old` y qué hay ahora en `passwords.new`. Por intuición, la nueva línea que aparece solo en `passwords.new` corresponde a la contraseña de `bandit18`.
+### 5. Prueba de conexióncon bandit18
+Con la nueva contraseña identificada, se realiza una conexión SSH como `bandit18`.
+```
+ssh -p 2220 bandit18@bandit.labs.overthewire.org
+```
+<!-- GIF verificando la conexión con bandit18 -->
 ![[BanditLevel17-GIF.gif]]
-AQUI NOS CONECTAMOS Y NOS SACAN de bandit18
-
-
 ![[BanditLevel17-05.webp]]
-mensaje byebye overthewire bandit 18
-
-Pagina de Over The wire diciendo que esto es normal
+Tras autenticarse, el servidor cierra la sesión mostrando un mensaje de despedida (“bye bye”) para `bandit18`.
 
 ![[Pasted image 20251212114048.png]]
-Pensamiento lateral, vemos que diablos está pasadno y facilmente vemos en la pagina que es un compartamiento normla, explciar ocomo se une esto con lo que queria dar a enter el equipo de over hte wire aca 
+**Aquí entra de nuevo el pensamiento lateral**: A primera vista podría parecer un error o que algo falló, pero al revisar la página se entiende que este comportamiento es **intencional** y forma parte del diseño del nivel. El equipo de OverTheWire quiere que **confirmes la solución tanto desde la terminal como desde la interfaz web**, reforzando la idea de que la salida inesperada de un sistema también puede ser una pista, **no solo un fallo**.
 
 ---
 ## Lecturas recomendadas
