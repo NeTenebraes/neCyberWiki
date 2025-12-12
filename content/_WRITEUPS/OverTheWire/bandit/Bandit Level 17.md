@@ -66,7 +66,7 @@ chmod 600 bandit17.key
 ![[Pasted image 20251212142101.png]]
 Aquí estoy usando `nano`, pero puedes emplear cualquier editor de texto que prefieras. Lo crucial es pegar la llave sin alterar **ningún** carácter y luego ajustar los permisos correctamente.
 
-`chmod 600 archivo` significa que solo el propietario puede leer y escribir el archivo, mientras que el grupo y el resto de usuarios no tienen ningún permiso sobre él.
+- `chmod 600 ARCHIVO` significa que solo el propietario puede leer y escribir ese archivo, mientras que el grupo y el resto de usuarios no tienen ningún permiso sobre él.
 
 ### 2. Conexión a bandit17.
 ```
