@@ -64,9 +64,9 @@ chmod 600 bandit17.key
 ```
 <!-- Imagen de la edición del archivo con la llave SSH-->
 ![[Pasted image 20251212142101.png]]
-Yo aquí estroy usando nano, pero realmente puedes usar cualquier editor de texto que guestes. Recuerda que es primordial que todo los caracteres esten intactos, asi como modificar los permisos necesarios.
+Aquí estoy usando `nano`, pero puedes emplear cualquier editor de texto que prefieras. Lo crucial es pegar la llave sin alterar **ningún** carácter y luego ajustar los permisos correctamente.
 
-Explicaicon de permisos chmod 600 
+`chmod 600 archivo` significa que solo el propietario puede leer y escribir el archivo, mientras que el grupo y el resto de usuarios no tienen ningún permiso sobre él.
 
 ### 2. Conexión a bandit17.
 ```
