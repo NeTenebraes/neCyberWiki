@@ -92,9 +92,7 @@ diff passwords.old passwords.new
 ```
 ![[BanditLevel17-04.webp]]
 
-
-
-Explicando solicuion final, cierre de bandit 18
+Explicando solicion final, cierre de bandit 18
 ssh -p
 ![[BanditLevel17-GIF.gif]]
 
@@ -105,67 +103,6 @@ Pagina de Over The wire diciendo que esto es normal
 
 
 ---
-## Lecturas recomendadas
-
--  Comando diff
-- Metalidad del hacker
-
-
-
----
-
----
-
-## Introducción y desafío
-
-Explica el contexto del nivel con 3–5 líneas: qué se busca, qué archivos hay y cuál es la meta (encontrar la línea diferente entre `passwords.old` y `passwords.new`).  
-
-El comando `diff` compara archivos línea por línea y resalta diferencias específicas, ideal para detectar cambios en listas grandes como contraseñas o configuraciones.
-
-​
-
-
-
-​
-## Comandos clave
-
-- `ssh`: conexión al servidor Bandit (menciona `-p 2220` y usuario).  
-- `touch`: creación del archivo de llave `bandit17.key`.  
-- `nano` o editor favorito: para pegar la llave privada.  
-- `chmod`: asegurar permisos de la llave (`chmod 600 bandit17.key`).  
-- `cat`: revisar contenido de archivos.  
-- `diff`: comparar `passwords.old` y `passwords.new` para encontrar la contraseña.  
-
----
-
-## Solución paso a paso
-
-### 1. Preparar la llave SSH de bandit17
-
-- Crear el archivo `bandit17.key`.
-- Pegar la llave obtenida en el nivel 16.
-- Ajustar permisos.  
-Incluye aquí el bloque de comandos y la captura `BanditLevel17-01.webp`. [file:1]
-
-### 2. Verificar acceso y archivos del nivel
-
-- (Opcional) mostrar cómo validar la contraseña actual con `cat /etc/bandit_pass/bandit17`.  
-- Listar archivos del home (`ls -l`) y mostrar `passwords.old` y `passwords.new`.  
-Inserta las capturas `BanditLevel17-02.webp` y `BanditLevel17-03.webp`. [file:1]
-
-### 3. Usar diff para encontrar la contraseña
-
-- Ejecutar `diff passwords.old passwords.new`.  
-- Explicar brevemente cómo leer la salida de `diff` y señalar cuál es la línea que corresponde a la nueva contraseña.  
-Aquí va `BanditLevel17-04.webp`. [file:1]
-
-### 4. Conexión al siguiente nivel
-
-- Mostrar el comando `ssh -i bandit17.key -p 2220 bandit17@bandit.labs.overthewire.org` (o la variante que uses).  
-- Cerrar comentando que es normal que la web de OTW muestre el mensaje de error al reconectar, con la captura `BanditLevel17-05.webp` y el GIF. [file:1]
-
----
-
 ## Lecturas recomendadas
 
 - Enlace a documentación o manpage de `diff`.  
