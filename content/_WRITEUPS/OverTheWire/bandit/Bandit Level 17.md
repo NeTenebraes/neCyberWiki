@@ -20,24 +20,25 @@ El comando `diff` compara archivos línea por línea y resalta diferencias espec
 
 La **mentalidad de hacker** aquí radica en el pensamiento lateral: ante dos archivos similares, no vas a revisar manualmente miles de líneas, sino que usas la herramienta precisa (`diff`) para revelar la única modificación en segundos.​
 
-### Sintaxis de `diff`
+## 🛠️ Sintaxis General del Comando `diff`
 
-La sintaxis básica del comando `diff` es simple y directa:
+La sintaxis básica es la siguiente:
+```Bash
+diff [OPCIONES] ARCHIVO1 ARCHIVO2
+```
 
-bash
+O, si quieres comparar directorios:
+```Bash
+diff [OPCIONES] DIRECTORIO1 DIRECTORIO2
+```
 
-`diff [opciones] archivo1 archivo2`
+---
+### 📄 Argumentos Principales
 
-Donde `archivo1` y `archivo2` son los ficheros a comparar, y las opciones modifican el formato y comportamiento de la salida.
-## Opciones esenciales
-
-- **`diff archivo1 archivo2`**: Comparación básica que muestra diferencias línea por línea con formato `< línea_eliminada` y `> línea_agregada`.[](https://eltallerdelbit.com/comando-diff-ejemplos/)
-
-- **`diff -u archivo1 archivo2`**: Formato unificado (más legible para humanos y `patch`), con `--- archivo1`, `+++ archivo2`, `@@ rangos @@`, `-` (eliminado), `+` (agregado).
-- **`diff -y archivo1 archivo2`**: Salida lado a lado, perfecta para diffs visuales en terminal amplia.
-- **`diff -q archivo1 archivo2`**: Solo indica si difieren ("Files archivo1 and archivo2 differ"), sin mostrar detalles.
-- **`diff -r dir1 dir2`**: Comparación recursiva de directorios (útil en recon de configs).
-​
+- **`ARCHIVO1`**: El primer archivo que se va a comparar (a menudo considerado el original o la versión anterior).    
+- **`ARCHIVO2`**: El segundo archivo que se va a comparar (a menudo considerado la versión modificada).    
+- **`DIRECTORIO1`**: El primer directorio a comparar.
+- **`DIRECTORIO2`**: El segundo directorio a comparar.
 **Casos de uso comunes**: validar actualizaciones de software (comparar configs antes/después), debugging de scripts, auditorías de seguridad en logs, o desafíos CTF donde un solo byte cambiado es la clave. ​
 
 ## Comandos Clave
