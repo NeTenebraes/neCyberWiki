@@ -11,7 +11,7 @@ publishDate: 2025-12-05
 ---
 ## Introducción y Desafío
 
-Este nivel prueba tu capacidad para detectar cambios sutiles en archivos mediante herramientas de comparación. Con la llave SSH privada obtenida en el nivel 16, accede como `bandit17` y usa `diff` para identificar la única diferencia entre dos listas de contraseñas, `passwords.new` y p`passwords.old`. 
+Este nivel prueba tu capacidad para detectar cambios sutiles en archivos mediante herramientas de comparación. Con la llave SSH privada obtenida en el nivel 16, accede como `bandit17` y usa `diff` para identificar la única diferencia entre dos listas de contraseñas, `passwords.new` y `passwords.old`. 
 
 **El enfoque clave es la precisión**: Un solo cambio revela la solución sin necesidad de revisar manualmente miles de líneas.
 ##  Conceptos Clave
@@ -20,12 +20,24 @@ El comando `diff` compara archivos línea por línea y resalta diferencias espec
 
 La **mentalidad de hacker** aquí radica en el pensamiento lateral: ante dos archivos similares, no vas a revisar manualmente miles de líneas, sino que usas la herramienta precisa (`diff`) para revelar la única modificación en segundos.​
 
-**Funcionamiento detallado de `diff`**:
+### Sintaxis de `diff`
 
-- **Salida unificada** (predeterminada): Muestra bloques con `---` (archivo1), `+++` (archivo2), `@@` (rango de líneas afectadas), y símbolos como `-` (línea solo en archivo1), `+` (línea solo en archivo2).
-- **Ejemplo en Bandit 17**: `diff passwords.old passwords.new` marca la línea cambiada con `+` (nueva contraseña) y `-` (línea anterior), ignorando las miles iguales.
-- **Opciones útiles**: `-u` (unified, más legible), `-y` (lado a lado), `--color` (resaltado visual), `-q` (solo reporta diferencias sin detalles).
+La sintaxis básica del comando `diff` es simple y directa:
 
+bash
+
+`diff [opciones] archivo1 archivo2`
+
+Donde `archivo1` y `archivo2` son los ficheros a comparar, y las opciones modifican el formato y comportamiento de la salida.
+## Opciones esenciales
+
+- **`diff archivo1 archivo2`**: Comparación básica que muestra diferencias línea por línea con formato `< línea_eliminada` y `> línea_agregada`.[](https://eltallerdelbit.com/comando-diff-ejemplos/)
+
+- **`diff -u archivo1 archivo2`**: Formato unificado (más legible para humanos y `patch`), con `--- archivo1`, `+++ archivo2`, `@@ rangos @@`, `-` (eliminado), `+` (agregado).
+- **`diff -y archivo1 archivo2`**: Salida lado a lado, perfecta para diffs visuales en terminal amplia.
+- **`diff -q archivo1 archivo2`**: Solo indica si difieren ("Files archivo1 and archivo2 differ"), sin mostrar detalles.
+- **`diff -r dir1 dir2`**: Comparación recursiva de directorios (útil en recon de configs).
+​
 **Casos de uso comunes**: validar actualizaciones de software (comparar configs antes/después), debugging de scripts, auditorías de seguridad en logs, o desafíos CTF donde un solo byte cambiado es la clave. ​
 
 ## Comandos Clave
