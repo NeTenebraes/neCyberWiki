@@ -18,9 +18,7 @@ Este nivel prueba tu capacidad para detectar cambios sutiles en archivos mediant
 
 El comando `diff` compara archivos línea por línea y resalta diferencias específicas, ideal para detectar cambios en listas grandes como contraseñas o configuraciones.
 
-La **mentalidad de hacker** aquí radica en el pensamiento lateral: Ante dos archivos similares, no vas a revisar manualmente miles de líneas, sino que usas la herramienta precisa (`diff`) para revelar la única modificación en segundos.​
-
-![[2.png]]
+La **mentalidad de hacker** aquí radica en el pensamiento lateral: Ante dos archivos similares, no vas a revisar manualmente miles de líneas, sino que usas la herramienta precisa (`diff`) para revelar la única modificación en segundos.​![[2.png]]
 ###  Sintaxis General del Comando `diff`
 
 La sintaxis básica es la siguiente:
@@ -101,21 +99,20 @@ diff passwords.old passwords.new
 <!-- Aplicamos comparativa con el comando diff -->
 ![[BanditLevel17-04.webp]]
 La salida de `diff` indica el número de línea donde hay una diferencia y muestra qué había en `passwords.old` y qué hay ahora en `passwords.new`. Por intuición, la nueva línea que aparece solo en `passwords.new` corresponde a la contraseña de `bandit18`.
-### 5. Prueba de conexióncon bandit18
+### 5. Prueba de conexión con bandit18
 Con la nueva contraseña identificada, se realiza una conexión SSH como `bandit18`.
 ```
 ssh -p 2220 bandit18@bandit.labs.overthewire.org
 ```
 <!-- GIF verificando la conexión con bandit18 -->
 ![[BanditLevel17-GIF.gif]]
-![[BanditLevel17-05.webp]]
 Tras autenticarse, el servidor cierra la sesión mostrando un mensaje de despedida (“bye bye”) para `bandit18`.
-
-![[Pasted image 20251212114048.png]]
+![[BanditLevel17-05.webp]]
 **Aquí entra de nuevo el pensamiento lateral**: A primera vista podría parecer un error o que algo falló, pero al revisar la página se entiende que este comportamiento es **intencional** y forma parte del diseño del nivel. El equipo de OverTheWire quiere que **confirmes la solución tanto desde la terminal como desde la interfaz web**, reforzando la idea de que la salida inesperada de un sistema también puede ser una pista, **no solo un fallo**.
+![[Pasted image 20251212114048.png]]
 
 ---
 ## Lecturas recomendadas
 
-- Enlace a documentación o manpage de `diff`.  
-- Nota breve sobre mentalidad de hacker aplicada a leer manpages y comparar archivos.  
+- [Documentación oficial de `diff`](https://www.gnu.org/software/diffutils/manual/diffutils) (GNU diffutils)
+- [Página de manual de `diff` en Linux](https://man7.org/linux/man-pages/man1/diff.1.html) 
