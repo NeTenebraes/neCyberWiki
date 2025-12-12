@@ -107,5 +107,3 @@ Pagina de Over The wire diciendo que esto es normal
 
 - Enlace a documentación o manpage de `diff`.  
 - Nota breve sobre mentalidad de hacker aplicada a leer manpages y comparar archivos.  
-
-Si quieres, en el siguiente mensaje se puede reescribir tu `Bandit-Level-17.md` completo usando esta estructura manteniendo tu estilo, pero más pulido para publicar directo en neCyberWiki.
