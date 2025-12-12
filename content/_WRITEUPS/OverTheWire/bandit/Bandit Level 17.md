@@ -75,7 +75,7 @@ ssh -p 2220 bandit17@bandit.labs.overthewire.org
 ![[BanditLevel17-01.webp]]
 
 Asegúrate de que la llave quede **idéntica** en un fichero, por ejemplo `bandit17.key` o `llaveotw` (el nombre es libre), porque cualquier cambio en el texto o en el formato hará que el servidor la rechace.
-### 2. Confirmamos la contraseña de nivel actual
+### 3. Confirmamos la contraseña de nivel actual
 ```
 cat /etc/bandit_pass/bandit17
 ```
@@ -83,7 +83,7 @@ cat /etc/bandit_pass/bandit17
 ![[BanditLevel17-02.webp]]
 
 Una vez dentro, es posible comprobar la contraseña actual del nivel.
-### 3. Verificamos el contenido de los archivos
+### 4. Verificamos el contenido de los archivos
 ```
 ls -l
 cat passwords.new passwords.old 
@@ -93,14 +93,14 @@ cat passwords.new passwords.old
 
 Usamos `ls` para verificar el contenido en el directorio `home` de `bandit17`. Encontramos dos listas: `passwords.old` y `passwords.new`.​ Vamos a relevar el contenido con cat para verificar la magnitud de lo que nos estamos enfrentando. 
 
-### 4. Comparativa de Archivos
+### 5. Comparativa de Archivos
 ```
 diff passwords.old passwords.new
 ```
 <!-- Aplicamos comparativa con el comando diff -->
 ![[BanditLevel17-04.webp]]
 La salida de `diff` indica el número de línea donde hay una diferencia y muestra qué había en `passwords.old` y qué hay ahora en `passwords.new`. Por intuición, la nueva línea que aparece solo en `passwords.new` corresponde a la contraseña de `bandit18`.
-### 5. Prueba de conexión con bandit18
+### 6. Prueba de conexión con bandit18
 Con la nueva contraseña identificada, se realiza una conexión SSH como `bandit18`.
 ```
 ssh -p 2220 bandit18@bandit.labs.overthewire.org
