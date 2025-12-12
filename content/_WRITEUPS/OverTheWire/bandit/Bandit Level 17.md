@@ -20,8 +20,7 @@ El comando `diff` compara archivos línea por línea y resalta diferencias espec
 
 La **mentalidad de hacker** aquí radica en el pensamiento lateral: ante dos archivos similares, no vas a revisar manualmente miles de líneas, sino que usas la herramienta precisa (`diff`) para revelar la única modificación en segundos.​
 
-
-
+![[2.png]]
 ###  Sintaxis General del Comando `diff`
 
 La sintaxis básica es la siguiente:
@@ -33,7 +32,6 @@ O, si quieres comparar directorios:
 ```Bash
 diff [OPCIONES] DIRECTORIO1 DIRECTORIO2
 ```
-
 
 #### Argumentos Principales:
 - **`ARCHIVO1`**: El primer archivo que se va a comparar (a menudo considerado el original o la versión anterior).    
@@ -55,7 +53,6 @@ diff [OPCIONES] DIRECTORIO1 DIRECTORIO2
 - **`diff`**: Muestra diferencias entre dos archivos.
 
 ---
-
 ##  Solución Paso a Paso
 
 ### 1. Creación y configuración llave SSH bandit17
@@ -101,6 +98,7 @@ ssh -p
 ![[BanditLevel17-05.webp]]
 Pagina de Over The wire diciendo que esto es normal
 
+![[Pasted image 20251212114048.png]]
 
 ---
 ## Lecturas recomendadas
