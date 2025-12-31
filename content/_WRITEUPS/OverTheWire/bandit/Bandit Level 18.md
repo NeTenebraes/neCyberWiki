@@ -80,8 +80,9 @@ De esta forma podemos evadir scripts de bloqueo en el login (como el `exit 0` de
 ssh bandit18@bandit.labs.overthewire.org -p 2220 cat readme
 ```
 <!-- Imagen de la edición del archivo con la llave SSH-->
+![[Pasted image 20251231185324.png]]
 
-En este nivel nos lo ponen re fácil, nos dicen que debemos leer un archivo llamado "readme" dentro del home. Sabemos que por defecto la termina de suele abrir el el homo por lo que todo lo que tendríamos que hacer es un cat readme luego la conexión SSH
+En este nivel nos lo ponen re fácil, nos dicen que debemos leer un archivo llamado "readme" dentro del home. Sabemos que por defecto la terminal se suele abrir el HOME por lo que todo lo que tendríamos que hacer es un cat readme luego la conexión SSH
 
 ## Complicarse la vida xd
 ### 1. conectarse por ssh conel bypass
