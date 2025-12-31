@@ -51,8 +51,7 @@ Si necesitas quedarte dentro del servidor para explorar, puedes forzar a Bash a 
 ```Bash
 ssh bandit18@bandit.labs.overthewire.org -p 2220 -t "/bin/bash --norc"
 ```
-
-#### Llamando a bash:
+#### Fijate como llamamos a bash:
 ```Bash
 /bin/bash --norc
 ```
@@ -62,12 +61,7 @@ ssh bandit18@bandit.labs.overthewire.org -p 2220 -t "/bin/bash --norc"
 - `-p` seleccion de puertos.  
 - `-t` forzar TTY.
 
-**Casos de uso comunes:** Evadir scripts de bloqueo en el login (como el `exit 0` de este nivel), automatizar auditorías en múltiples servidores, o exfiltrar archivos específicos de forma rápida sin dejar una sesión abierta en los registros de última conexión.
-
-Ejemplo:
-```bash
-ssh bandit18@bandit.labs.overthewire.org -p 2220 whoami
-```
+De esta forma podemos evadir scripts de bloqueo en el login (como el `exit 0` de este nivel), automatizar auditorías en múltiples servidores, o exfiltrar archivos específicos de forma rápida sin dejar una sesión abierta en los registros de última conexión.
 
 ### Comandos Clave para este nivel
 
