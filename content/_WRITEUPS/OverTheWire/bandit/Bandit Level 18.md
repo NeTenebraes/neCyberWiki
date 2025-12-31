@@ -51,8 +51,8 @@ Si necesitas quedarte dentro del servidor para explorar, puedes forzar a Bash a 
 ```Bash
 ssh bandit18@bandit.labs.overthewire.org -p 2220 -t "/bin/bash --norc"
 ```
-La sintaxis para iniciar un shell ignorando configuraciones locales es:
 
+#### Llamando a bash:
 ```Bash
 /bin/bash --norc
 ```
