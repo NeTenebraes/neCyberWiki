@@ -24,11 +24,15 @@ Normalmente, cuando te conetas por medio de `ssh`, el servidor inicia un "login 
 > 
 > **Antes de continuar:** Lee mi nota "**[[Ética en la Ciberseguridad]]**" para más información. 
 
-## 📂 ¿Qué es el archivo .bashrc?
-El archivo `.bashrc` es un script de shell que **Bash** ejecuta automáticamente cada vez que se inicia una nueva sesión interactiva (terminal).
+## 📂 El archivo .bashrc
 
-- **¿Para qué sirve?** Se utiliza para personalizar el entorno del usuario: definir alias, variables de entorno (como el `PATH`), configurar el aspecto del prompt (`PS1`) y cargar funciones personalizadas.
-- **Uso en este nivel:** Se utilizó como un mecanismo de denegación. Al final del archivo se incluyó un comando `exit 0`, lo que provoca que la sesión se cierre justo después de cargar las configuraciones, sin dar tiempo al usuario de interactuar.
+Este es un script de shell que Bash ejecuta automáticamente cada vez que se inicia una sesión **interactiva** (cuando abres una terminal o te conectas por SSH sin comandos adicionales). Se encuentra oculto en el directorio home del usuario (`~/.bashrc`). Si el script encuentra un error o una instrucción de salida (`exit`), detendrá el proceso de inicio del shell, impidiendo que el usuario pueda escribir.
+
+- **Ejecución automática**: No necesitas llamarlo manualmente; el sistema lo lee apenas el usuario "entra" a la terminal.
+- **Persistencia**: Permite que tus configuraciones (como el color de la terminal o tus comandos abreviados) se mantengan cada vez que inicias sesión.
+- Personalizar el entorno: definir alias, variables de entorno (como el `PATH`), configurar el aspecto del prompt (`PS1`) y cargar funciones personalizadas.
+
+En estes caso, se utilizó como un mecanismo de denegación. Al final del archivo `.bashrc` de este nivel se incluyó un comando `exit 0`, lo que provoca que la sesión se cierre justo después de cargar las configuraciones, sin dar tiempo al usuario de interactuar.
 
 ## 🚀 Técnicas de Bypass
 
@@ -64,22 +68,6 @@ Ejemplo:
 ```bash
 ssh bandit18@bandit.labs.overthewire.org -p 2220 whoami
 ```
-
-## El archivo .bashrc
-
-El **.bashrc** es un script de shell que Bash ejecuta automáticamente cada vez que se inicia una sesión **interactiva** (cuando abres una terminal o te conectas por SSH sin comandos adicionales). Se encuentra oculto en el directorio home del usuario (`~/.bashrc`).
-
-#### Estructura y Funcionamiento:
-- **Ejecución automática**: No necesitas llamarlo manualmente; el sistema lo lee apenas el usuario "entra" a la terminal.
-- **Persistencia**: Permite que tus configuraciones (como el color de la terminal o tus comandos abreviados) se mantengan cada vez que inicias sesión.
-- **Impacto en el flujo**: Si el script encuentra un error o una instrucción de salida (`exit`), detendrá el proceso de inicio del shell, impidiendo que el usuario pueda escribir.
-
-**Casos de uso comunes**:
-
-1. **Personalización**: Crear **alias** (`alias ll='ls -la'`) para ahorrar tiempo.
-2. **Variables de Entorno**: Configurar el `PATH` para que el sistema encuentre programas instalados en carpetas personalizadas.
-3. **Automatización**: Ejecutar scripts de bienvenida o recolectar métricas cada vez que un administrador se loguea.
-4. **Seguridad (Desafíos)**: Como técnica de denegación de servicio local o para forzar el cierre de sesión de usuarios no autorizados.
 
 ### Comandos Clave para este nivel
 
