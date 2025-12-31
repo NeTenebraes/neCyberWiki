@@ -83,7 +83,7 @@ ssh bandit18@bandit.labs.overthewire.org -p 2220 whoami
 ### 1. Conexión ssh y concatenacion de comandos.
 
 ```bash
-ssh bandit18@bandit.labs.overthewire.org -p 2220 cat readm
+ssh bandit18@bandit.labs.overthewire.org -p 2220 cat readme
 ```
 <!-- Imagen de la edición del archivo con la llave SSH-->
 
