@@ -1,6 +1,7 @@
 ---
 title: "OTW Bandit: 0"
 cover:
+permalink: bandit/0
 description: Bandit es un wargame de seguridad informática diseñado para principiantes que te introduce al uso de comandos básicos de Linux y scripting en un entorno controlado. Su objetivo es enseñarte conceptos fundamentales de administración de sistemas y seguridad a través de retos prácticos.
 tags:
   - bandit
@@ -11,7 +12,6 @@ tags:
 difficulty:
   - ★☆☆☆
 publishDate: 2025-11-07
-slug: bandit/0
 ---
 # Introducción
 ![[Bandit_Level_0-01.webp]]
