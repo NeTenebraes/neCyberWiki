@@ -20,4 +20,3 @@ export const Favicon: QuartzEmitterPlugin = () => ({
   },
   async *partialEmit() {},
 })
-
