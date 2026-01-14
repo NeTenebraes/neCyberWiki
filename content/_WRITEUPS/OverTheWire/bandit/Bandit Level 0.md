@@ -21,6 +21,10 @@ El juego se estructura en niveles progresivos, iniciando en [Bandit Level 0](htt
 * **Toma de notas**: Mantén un archivo local con las contraseñas de cada nivel. Si tu conexión se interrumpe, no tendrás que empezar desde cero.
 * **Documenta el proceso**: Anota no solo la solución, sino también los comandos que probaste y por qué. Esto te ayudará a construir una metodología para resolver problemas más complejos.
 ----
+## Video Explicativo
+<iframe width="100%" height="400" src="https://www.youtube.com/embed/uCmhLw4oqjw" title="TUS PRIMEROS PASOS en la TERMINAL DE LINUX" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+---
 ## Conceptos Fundamentales
 
 ### ¿Qué es SSH?
