@@ -11,6 +11,7 @@ tags:
 difficulty:
   - ★☆☆☆
 publishDate: 2025-11-07
+slug: bandit/0
 ---
 # Introducción
 ![[Bandit_Level_0-01.webp]]
