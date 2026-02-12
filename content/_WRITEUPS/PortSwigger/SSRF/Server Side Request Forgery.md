@@ -1,4 +1,18 @@
-https://portswigger.net/web-security/learning-paths/ssrf-attacks/ssrf-attacks-what-is-ssrf/ssrf/what-is-ssrf
+---
+title: Server-side Request Forgery
+cover:
+description: https://portswigger.net/web-security/learning-paths/ssrf-attacks/ssrf-attacks-what-is-ssrf/ssrf/what-is-ssrf
+tags:
+  - PortSwigger
+  - Vulnerabilidad
+  - Web
+  - CTF
+  - SSRF
+difficulty: ★★☆☆☆
+publishDate: 2026-02-11
+---
+
+
 
 ![[Pasted image 20260209112651.png]]
 
@@ -86,4 +100,14 @@ Para resolver el laboratorio, debes modificar la URL de verificación de stock p
 > 4. Lea el código HTML para identificar la URL necesaria para eliminar al usuario objetivo, la cual es: `http://localhost/admin/delete?username=carlos`
 >     
 > 5. Envía esta URL en el parámetro `stockApi` para ejecutar el ataque SSRF y ver como se elimina el usuario "carlos".
+
+
+
+---
+
+![[Pasted image 20260211212904.png]]
+
+![[Pasted image 20260211212927.png]]
+
+![[Pasted image 20260211212946.png]]
 
