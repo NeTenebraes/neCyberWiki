@@ -11,7 +11,7 @@ tags:
 difficulty: ★★☆☆☆
 publishDate: 2026-02-11
 ---
-![[Cover SSRF.png]]
+![[Cover SSRF.webp]]
 
 ## 💡 ¿Qué es un SSRF? (Explicado fácil)
 
