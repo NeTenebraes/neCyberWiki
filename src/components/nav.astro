@@ -1,0 +1,33 @@
+---
+// Un componente simple para tu navegación
+---
+
+<nav class="terminal-nav">
+  <div class="logo">~/neCyberWiki</div>
+  <ul>
+    <li><a href="/">[home]</a></li>
+    <li><a href="/red-team">[red_team]</a></li>
+    <li><a href="/blue-team">[blue_team]</a></li>
+    <li><a href="/roadmap">[roadmap]</a></li>
+  </ul>
+</nav>
+
+<style>
+  .terminal-nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0;
+    border-bottom: 1px solid #333;
+    margin-bottom: 2rem;
+  }
+  .terminal-nav ul {
+    display: flex;
+    list-style: none;
+    gap: 1.5rem;
+  }
+  .terminal-nav a {
+    color: #00ff00; /* Verde hacker */
+    text-decoration: none;
+    font-family: "Courier New", monospace;
+  }
+</style>

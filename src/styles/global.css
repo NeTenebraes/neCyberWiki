@@ -1,0 +1,38 @@
+:root {
+    --bg-color: #0d0d0d;
+    --text-color: #c0c0c0;
+    --accent-color: #00ff00;
+    /* Verde hacker */
+}
+
+html {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: "Courier New", Courier, monospace;
+    /* Fuente de terminal */
+}
+
+body {
+    margin: 0 auto;
+    padding: 2rem;
+    max-width: 800px;
+    line-height: 1.6;
+}
+
+h1,
+h2 {
+    color: var(--accent-color);
+    text-transform: uppercase;
+}
+
+a {
+    color: var(--accent-color);
+}
+
+footer {
+    margin-top: 4rem;
+    border-top: 1px solid #333;
+    padding-top: 1rem;
+    font-size: 0.8rem;
+    text-align: center;
+}
