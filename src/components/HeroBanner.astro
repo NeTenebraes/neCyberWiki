@@ -1,0 +1,157 @@
+---
+const {
+  title = "neCyberWiki",
+  subtitle = "Hacking Ético",
+  mainTitle = "Aprende Cyberseguridad Gratis",
+  description = "Accede a todas mis notas de ciberseguridad sin ningun tipo de costo",
+  primaryButtonText = "Ver Proyectos",
+  secondaryButtonText = "Escríbeme",
+  characterImageSrc = "character.png", // Asegúrate de tener tu imagen aquí
+  cubeColor = "#1A1D23",
+} = Astro.props;
+---
+
+<section class="hero-container">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-greeting">
+        <span>👤</span>
+        <span>{title} • {subtitle}</span>
+      </div>
+
+      <h1 class="hero-main-title">
+        <Fragment set:html={mainTitle} />
+      </h1>
+      <p class="hero-description">{description}</p>
+
+      <div class="hero-cta">
+        <a href="/proyectos" class="btn-primary">
+          {primaryButtonText} →
+        </a>
+        <a href="/contacto" class="btn-secondary">
+          {secondaryButtonText}
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-image-wrapper">
+      <div class="cube" style={`--cube-color: ${cubeColor};`}></div>
+      <img src={characterImageSrc} alt="Personaje" class="hero-character" />
+    </div>
+  </div>
+</section>
+
+<style>
+  /* 1. ANCHO TOTAL: Se mantiene igual para abarcar toda la pantalla */
+  .hero-container {
+    width: 100%;
+    background-color: #0d1117;
+    padding: 4rem 0;
+    overflow: hidden;
+    position: relative;
+  }
+  /* 2. CONTENEDOR INTERNO: Alineación TESTING */
+  .hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center; /* Centra el bloque entero */
+    align-items: center;
+    gap: 6rem; /* Ajusta este gap para acercar/alejar */
+    padding: 0 2rem;
+  }
+
+  .hero-content {
+    flex: 1;
+    max-width: 500px; /* Tamaño máximo para lectura cómoda */
+  }
+  /* Estilos de texto */
+  .hero-greeting {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #4ade80;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-main-title {
+    font-size: 3.5rem;
+    color: white;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-description {
+    font-size: 1.1rem;
+    color: #c9d1d9;
+    margin-bottom: 2.5rem;
+  }
+
+  /* BOTONES */
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .btn-primary {
+    background: #2ea44f;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: white;
+    border: 1px solid #c9d1d9;
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px;
+    text-decoration: none;
+  }
+
+  /* IMAGEN Y CUBO: Ajuste para que el personaje no desborde TESTING */
+  .hero-image-wrapper {
+    flex-shrink: 0;
+    width: 520px;
+    height: 520px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  .cube {
+    width: 550px;
+    height: 550px;
+    background: var(--cube-color);
+    position: absolute;
+    transform: rotate(45deg);
+    opacity: 0.3; /* Un poco más sutil */
+  }
+
+  .hero-character {
+    padding-top: 17rem;
+    padding-left: 10rem;
+    width: 50rem;
+    max-width: none;
+    z-index: 1;
+  }
+  /* RESPONSIVE INITIAL */
+  @media (max-width: 900px) {
+    .hero-inner {
+      flex-direction: column-reverse; /* Imagen debajo del texto en móvil */
+      text-align: center;
+      gap: 3rem;
+    }
+    .hero-cta {
+      justify-content: center;
+    }
+    .hero-description {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+</style>

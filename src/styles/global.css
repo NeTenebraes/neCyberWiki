@@ -2,21 +2,29 @@
     --bg-color: #0d0d0d;
     --text-color: #c0c0c0;
     --accent-color: #00ff00;
-    /* Verde hacker */
+    --content-width: 800px;
 }
 
 html {
     background-color: var(--bg-color);
     color: var(--text-color);
     font-family: "Courier New", Courier, monospace;
-    /* Fuente de terminal */
 }
 
 body {
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+main {
+    width: 100%;
+}
+
+.container {
+    max-width: var(--content-width);
     margin: 0 auto;
     padding: 2rem;
-    max-width: 800px;
-    line-height: 1.6;
 }
 
 h1,
@@ -32,7 +40,7 @@ a {
 footer {
     margin-top: 4rem;
     border-top: 1px solid #333;
-    padding-top: 1rem;
+    padding: 1rem 2rem 0;
     font-size: 0.8rem;
     text-align: center;
 }

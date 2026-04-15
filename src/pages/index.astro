@@ -1,9 +1,10 @@
 ---
 import Layout from "../layouts/layout.astro";
+import HeroBanner from "../components/HeroBanner.astro";
 ---
 
 <Layout title="neCyberWiki | Inicio">
-  <img src="/_assets/Banner.webp" alt="Banner de la Wiki" class="banner" />
+  <HeroBanner />
 
   <section class="intro">
     <h1>¡Bienvenido/a!</h1>
@@ -42,4 +43,17 @@ import Layout from "../layouts/layout.astro";
       </p>
     </div>
   </section>
+
+  <section id="ultimo-contenido">
+    <h2>Último contenido</h2>
+    <div class="grid-contenido">
+      <article class="card">
+        <h3>Título del apunte</h3>
+        <p>Breve descripción del contenido...</p>
+        <a href="/ruta-al-post">Leer más</a>
+      </article>
+    </div>
+  </section>
 </Layout>
+
+<style></style>

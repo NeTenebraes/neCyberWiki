@@ -1,33 +1,165 @@
----
-// Un componente simple para tu navegación
----
-
 <nav class="terminal-nav">
-  <div class="logo">~/neCyberWiki</div>
-  <ul>
-    <li><a href="/">[home]</a></li>
-    <li><a href="/red-team">[red_team]</a></li>
-    <li><a href="/blue-team">[blue_team]</a></li>
-    <li><a href="/roadmap">[roadmap]</a></li>
-  </ul>
+  <div class="nav-container">
+    <div class="nav-left">
+      <div class="logo">~/neCyberWiki</div>
+      <a href="/" class="home-btn">[home]</a>
+      <ul class="nav-links">
+        <li><a href="/programming">Programación</a></li>
+        <li><a href="/blue-team">CTFs</a></li>
+        <li><a href="/roadmap">Roadmaps</a></li>
+      </ul>
+    </div>
+
+    <div class="nav-right">
+      <a
+        href="https://youtube.com/@NeTenebrae"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 16 16"
+          aria-hidden="true"
+          class="nav-icon"
+        >
+          <path
+            d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.01 2.01 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.01 2.01 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31 31 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.01 2.01 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A100 100 0 0 1 7.858 2zM6.4 5.209v4.818l4.157-2.408z"
+          ></path>
+        </svg>
+        <span>YouTube</span>
+      </a>
+
+      <a
+        href="https://github.com/netenebraes"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 16 16"
+          aria-hidden="true"
+          class="nav-icon"
+        >
+          <path
+            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"
+          ></path>
+        </svg>
+        <span>GitHub</span>
+      </a>
+
+      <a
+        href="https://threads.com/@netenebrae"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 16 16"
+          aria-hidden="true"
+          class="nav-icon"
+        >
+          <path
+            d="M6.81 9.204c0-.41.197-1.062 1.727-1.062.469 0 .758.034 1.146.121-.124 1.606-.91 1.818-1.674 1.818-.418 0-1.2-.218-1.2-.877Z"
+          ></path>
+          <path
+            d="M2.59 16h10.82A2.59 2.59 0 0 0 16 13.41V2.59A2.59 2.59 0 0 0 13.41 0H2.59A2.59 2.59 0 0 0 0 2.59v10.82A2.59 2.59 0 0 0 2.59 16M5.866 5.91c.567-.81 1.315-1.126 2.35-1.126.73 0 1.351.246 1.795.711.443.466.696 1.132.754 1.983q.368.154.678.363c.832.559 1.29 1.395 1.29 2.353 0 2.037-1.67 3.806-4.692 3.806-2.595 0-5.291-1.51-5.291-6.004C2.75 3.526 5.361 2 8.033 2c1.234 0 4.129.182 5.217 3.777l-1.02.264c-.842-2.56-2.607-2.968-4.224-2.968-2.675 0-4.187 1.628-4.187 5.093 0 3.107 1.69 4.757 4.222 4.757 2.083 0 3.636-1.082 3.636-2.667 0-1.079-.906-1.595-.953-1.595-.177.925-.651 2.482-2.733 2.482-1.213 0-2.26-.838-2.26-1.936 0-1.568 1.488-2.136 2.663-2.136.44 0 .97.03 1.247.086 0-.478-.404-1.296-1.426-1.296-.911 0-1.16.288-1.45.624l-.024.027c-.202-.135-.875-.601-.875-.601Z"
+          ></path>
+        </svg>
+        <span>Threads</span>
+      </a>
+    </div>
+  </div>
 </nav>
 
 <style>
   .terminal-nav {
+    width: 100%;
+    background-color: #0d1117;
+    border-bottom: 1px solid #333;
+    padding: 1rem 0;
+  }
+
+  .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
-    padding: 1rem 0;
-    border-bottom: 1px solid #333;
-    margin-bottom: 2rem;
+    align-items: center;
+    padding: 0 2rem;
+    gap: 2rem;
   }
-  .terminal-nav ul {
+
+  .nav-left,
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .logo {
+    color: #4ade80;
+    font-family: monospace;
+    font-weight: 700;
+    margin-right: 1rem;
+    white-space: nowrap;
+  }
+
+  .nav-links {
     display: flex;
     list-style: none;
     gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
   }
+
+  .home-btn {
+    color: #4ade80 !important;
+    font-weight: 700;
+    border: 1px solid #4ade80;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
   .terminal-nav a {
-    color: #00ff00; /* Verde hacker */
+    color: #c9d1d9;
     text-decoration: none;
     font-family: "Courier New", monospace;
+    font-size: 0.9rem;
+    transition:
+      color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .terminal-nav a:hover {
+    color: #4ade80;
+  }
+
+  .nav-right a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    white-space: nowrap;
+  }
+
+  .nav-icon {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+    fill: currentColor;
+  }
+
+  @media (max-width: 768px) {
+    .nav-container {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .nav-right {
+      width: 100%;
+      justify-content: flex-start;
+    }
   }
 </style>
