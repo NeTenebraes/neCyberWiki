@@ -27,7 +27,10 @@ const {
         <a href="/proyectos" class="btn-primary">
           {primaryButtonText} →
         </a>
-        <a href="/contacto" class="btn-secondary">
+
+        <a href="#wiki" class="btn-tertiary"> Explora la Wiki </a>
+
+        <a href="/contacto" class="btn-secondary btn-contact-full">
           {secondaryButtonText}
         </a>
       </div>
@@ -38,10 +41,44 @@ const {
       <img src={characterImageSrc} alt="Personaje" class="hero-character" />
     </div>
   </div>
-  <hr />
+
+  <div class="hero-notice" aria-label="Aviso de uso ético">
+    <div class="hero-notice__viewport">
+      <div class="hero-notice__track">
+        <div class="hero-notice__group">
+          <span class="hero-notice__label">Importante</span>
+          <span class="hero-notice__text">
+            Uso educativo y ético únicamente. No ejecutes nada en producción ni
+            sobre datos reales. Lee primero
+            <a
+              href="https://netenebraes.github.io/neCyberWiki/Ética-en-la-Ciberseguridad"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Ética en la Ciberseguridad
+            </a>.
+          </span>
+        </div>
+
+        <div class="hero-notice__group" aria-hidden="true">
+          <span class="hero-notice__label">Importante</span>
+          <span class="hero-notice__text">
+            Uso educativo y ético únicamente. No ejecutes nada en producción ni
+            sobre datos reales. Lee primero
+            <a
+              href="https://netenebraes.github.io/neCyberWiki/Ética-en-la-Ciberseguridad"
+              target="_blank"
+              rel="noopener noreferrer"
+              tabindex="-1"
+            >
+              Ética en la Ciberseguridad
+            </a>.
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
-<br />
-AGREGAR BOTON "EXPLORA LA WIKI"
 
 <style>
   /* 1. ANCHO TOTAL: Se mantiene igual para abarcar toda la pantalla */
@@ -52,6 +89,7 @@ AGREGAR BOTON "EXPLORA LA WIKI"
     overflow: hidden;
     position: relative;
   }
+
   /* 2. CONTENEDOR INTERNO: Alineación TESTING */
   .hero-inner {
     max-width: 1200px;
@@ -67,6 +105,7 @@ AGREGAR BOTON "EXPLORA LA WIKI"
     flex: 1;
     max-width: 500px; /* Tamaño máximo para lectura cómoda */
   }
+
   /* Estilos de texto */
   .hero-greeting {
     display: flex;
@@ -89,10 +128,12 @@ AGREGAR BOTON "EXPLORA LA WIKI"
     margin-bottom: 2.5rem;
   }
 
-  /* BOTONES */
+  /* BOTONES: dos arriba, uno abajo ocupando ambas columnas */
   .hero-cta {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1rem;
+    align-items: stretch;
   }
 
   .btn-primary {
@@ -102,6 +143,10 @@ AGREGAR BOTON "EXPLORA LA WIKI"
     border-radius: 6px;
     text-decoration: none;
     font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }
 
   .btn-secondary {
@@ -111,6 +156,27 @@ AGREGAR BOTON "EXPLORA LA WIKI"
     padding: 0.8rem 1.5rem;
     border-radius: 6px;
     text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .btn-tertiary {
+    background: transparent;
+    color: #4ade80;
+    border: 1px solid #253041;
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .btn-contact-full {
+    grid-column: 1 / -1;
   }
 
   /* IMAGEN Y CUBO: Ajuste para que el personaje no desborde TESTING */
@@ -134,11 +200,81 @@ AGREGAR BOTON "EXPLORA LA WIKI"
   }
 
   .hero-character {
-    padding-top: 15rem;
+    padding-top: 17rem;
     width: 40rem;
     max-width: none;
     z-index: 1;
   }
+
+  /* BANNER PEQUEÑO DE ÉTICA */
+  .hero-notice {
+    width: 100%;
+    border-top: 1px solid #1f2937;
+    border-bottom: 1px solid #1f2937;
+    background: #0b1220;
+    overflow: hidden;
+  }
+
+  .hero-notice__viewport {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .hero-notice__track {
+    width: max-content;
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    animation: heroTicker 24s linear infinite;
+    will-change: transform;
+  }
+
+  .hero-notice__group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    white-space: nowrap;
+    padding: 0.55rem 0;
+  }
+
+  .hero-notice__label {
+    flex-shrink: 0;
+    color: #4ade80;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.72rem;
+    padding-left: 1rem;
+  }
+
+  .hero-notice__text {
+    color: #c9d1d9;
+    font-size: 0.82rem;
+    line-height: 1;
+  }
+
+  .hero-notice__text a {
+    color: #4ade80;
+    text-decoration: none;
+  }
+
+  .hero-notice__text a:hover {
+    text-decoration: underline;
+  }
+
+  .hero-notice:hover .hero-notice__track {
+    animation-play-state: paused;
+  }
+
+  @keyframes heroTicker {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-50% - 1.25rem));
+    }
+  }
+
   /* RESPONSIVE INITIAL EXPERIMENTAL */
   @media (max-width: 900px) {
     .hero-inner {
@@ -146,12 +282,39 @@ AGREGAR BOTON "EXPLORA LA WIKI"
       text-align: center;
       gap: 3rem;
     }
+
     .hero-cta {
+      grid-template-columns: 1fr;
       justify-content: center;
     }
+
+    .btn-contact-full {
+      grid-column: auto;
+    }
+
     .hero-description {
       margin-left: auto;
       margin-right: auto;
+    }
+
+    .hero-notice__group {
+      gap: 0.55rem;
+      padding: 0.5rem 0;
+    }
+
+    .hero-notice__text {
+      font-size: 0.76rem;
+    }
+
+    .hero-notice__track {
+      animation-duration: 18s;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-notice__track {
+      animation: none;
+      transform: none;
     }
   }
 </style>
