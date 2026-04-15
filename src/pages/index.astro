@@ -1,59 +1,89 @@
 ---
 import Layout from "../layouts/layout.astro";
 import HeroBanner from "../components/HeroBanner.astro";
+import CarruselInfo from "../components/CarruselInfo.astro";
 ---
 
 <Layout title="neCyberWiki | Inicio">
   <HeroBanner />
 
-  <section class="intro">
-    <h1>¡Bienvenido/a!</h1>
-    <p>
-      Si estás aquí, es porque compartes la pasión por un campo que define
-      nuestro futuro digital.
-    </p>
-    <p>
-      La <strong>neCyberWIKI</strong> nace de una convicción: <strong
-        >el conocimiento de calidad debe ser universal y accesible</strong
-      >.
-    </p>
-  </section>
-
-  <hr />
-
-  <section id="abrumado">
-    <h2>¿Te sientes abrumado? No estás solo...</h2>
-    <p>
-      En Internet hay una fiesta de información sobre cualquier tema, y la
-      ciberseguridad no es la excepción...
-    </p>
-
-    <ul>
-      <li>Ciencias de la Computación</li>
-      <li>Redes Informáticas</li>
-      <li>Ciberseguridad (Red Team y Blue Team)</li>
-    </ul>
-
-    <div class="warning-box">
-      <strong>¡Importante!</strong>
+  <CarruselInfo />
+  <section class="two-columns">
+    <div class="two-columns__left">
+      <h2>¿Por qué existe neCyberWiki?</h2>
       <p>
-        Esta Wiki es para fines educativos y prácticas éticas. Lee primero <a
-          href="/etica">Ética en la Ciberseguridad</a
-        >.
+        La idea es reunir apuntes, rutas y recursos útiles para aprender
+        ciberseguridad de forma clara y accesible.
+      </p>
+      <p>
+        No hace falta empezar sabiéndolo todo. Lo importante es tener una ruta,
+        criterio y constancia.
       </p>
     </div>
-  </section>
 
-  <section id="ultimo-contenido">
-    <h2>Último contenido</h2>
-    <div class="grid-contenido">
-      <article class="card">
-        <h3>Título del apunte</h3>
-        <p>Breve descripción del contenido...</p>
-        <a href="/ruta-al-post">Leer más</a>
-      </article>
-    </div>
+    <aside class="two-columns__right">
+      <div class="info-card">
+        <h3>Empieza por aquí</h3>
+        <ul>
+          <li><a href="/fundamentos">Fundamentos</a></li>
+          <li><a href="/redes">Redes</a></li>
+          <li><a href="/roadmap">Roadmap</a></li>
+          <li><a href="/etica">Ética</a></li>
+        </ul>
+      </div>
+    </aside>
   </section>
 </Layout>
 
-<style></style>
+<style>
+  .two-columns {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    display: grid;
+    grid-template-columns: 1.4fr 0.9fr;
+    gap: 3rem;
+  }
+
+  .two-columns__left,
+  .two-columns__right {
+    min-width: 0;
+  }
+
+  .two-columns__left h2 {
+    margin-bottom: 1rem;
+  }
+
+  .two-columns__left p {
+    margin-bottom: 1rem;
+    max-width: 65ch;
+  }
+
+  .info-card {
+    background: #111827;
+    border: 1px solid #2f3945;
+    border-radius: 8px;
+    padding: 1.5rem;
+  }
+
+  .info-card h3 {
+    margin-bottom: 1rem;
+    color: #4ade80;
+  }
+
+  .info-card ul {
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+
+  .info-card li + li {
+    margin-top: 0.75rem;
+  }
+
+  @media (max-width: 900px) {
+    .top-strip__inner,
+    .two-columns {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
