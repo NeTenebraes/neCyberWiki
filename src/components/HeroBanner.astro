@@ -1,12 +1,12 @@
 ---
 const {
   title = "neCyberWiki",
-  subtitle = "Hacking Ético",
-  mainTitle = "Aprende Cyberseguridad Gratis",
-  description = "Accede a todas mis notas de ciberseguridad sin ningun tipo de costo",
-  primaryButtonText = "Ver Proyectos",
-  secondaryButtonText = "Escríbeme",
-  characterImageSrc = "character.png", // Asegúrate de tener tu imagen aquí
+  subtitle = "NeTenebrae",
+  mainTitle = "Aprende gratis Ciberseguridad",
+  description = "Accede a todos mis recursos de ciberseguridad sin ningun tipo de costo",
+  primaryButtonText = "Ver Roadmaps",
+  secondaryButtonText = "Contáctame",
+  characterImageSrc = "components/HeroBanner/character.webp", // Asegúrate de tener tu imagen aquí
   cubeColor = "#1A1D23",
 } = Astro.props;
 ---
@@ -15,7 +15,7 @@ const {
   <div class="hero-inner">
     <div class="hero-content">
       <div class="hero-greeting">
-        <span>{title} • {subtitle}</span>
+        <span>{subtitle} • {title}</span>
       </div>
 
       <h1 class="hero-main-title">
@@ -38,14 +38,17 @@ const {
       <img src={characterImageSrc} alt="Personaje" class="hero-character" />
     </div>
   </div>
+  <hr />
 </section>
+<br />
+AGREGAR BOTON "EXPLORA LA WIKI"
 
 <style>
   /* 1. ANCHO TOTAL: Se mantiene igual para abarcar toda la pantalla */
   .hero-container {
     width: 100%;
     background-color: #0d1117;
-    padding: 4rem 0;
+    padding: 0;
     overflow: hidden;
     position: relative;
   }
@@ -71,14 +74,13 @@ const {
     gap: 0.5rem;
     color: #4ade80;
     font-weight: 500;
-    margin-bottom: 1.5rem;
   }
 
   .hero-main-title {
     font-size: 3.5rem;
     color: white;
     line-height: 1.1;
-    margin-bottom: 1.5rem;
+    margin: 0;
   }
 
   .hero-description {
@@ -132,16 +134,15 @@ const {
   }
 
   .hero-character {
-    padding-top: 17rem;
-    padding-left: 10rem;
-    width: 50rem;
+    padding-top: 15rem;
+    width: 40rem;
     max-width: none;
     z-index: 1;
   }
-  /* RESPONSIVE INITIAL */
+  /* RESPONSIVE INITIAL EXPERIMENTAL */
   @media (max-width: 900px) {
     .hero-inner {
-      flex-direction: column-reverse; /* Imagen debajo del texto en móvil */
+      flex-direction: column-reverse; /* Imagen debajo del texto en móvil | NECESITA ARREGLOS */
       text-align: center;
       gap: 3rem;
     }
