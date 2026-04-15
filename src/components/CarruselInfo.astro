@@ -69,19 +69,23 @@
 
 <script>
   class CarruselInfo extends HTMLElement {
+    track: HTMLElement | null = null;
+    slides: HTMLElement[] = [];
+    dots: HTMLButtonElement[] = [];
+    current = 0;
+    interval: number | null = null;
+    prefersReducedMotion = false;
+
     connectedCallback() {
       if (this.dataset.ready === "true") return;
       this.dataset.ready = "true";
 
       this.track = this.querySelector("[data-track]");
-      this.slides = [...this.querySelectorAll(".carousel__slide")];
-      this.dots = [...this.querySelectorAll(".carousel__dot")];
-
+      this.slides = [...this.querySelectorAll(".carousel__slide")] as HTMLElement[];
+      this.dots = [...this.querySelectorAll(".carousel__dot")] as HTMLButtonElement[];
       this.current = 0;
       this.interval = null;
-      this.prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
+      this.prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       this.update();
 
@@ -105,10 +109,7 @@
       this.track.style.transform = `translateX(-${this.current * 100}%)`;
 
       this.slides.forEach((slide, index) => {
-        slide.setAttribute(
-          "aria-hidden",
-          index === this.current ? "false" : "true",
-        );
+        slide.setAttribute("aria-hidden", index === this.current ? "false" : "true");
       });
 
       this.dots.forEach((dot, index) => {
@@ -118,7 +119,7 @@
       });
     }
 
-    goTo(index) {
+    goTo(index: number) {
       this.current = index;
       this.update();
     }
