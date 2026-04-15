@@ -1,0 +1,325 @@
+<section class="carousel-shell">
+  <div class="carousel-header">
+    <p class="carousel-kicker">Explora la wiki</p>
+    <h2>Tres caminos para aprender ciberseguridad</h2>
+  </div>
+
+  <carrusel-info class="carousel" aria-label="Carrusel de áreas principales">
+    <div class="carousel__viewport">
+      <div class="carousel__track" data-track>
+        <article class="carousel__slide">
+          <div class="carousel__content">
+            <span class="carousel__index">01</span>
+            <h3>Fundamentos</h3>
+            <p>
+              Construye bases reales en sistemas, terminal, redes y conceptos
+              esenciales para entender la ciberseguridad desde cero.
+            </p>
+            <a href="/fundamentos" class="carousel__link">Ir a fundamentos →</a>
+          </div>
+        </article>
+
+        <article class="carousel__slide">
+          <div class="carousel__content">
+            <span class="carousel__index">02</span>
+            <h3>Red Team</h3>
+            <p>
+              Aprende reconocimiento, explotación, metodología ofensiva y
+              práctica en laboratorios para desarrollar criterio técnico.
+            </p>
+            <a href="/red-team" class="carousel__link">Explorar Red Team →</a>
+          </div>
+        </article>
+
+        <article class="carousel__slide">
+          <div class="carousel__content">
+            <span class="carousel__index">03</span>
+            <h3>Blue Team</h3>
+            <p>
+              Trabaja detección, análisis, hardening, monitoreo y defensa para
+              entender cómo proteger sistemas y responder a incidentes.
+            </p>
+            <a href="/blue-team" class="carousel__link">Explorar Blue Team →</a>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="carousel__footer">
+      <div class="carousel__dots" data-dots>
+        <button
+          class="carousel__dot is-active"
+          type="button"
+          aria-label="Ver slide 1"
+          aria-current="true"></button>
+        <button
+          class="carousel__dot"
+          type="button"
+          aria-label="Ver slide 2"
+          aria-current="false"></button>
+        <button
+          class="carousel__dot"
+          type="button"
+          aria-label="Ver slide 3"
+          aria-current="false"></button>
+      </div>
+    </div>
+  </carrusel-info>
+</section>
+
+<script>
+  class CarruselInfo extends HTMLElement {
+    connectedCallback() {
+      if (this.dataset.ready === "true") return;
+      this.dataset.ready = "true";
+
+      this.track = this.querySelector("[data-track]");
+      this.slides = [...this.querySelectorAll(".carousel__slide")];
+      this.dots = [...this.querySelectorAll(".carousel__dot")];
+
+      this.current = 0;
+      this.interval = null;
+      this.prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      this.update();
+
+      this.dots.forEach((dot, index) => {
+        dot.addEventListener("click", () => {
+          this.goTo(index);
+          this.restart();
+        });
+      });
+
+      this.addEventListener("mouseenter", () => this.stop());
+      this.addEventListener("mouseleave", () => this.start());
+      this.addEventListener("focusin", () => this.stop());
+      this.addEventListener("focusout", () => this.start());
+
+      this.start();
+    }
+
+    update() {
+      if (!this.track) return;
+      this.track.style.transform = `translateX(-${this.current * 100}%)`;
+
+      this.slides.forEach((slide, index) => {
+        slide.setAttribute(
+          "aria-hidden",
+          index === this.current ? "false" : "true",
+        );
+      });
+
+      this.dots.forEach((dot, index) => {
+        const active = index === this.current;
+        dot.classList.toggle("is-active", active);
+        dot.setAttribute("aria-current", active ? "true" : "false");
+      });
+    }
+
+    goTo(index) {
+      this.current = index;
+      this.update();
+    }
+
+    next() {
+      this.current = (this.current + 1) % this.slides.length;
+      this.update();
+    }
+
+    start() {
+      if (this.prefersReducedMotion || this.slides.length <= 1) return;
+      this.stop();
+      this.interval = window.setInterval(() => this.next(), 5000);
+    }
+
+    stop() {
+      if (this.interval) {
+        window.clearInterval(this.interval);
+        this.interval = null;
+      }
+    }
+
+    restart() {
+      this.stop();
+      this.start();
+    }
+  }
+
+  if (!customElements.get("carrusel-info")) {
+    customElements.define("carrusel-info", CarruselInfo);
+  }
+</script>
+
+<style>
+  .carousel-shell {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2.25rem 2rem 1.5rem;
+  }
+
+  .carousel-header {
+    margin-bottom: 1rem;
+  }
+
+  .carousel-kicker {
+    margin: 0 0 0.45rem;
+    color: #4ade80;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.82rem;
+  }
+
+  .carousel-header h2 {
+    margin: 0;
+    color: #f8fafc;
+    font-size: clamp(1.5rem, 50vw, 2.1rem);
+    line-height: 1.08;
+    max-width: none;
+  }
+
+  .carousel,
+  .carousel *,
+  .carousel *::before,
+  .carousel *::after {
+    box-sizing: border-box;
+  }
+
+  .carousel {
+    display: block;
+    border: 1px solid #253041;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #0f1724 0%, #0b1220 100%);
+    overflow: hidden;
+  }
+
+  .carousel__viewport {
+    overflow: hidden;
+    min-height: 320px;
+  }
+
+  .carousel__track {
+    display: flex;
+    width: 100%;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+
+  .carousel__slide {
+    flex: 0 0 100%;
+    width: 100%;
+    min-width: 100%;
+  }
+
+  .carousel__content {
+    min-height: 320px;
+    padding: 2.5rem 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: radial-gradient(
+      circle at top right,
+      rgba(74, 222, 128, 0.08),
+      transparent 28%
+    );
+  }
+
+  .carousel__index {
+    display: inline-block;
+    margin-bottom: 0.85rem;
+    color: #4ade80;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  .carousel__slide h3 {
+    margin: 0 0 0.85rem;
+    color: #4ade80;
+    font-size: clamp(1.9rem, 3vw, 2.6rem);
+    line-height: 1.02;
+  }
+
+  .carousel__slide p {
+    margin: 0 0 1.25rem;
+    color: #c9d1d9;
+    max-width: 58ch;
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  .carousel__link {
+    width: fit-content;
+    color: #f8fafc;
+    text-decoration: none;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    transition: 0.2s ease;
+  }
+
+  .carousel__link:hover {
+    color: #4ade80;
+    border-color: #4ade80;
+  }
+
+  .carousel__footer {
+    border-top: 1px solid #1f2a3a;
+    padding: 0.9rem 1rem 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .carousel__dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.55rem;
+    width: 100%;
+  }
+
+  .carousel__dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 999px;
+    border: none;
+    background: #334155;
+    cursor: pointer;
+    transition: 0.2s ease;
+    padding: 0;
+  }
+
+  .carousel__dot.is-active {
+    width: 26px;
+    background: #4ade80;
+  }
+
+  @media (max-width: 900px) {
+    .carousel-shell {
+      padding: 1.75rem 1rem 1.25rem;
+    }
+
+    .carousel__viewport,
+    .carousel__content {
+      min-height: 360px;
+    }
+
+    .carousel__content {
+      padding: 2rem 1.5rem;
+    }
+
+    .carousel__slide p {
+      font-size: 0.98rem;
+      line-height: 1.75;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .carousel__track {
+      transition: none;
+    }
+  }
+</style>
