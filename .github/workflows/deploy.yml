@@ -33,7 +33,7 @@ jobs:
         run: npx quartz build
 
       - name: Upload artifact for deployment
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: './public' # Sube la carpeta 'public' que contiene el sitio
 
@@ -47,4 +47,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
